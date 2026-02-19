@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="apple-touch-icon" href="img/CycloneSync.svg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mana-font@latest/css/mana.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="manifest" href="manifest.json">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <link rel="shortcut icon" type="image/svg" href="img/CycloneSync.svg">
+
+    <title>CycloneSync</title>
+</head>
+
+<body>
+    <div id="container" class="floatcontainer">
+        <div id="content" class="content">
+            <div id="top-row" class="top-row">
+                <div class="tile-wrapper" id="tile-life">
+                    <div class="manasymbol-container">
+                        <i class="ms ss-foil ss-grad ms-ability-lifelink toprow-manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="life" min="0" max="99" value="40" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('life', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('life', -1)">&minus;</button>
+                    </div>
+                </div>
+                <div class="tile-wrapper hidden" id="tile-tax">
+                    <div class="manasymbol-container">
+                        <i class="ss ss-foil ss-grad ss-cmd ss-5x toprow-manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="tax" min="0" max="99" value="0" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('tax', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('tax', -1)">&minus;</button>
+                    </div>
+                </div>
+            </div>
+            <div id="room-row" class="room-row hidden">
+                <div class="room-qr-trigger" onclick="showRoomQR()">
+                    <i class="ms ms-counter-brick"></i>
+                    <span>QR</span>
+                </div>
+
+                <div id="remote-players-container" class="remote-players-grid">
+                </div>
+
+                <div class="room-exit-btn" onclick="leaveRoom()">
+                    <i class="ss ss-foil ss-grad ss-bfz ss-2x"></i>
+                </div>
+            </div>
+            <div class="tracker-grid">
+                <div class="tile-wrapper hidden" id="tile-w">
+                    <div class="manasymbol-container">
+                        <i class="ms ms-w ms-cost ms-fw manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="mana-w" min="0" max="99" value="0" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('mana-w', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('mana-w', -1)">&minus;</button>
+                    </div>
+                </div>
+                <div class="tile-wrapper hidden" id="tile-u">
+                    <div class="manasymbol-container">
+                        <i class="ms ms-u ms-cost manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="mana-u" min="0" max="99" value="0" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('mana-u', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('mana-u', -1)">&minus;</button>
+                    </div>
+                </div>
+                <div class="tile-wrapper hidden" id="tile-b">
+                    <div class="manasymbol-container">
+                        <i class="ms ms-b ms-cost manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="mana-b" min="0" max="99" value="0" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('mana-b', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('mana-b', -1)">&minus;</button>
+                    </div>
+                </div>
+                <div class="tile-wrapper hidden" id="tile-r">
+                    <div class="manasymbol-container">
+                        <i class="ms ms-r ms-cost ms-fw manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="mana-r" min="0" max="99" value="0" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('mana-r', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('mana-r', -1)">&minus;</button>
+                    </div>
+                </div>
+                <div class="tile-wrapper hidden" id="tile-g">
+                    <div class="manasymbol-container">
+                        <i class="ms ms-g ms-cost manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="mana-g" min="0" max="99" value="0" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('mana-g', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('mana-g', -1)">&minus;</button>
+                    </div>
+                </div>
+                <div class="tile-wrapper hidden" id="tile-c">
+                    <div class="manasymbol-container">
+                        <i class="ms ms-c ms-cost manasymbol-icon"></i>
+                    </div>
+                    <input class="quantity" id="mana-c" min="0" max="99" value="0" type="number" oninput="manualUpdate(this)">
+                    <div class="spinner-btns">
+                        <button class="plus" onclick="updateValue('mana-c', 1)">&plus;</button>
+                        <button class="minus" onclick="updateValue('mana-c', -1)">&minus;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="controls-row">
+                <button class="control-btn" id="btn-life" onclick="toggleLife()">
+                    <i class="ms ss-foil ss-grad ms-ability-lifelink"></i>
+                </button>
+                <button class="control-btn disabled" id="btn-tax" onclick="toggleTax()">
+                    <i class="ss ss-foil ss-grad ss-cmd"></i>
+                </button>
+                <button class="control-btn" id="btn-pips" oncontextmenu="return false;">
+                    <i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>
+                </button>
+                <button class="control-btn" id="btn-cmd" onclick="toggleCmdModal()">
+                    <i class="ss ss-foil ss-grad ss-mic"></i>
+                </button>
+                <button class="control-btn" id="btn-connect" onclick="toggleConnectModal()">
+                    <i class="ss ss-foil ss-grad ss-eoe"></i>
+                </button>
+                <button class="control-btn" id="btn-awake" onclick="toggleWakeLock()">
+                    <i class="ms ss-foil ss-grad ms-dfc-day"></i>
+                </button>
+                <button onclick="resetAll()" class="control-btn">
+                    <i class="ms ss-foil ss-grad ms-ability-dfc"></i> <span style="font-size: 1rem; margin-left: 0.2rem;">RESET</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="credits-modal" class="hidden">
+        <h2>Credits & Legal</h2>
+        <p>Background image:
+            <br>
+            <i class="ms ss-foil ss-grad ms-artist-nib"></i> <em>black and white clouds in the sky</em> illustration by Mikhail Tyrsyna
+        </p>
+        <p>Fonts:<br>
+            <a href="https://github.com/andrewgioia/keyrune" target="_blank">Keyrune</a> and <a href="https://github.com/andrewgioia/Mana" target="_blank">Mana</a> fonts by <a href="https://andrewgioia.com/">Andrew Gioia</a> (SIL OFL 1.1)
+            <br>
+            Beleren font from Wizards of the Coast
+        </p>
+        <p class="legal-text">
+            CycloneSync is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards of the Coast. Portions of the materials used are property of Wizards of the Coast; those portions &copy; Wizards of the Coast LLC.
+        </p>
+        <button class="close-btn" onclick="toggleCredits()">CLOSE</button>
+    </div>
+    <div id="pips-modal" class="hidden">
+        <div class="cmd-modal-content">
+            <h2>Mana Tile Visibility</h2>
+            <p class="help-subtext">Choose which mana tiles are always shown and which ones are toggled by the &ensp;<i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>&ensp; button.</p>
+
+            <div class="pips-grid">
+                <input type="checkbox" id="chk-white" class="pip-chk" value="white">
+                <label for="chk-white" class="pip-label"><i class="ms ms-w ms-cost ms-2x"></i></label>
+
+                <input type="checkbox" id="chk-blue" class="pip-chk" value="blue">
+                <label for="chk-blue" class="pip-label"><i class="ms ms-u ms-cost ms-2x"></i></label>
+
+                <input type="checkbox" id="chk-black" class="pip-chk" value="black">
+                <label for="chk-black" class="pip-label"><i class="ms ms-b ms-cost ms-2x"></i></label>
+
+                <input type="checkbox" id="chk-red" class="pip-chk" value="red">
+                <label for="chk-red" class="pip-label"><i class="ms ms-r ms-cost ms-2x"></i></label>
+
+                <input type="checkbox" id="chk-green" class="pip-chk" value="green">
+                <label for="chk-green" class="pip-label"><i class="ms ms-g ms-cost ms-2x"></i></label>
+
+                <input type="checkbox" id="chk-colorless" class="pip-chk" value="colorless">
+                <label for="chk-colorless" class="pip-label"><i class="ms ms-c ms-cost ms-2x"></i></label>
+            </div>
+
+            <button class="close-btn" onclick="savePipsConfig()">SAVE & CLOSE</button>
+        </div>
+    </div>
+    <div id="cmd-modal" class="hidden modal-overlay">
+        <div class="cmd-modal-content">
+            <div class="cmd-quarters">
+                <div class="cmd-quarter">
+                    <input type="text" id="name-p1" class="player-name" value="Player 1" placeholder="Name" oninput="savePlayerName(this)">
+                    <div class="cmd-counters-vertical">
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p1-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p1-c1', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p1-c1', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p1-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p1-c2', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p1-c2', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmd-quarter">
+                    <input type="text" id="name-p2" class="player-name" value="Player 2" placeholder="Name" oninput="savePlayerName(this)">
+                    <div class="cmd-counters-vertical">
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p2-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p2-c1', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p2-c1', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p2-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p2-c2', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p2-c2', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmd-quarter">
+                    <input type="text" id="name-p3" class="player-name" value="Player 3" placeholder="Name" oninput="savePlayerName(this)">
+                    <div class="cmd-counters-vertical">
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p3-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p3-c1', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p3-c1', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p3-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p3-c2', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p3-c2', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cmd-quarter">
+                    <input type="text" id="name-p4" class="player-name" value="Player 4" placeholder="Name" oninput="savePlayerName(this)">
+                    <div class="cmd-counters-vertical">
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p4-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p4-c1', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p4-c1', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cmd-wrapper">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <div class="cmd-counter-unit">
+                                <input class="quantity cmd-qty" id="cmd-p4-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <div class="spinner-btns">
+                                    <button class="plus" onclick="updateCmdValue('cmd-p4-c2', 1)">&plus;</button>
+                                    <button class="minus" onclick="updateCmdValue('cmd-p4-c2', -1)">&minus;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="close-btn" onclick="toggleCmdModal()">CLOSE</button>
+        </div>
+    </div>
+    <div id="connect-modal" class="hidden">
+        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+            <h2>Table Sync</h2>
+
+            <div id="connect-step-1">
+                <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" maxlength="12">
+
+                <div class="divider-line"></div>
+
+                <input type="text" id="conn-room-code" class="modal-input" placeholder="Room Name" style="text-transform: uppercase;">
+
+                <div class="connect-actions">
+                    <button class="control-btn" onclick="joinRoom()">JOIN / CREATE</button>
+                    <button class="control-btn" onclick="startQRScan()">
+                        <i class="ms ms-beleren"></i> SCAN QR
+                    </button>
+                </div>
+
+                <div id="qr-reader" style="width: 100%; margin-top: 1rem;"></div>
+                <p id="conn-status" class="help-subtext">Enter a room name to start.</p>
+            </div>
+
+            <div id="connect-step-2" class="hidden" style="text-align: center;">
+                <h3>Room: <span id="display-room-code"></span></h3>
+                <div id="room-qr-display" style="display: flex; justify-content: center; margin: 1rem 0; background: white; padding: 1rem; border-radius: 0.5rem;"></div>
+                <p class="help-subtext">Scan to join the room!</p>
+                <button class="close-btn" onclick="toggleConnectModal()">CLOSE</button>
+            </div>
+
+            <button class="close-btn" id="close-connect-btn" onclick="toggleConnectModal()" style="margin-top:1rem;">CANCEL</button>
+        </div>
+    </div>
+    <div id="help-modal" class="hidden">
+        <h2>Help</h2>
+        <p>
+            <i class="ms ss-foil ss-grad ms-ability-lifelink ms-2x"></i> - toggle life counter
+        </p>
+        <p>
+            <i class="ss ss-foil ss-grad ss-cmd ss-2x"></i> - toggle commander tax counter
+        </p>
+        <p>
+            <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x"></i> - long press to choose which mana tiles are always visible and which toggle on and off using the &ensp;<i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>&ensp; button
+        </p>
+        <p>
+            <i class="ss ss-foil ss-grad ss-mic ss-2x"></i> - toggle commander damage page
+            <br>
+            <span class="help-subtext">Player and commander labels are editable!</span>
+        </p>
+        <p>
+            <i class="ms ss-foil ss-grad ms-dfc-day ms-2x"></i>/<i class="ms ms-dfc-night ms-2x"></i> - toggle screen wake lock
+        </p>
+        <p>
+            <i class="ss ss-foil ss-grad ss-iko ss-2x"></i> - reset all counters
+        </p>
+        <button class="close-btn" onclick="toggleHelp()">CLOSE</button>
+    </div>
+    <div id="sticky-footer">
+        <span class="footer-link" onclick="toggleCredits()">
+            <i class="ms ss-foil ss-grad ms-artist-nib"></i> & <i class="ms ss-foil ss-grad ms-ability-adventure"></i> Credits
+        </span>
+        <span class="footer-separator">|</span>
+        <span class="footer-link" onclick="toggleHelp()">
+            <i class="ss ss-foil ss-grad ss-mb2"></i> Help
+        </span>
+        <span class="footer-separator">|</span>
+        <span class="footer-link">
+            Issues? Report on <a href="https://github.com/regularwave/kinnan-tracker" target="_blank">GitHub</a>
+        </span>
+    </div>
+    <script type="module" src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Registration Failed: ', err));
+            });
+        }
+    </script>
+</body>
+
+</html>

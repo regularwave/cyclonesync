@@ -300,36 +300,50 @@
             <button class="close-btn" onclick="toggleCmdModal()">CLOSE</button>
         </div>
     </div>
-    <div id="connect-modal" class="hidden">
+    <div id="connect-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
-            <h2>Table Sync</h2>
+            <h2>CycloneSync Connect</h2>
 
             <div id="connect-step-1">
-                <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" maxlength="12">
+                <label class="help-subtext" style="text-align: left; display: block; margin-bottom: 0.2rem;">Your Name (1-12 chars)</label>
+                <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" oninput="validateConnectionInputs()">
 
                 <div class="divider-line"></div>
 
-                <input type="text" id="conn-room-code" class="modal-input" placeholder="Room Name" style="text-transform: uppercase;">
+                <div style="display: flex; gap: 1rem; align-items: stretch; margin-top: 1rem;">
+                    <div style="flex: 2; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label class="help-subtext" style="text-align: left;">Room Name (5-20 chars)</label>
+                        <input type="text" id="conn-room-code" class="modal-input" placeholder="e.g. EDH-NIGHT" style="text-transform: uppercase; margin-bottom: 0;" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
+                        <button class="control-btn" id="btn-join-room" onclick="joinRoom()" disabled>JOIN / CREATE</button>
+                    </div>
 
-                <div class="connect-actions">
-                    <button class="control-btn" onclick="joinRoom()">JOIN / CREATE</button>
-                    <button class="control-btn" onclick="startQRScan()">
-                        <i class="ms ms-beleren"></i> SCAN QR
-                    </button>
+                    <div style="width: 1px; background: #333; margin: 0.5rem 0;"></div>
+
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.5rem;">
+                        <button class="control-btn" id="btn-scan-qr" onclick="startQRScan()" disabled style="height: 100%; min-height: 4.5rem; flex-direction: column; gap: 0.2rem;">
+                            <i class="ms ms-beleren ms-2x"></i>SCAN QR
+                        </button>
+                    </div>
                 </div>
 
-                <div id="qr-reader" style="width: 100%; margin-top: 1rem;"></div>
-                <p id="conn-status" class="help-subtext">Enter a room name to start.</p>
+                <p id="conn-status" class="help-subtext" style="margin-top: 1rem;">Enter a name to begin.</p>
             </div>
 
             <div id="connect-step-2" class="hidden" style="text-align: center;">
                 <h3>Room: <span id="display-room-code"></span></h3>
-                <div id="room-qr-display" style="display: flex; justify-content: center; margin: 1rem 0; background: white; padding: 1rem; border-radius: 0.5rem;"></div>
-                <p class="help-subtext">Scan to join the room!</p>
-                <button class="close-btn" onclick="toggleConnectModal()">CLOSE</button>
+                <div id="room-qr-display" style="width: fit-content; margin: 1rem auto; background: white; padding: 1rem; border-radius: 0.5rem;"></div>
+                <p class="help-subtext">Other players can scan this to join the same room!</p>
             </div>
 
-            <button class="close-btn" id="close-connect-btn" onclick="toggleConnectModal()" style="margin-top:1rem;">CANCEL</button>
+            <button class="close-btn" onclick="toggleConnectModal()" style="margin-top:1rem;">CLOSE</button>
+        </div>
+    </div>
+
+    <div id="qr-modal" class="hidden modal-overlay">
+        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+            <h2>Scan QR Code</h2>
+            <div id="qr-reader" style="width: 100%; margin: 1rem 0; background: #000;"></div>
+            <button class="close-btn" onclick="stopQRScan()">CANCEL</button>
         </div>
     </div>
     <div id="help-modal" class="hidden">

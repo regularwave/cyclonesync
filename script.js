@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const savedName = localStorage.getItem('name-p1');
     if (savedName) document.getElementById('conn-player-name').value = savedName;
+    validateConnectionInputs();
 });
 
 function toggleCredits() {
@@ -386,16 +387,47 @@ async function requestWakeLock() {
     }
 }
 
+function validateConnectionInputs() {
+    const nameInput = document.getElementById('conn-player-name').value.trim();
+    const roomInputValue = document.getElementById('conn-room-code').value.trim();
+    const joinBtn = document.getElementById('btn-join-room');
+    const scanBtn = document.getElementById('btn-scan-qr');
+    const roomInput = document.getElementById('conn-room-code');
+    const status = document.getElementById('conn-status');
+
+    if (nameInput.length > 0) {
+        roomInput.disabled = false;
+        scanBtn.disabled = false;
+
+        if (roomInputValue.length >= 5) {
+            joinBtn.disabled = false;
+            status.innerText = "Ready to connect!";
+        } else {
+            joinBtn.disabled = true;
+            status.innerText = "Enter a room name (5+ chars) or scan a QR code.";
+        }
+    } else {
+        roomInput.disabled = true;
+        joinBtn.disabled = true;
+        scanBtn.disabled = true;
+        status.innerText = "Enter a name to begin.";
+    }
+}
+
 async function joinRoom() {
     const nameInput = document.getElementById('conn-player-name');
     const roomInput = document.getElementById('conn-room-code');
     const status = document.getElementById('conn-status');
-
-    const playerName = nameInput.value || "Anonymous";
+    const playerName = nameInput.value.trim();
     const roomId = roomInput.value.trim().toUpperCase();
 
-    if (!roomId) {
-        status.innerText = "Please enter a Room Name.";
+    if (!playerName) {
+        status.innerText = "Please enter your name.";
+        return;
+    }
+
+    if (roomId.length < 5 || roomId.length > 20) {
+        status.innerText = "Room name must be between 5 and 20 characters.";
         return;
     }
 
@@ -429,14 +461,13 @@ async function joinRoom() {
     document.getElementById('connect-step-2').classList.remove('hidden');
     document.getElementById('display-room-code').innerText = roomId;
     document.getElementById('room-row').classList.remove('hidden');
-    document.getElementById('btn-connect').classList.add('hidden');
 
     const qrContainer = document.getElementById('room-qr-display');
     qrContainer.innerHTML = "";
     new QRCode(qrContainer, {
         text: roomId,
-        width: 128,
-        height: 128
+        width: 150,
+        height: 150
     });
 
     listenToRoom();
@@ -479,8 +510,11 @@ function syncLifeToRoom(newLife) {
 }
 
 function startQRScan() {
-    const readerDiv = document.getElementById('qr-reader');
-    readerDiv.style.height = "250px";
+    document.getElementById('conn-room-code').value = '';
+
+    validateConnectionInputs();
+
+    document.getElementById('qr-modal').classList.remove('hidden');
 
     html5QrcodeScanner = new Html5Qrcode("qr-reader");
 
@@ -489,17 +523,24 @@ function startQRScan() {
         { fps: 10, qrbox: 250 },
         (decodedText, decodedResult) => {
             document.getElementById('conn-room-code').value = decodedText;
-            html5QrcodeScanner.stop().then(() => {
-                readerDiv.innerHTML = "";
-                readerDiv.style.height = "0";
-            });
+            stopQRScan();
             joinRoom();
         },
         (errorMessage) => {
         }
     ).catch(err => {
         document.getElementById('conn-status').innerText = "Camera error: " + err;
+        stopQRScan();
     });
+}
+
+function stopQRScan() {
+    document.getElementById('qr-modal').classList.add('hidden');
+    if (html5QrcodeScanner) {
+        html5QrcodeScanner.stop().then(() => {
+            document.getElementById('qr-reader').innerHTML = "";
+        }).catch(err => console.error("Failed to stop scanner", err));
+    }
 }
 
 function showRoomQR() {
@@ -541,7 +582,9 @@ window.resetAll = resetAll;
 window.savePlayerName = savePlayerName;
 window.saveCmdName = saveCmdName;
 window.savePipsConfig = savePipsConfig;
+window.validateConnectionInputs = validateConnectionInputs;
 window.joinRoom = joinRoom;
 window.startQRScan = startQRScan;
+window.stopQRScan = stopQRScan;
 window.showRoomQR = showRoomQR;
 window.leaveRoom = leaveRoom;

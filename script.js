@@ -134,6 +134,15 @@ function toggleHelp() {
 
 function toggleShare() {
     document.getElementById('share-modal').classList.toggle('hidden');
+
+    const qrContainer = document.getElementById('share-qr-display');
+    if (qrContainer && qrContainer.innerHTML === "") {
+        new QRCode(qrContainer, {
+            text: "https://regularwave.github.io/cyclonesync/",
+            width: 150,
+            height: 150
+        });
+    }
 }
 
 function toggleCmdModal() {

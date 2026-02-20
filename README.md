@@ -8,22 +8,22 @@ No ads, no sign-ups, no having to touch another person's phone! CycloneSync is a
 
 ### Installing
 
-* **Browser:** open the [CycloneSync](https://github.com/regularwave/cyclonesync/) page. That's it!
+* **Browser:** open the [CycloneSync](https://regularwave.github.io/cyclonesync/) page. That's it!
 * **App (PWA install):**
   * **Android**
-    1. Open the [CycloneSync](https://github.com/regularwave/cyclonesync/) page in **Chrome**.
+    1. Open the [CycloneSync](https://regularwave.github.io/cyclonesync/) page in **Chrome**.
     2. Tap the **three-dot menu** icon in the top-right corner.
     3. Select **Install app** or **Add to Home Screen**.
     4. Follow the on-screen prompt to install.
   * **iOS**
-    1. Open the [CycloneSync](https://github.com/regularwave/cyclonesync/) page in **Safari**.
+    1. Open the [CycloneSync](https://regularwave.github.io/cyclonesync/) page in **Safari**.
     2. Tap the **Share** button (square with an arrow pointing up) at the bottom of the screen.
     3. Scroll down the list and tap **Add to Home Screen**.
     4. Tap **Add** in the top-right corner.
 
 ## Help
 
-Check the Help link at the bottom of the [CycloneSync](https://github.com/regularwave/cyclonesync/) page for usage instructions.
+Check the Help link at the bottom of the [CycloneSync](https://regularwave.github.io/cyclonesync/) page for usage instructions.
 
 ## License
 

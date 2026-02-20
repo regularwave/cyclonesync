@@ -194,6 +194,10 @@ function resetAll() {
         const defaultVal = (input.id === 'life') ? 40 : 0;
         input.value = defaultVal;
         localStorage.setItem('cyclonesync_tracker_' + input.id, defaultVal);
+
+        if (input.id === 'life') {
+            syncLifeToRoom(defaultVal);
+        }
     });
     if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
 }

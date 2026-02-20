@@ -22,6 +22,8 @@ const appCheck = initializeAppCheck(app, {
 const db = getDatabase(app);
 
 let wakeLock = null;
+let exitTimer = null;
+
 let settings = {
     life: true,
     tax: false,
@@ -122,6 +124,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedName = localStorage.getItem('name-p1');
     if (savedName) document.getElementById('conn-player-name').value = savedName;
     validateConnectionInputs();
+
+    history.pushState(null, '', window.location.href);
+
+    window.addEventListener('popstate', (e) => {
+        let modalClosed = false;
+        const modals = ['credits-modal', 'help-modal', 'share-modal', 'cmd-modal', 'connect-modal', 'qr-modal', 'pips-modal'];
+
+        modals.forEach(id => {
+            const m = document.getElementById(id);
+            if (m && !m.classList.contains('hidden')) {
+                if (id === 'qr-modal') {
+                    stopQRScan();
+                } else {
+                    m.classList.add('hidden');
+                }
+                modalClosed = true;
+            }
+        });
+
+        if (modalClosed) {
+            history.pushState(null, '', window.location.href);
+        } else {
+            if (exitTimer) {
+                clearTimeout (exitTimer);
+                history.back();
+            } else {
+                showExitToast();
+                history.pushState(null, '', window.location.href);
+                exitTimer = setTimeout(() => {
+                    exitTimer = null;
+                }, 2000);
+            }
+        }
+    });
 });
 
 function toggleCredits() {
@@ -582,6 +618,38 @@ function leaveRoom() {
 
         document.getElementById('connect-modal').classList.add('hidden');
     }
+}
+
+function showExitToast() {
+    let toast = document.getElementById('exit-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'exit-toast';
+        toast.innerText = "Press back again to exit";
+        toast.style.position = 'fixed';
+        toast.style.bottom = '10%';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        toast.style.color = '#fff';
+        toast.style.padding = '0.75rem 1.5rem';
+        toast.style.borderRadius = '2rem';
+        toast.style.zIndex = '9999';
+        toast.style.fontFamily = '"Beleren Bold", sans-serif';
+        toast.style.fontSize = '0.9rem';
+        toast.style.pointerEvents = 'none';
+        document.body.appendChild(toast);
+    }
+    
+    toast.style.transition = 'none';
+    toast.style.opacity = '1';
+    
+    void toast.offsetWidth; 
+    toast.style.transition = 'opacity 0.5s ease-in-out';
+    
+    setTimeout(() => {
+        if (toast) toast.style.opacity = '0';
+    }, 2000);
 }
 
 window.toggleCredits = toggleCredits;

@@ -75,9 +75,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('visibilitychange', async () => {
-        if (wakeLock !== null && document.visibilityState === 'visible') {
-            requestWakeLock();
-        }
+        const connectedRef = ref(db, ".info/connected");
+        onValue(connectedRef, (snap) => {
+            if (snap.val() === true && currentRoomId) {
+                reestablishPresence();
+            }
+        });
+
+        document.addEventListener('visibilitychange', async () => {
+            if (document.visibilityState === 'hidden') {
+                localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
+            } else if (document.visibilityState === 'visible') {
+                if (settings.awake) requestWakeLock();
+
+                if (currentRoomId) {
+                    const lastBackgrounded = localStorage.getItem('cyclonesync_last_backgrounded');
+                    const timeAway = lastBackgrounded ? (Date.now() - parseInt(lastBackgrounded)) : 0;
+
+                    const SESSION_TIMEOUT = 30 * 60 * 1000;
+
+                    if (timeAway > SESSION_TIMEOUT) {
+                        leaveRoom(true);
+                        setTimeout(() => {
+                            alert("Disconnected from PodConnect session expired due to inactivity.");
+                        }, 500);
+                    } else {
+                        if (typeof reestablishPresence === 'function') {
+                            reestablishPresence();
+                        }
+                    }
+                }
+            }
+        });
     });
 
     const names = ['name-p1', 'name-p2', 'name-p3', 'name-p4'];
@@ -125,16 +154,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedName) document.getElementById('conn-player-name').value = savedName;
     validateConnectionInputs();
 
+    const connectedRef = ref(db, ".info/connected");
+    onValue(connectedRef, (snap) => {
+        if (snap.val() === true) {
+            if (currentRoomId) {
+                reestablishPresence();
+            }
+        }
+    });
+
     history.pushState(null, '', window.location.href);
 
     window.addEventListener('popstate', (e) => {
-        
+
         if (!document.getElementById('qr-modal').classList.contains('hidden')) {
             stopQRScan();
             history.pushState(null, '', window.location.href);
             return;
         }
-        
+
         if (!document.getElementById('connect-modal').classList.contains('hidden')) {
             toggleConnectModal();
             history.pushState(null, '', window.location.href);
@@ -142,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!document.getElementById('pips-modal').classList.contains('hidden')) {
-            savePipsConfig(); 
+            savePipsConfig();
             history.pushState(null, '', window.location.href);
             return;
         }
@@ -566,8 +604,12 @@ function renderRemotePlayers(players) {
     const container = document.getElementById('remote-players-container');
     container.innerHTML = '';
 
+    let hasRemotePlayers = false;
+
     Object.keys(players).forEach(key => {
         if (key === myPlayerId) return;
+
+        hasRemotePlayers = true;
 
         const p = players[key];
 
@@ -579,12 +621,31 @@ function renderRemotePlayers(players) {
         `;
         container.appendChild(tile);
     });
+
+    if (!hasRemotePlayers) {
+        container.innerHTML = `<span class="waiting-text">waiting for players...</span>`;
+    }
 }
 
 function syncLifeToRoom(newLife) {
     if (!currentRoomId) return;
     const myLifeRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId + '/life');
     set(myLifeRef, newLife);
+}
+
+function reestablishPresence() {
+    if (!currentRoomId || !myPlayerId) return;
+
+    const myRef = ref(db, 'rooms/' + currentRoomId + '/players' + myPlayerId);
+
+    const myData = {
+        name: document.getElementById('conn-player-name').value.trim() || localStorage.getItem('name-p1'),
+        life: parseInt(document.getElementById('life').value) || 40,
+        lastSeen: Date.now()
+    };
+
+    set(myRef, myData);
+    onDisconnect(myRef).remove();
 }
 
 function startQRScan() {
@@ -627,10 +688,12 @@ function showRoomQR() {
     document.getElementById('connect-step-2').classList.remove('hidden');
 }
 
-function leaveRoom() {
-    if (confirm("Disconnect from room?")) {
-        const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
-        remove(myRef);
+function leaveRoom(force = false) {
+    if (force || confirm("Disconnect from room?")) {
+        if (currentRoomId) {
+            const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
+            remove(myRef);
+        }
 
         currentRoomId = null;
 
@@ -642,6 +705,8 @@ function leaveRoom() {
         document.getElementById('remote-players-container').innerHTML = '';
 
         document.getElementById('connect-modal').classList.add('hidden');
+
+        document.getElementById('conn-status').innerText = "Enter a room name or scan a QR code.";
     }
 }
 
@@ -665,13 +730,13 @@ function showExitToast() {
         toast.style.pointerEvents = 'none';
         document.body.appendChild(toast);
     }
-    
+
     toast.style.transition = 'none';
     toast.style.opacity = '1';
-    
-    void toast.offsetWidth; 
+
+    void toast.offsetWidth;
     toast.style.transition = 'opacity 0.5s ease-in-out';
-    
+
     setTimeout(() => {
         if (toast) toast.style.opacity = '0';
     }, 2000);

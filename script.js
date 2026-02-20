@@ -128,34 +128,59 @@ document.addEventListener('DOMContentLoaded', () => {
     history.pushState(null, '', window.location.href);
 
     window.addEventListener('popstate', (e) => {
-        let modalClosed = false;
-        const modals = ['credits-modal', 'help-modal', 'share-modal', 'cmd-modal', 'connect-modal', 'qr-modal', 'pips-modal'];
-
-        modals.forEach(id => {
-            const m = document.getElementById(id);
-            if (m && !m.classList.contains('hidden')) {
-                if (id === 'qr-modal') {
-                    stopQRScan();
-                } else {
-                    m.classList.add('hidden');
-                }
-                modalClosed = true;
-            }
-        });
-
-        if (modalClosed) {
+        
+        if (!document.getElementById('qr-modal').classList.contains('hidden')) {
+            stopQRScan();
             history.pushState(null, '', window.location.href);
+            return;
+        }
+        
+        if (!document.getElementById('connect-modal').classList.contains('hidden')) {
+            toggleConnectModal();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+
+        if (!document.getElementById('pips-modal').classList.contains('hidden')) {
+            savePipsConfig(); 
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+
+        if (!document.getElementById('cmd-modal').classList.contains('hidden')) {
+            toggleCmdModal();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+
+        const shareModal = document.getElementById('share-modal');
+        if (shareModal && !shareModal.classList.contains('hidden')) {
+            toggleShare();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+
+        if (!document.getElementById('help-modal').classList.contains('hidden')) {
+            toggleHelp();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+
+        if (!document.getElementById('credits-modal').classList.contains('hidden')) {
+            toggleCredits();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+
+        if (exitTimer) {
+            clearTimeout(exitTimer);
+            history.back();
         } else {
-            if (exitTimer) {
-                clearTimeout (exitTimer);
-                history.back();
-            } else {
-                showExitToast();
-                history.pushState(null, '', window.location.href);
-                exitTimer = setTimeout(() => {
-                    exitTimer = null;
-                }, 2000);
-            }
+            showExitToast();
+            history.pushState(null, '', window.location.href);
+            exitTimer = setTimeout(() => {
+                exitTimer = null;
+            }, 2000);
         }
     });
 });

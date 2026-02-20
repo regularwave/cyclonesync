@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cyclonesync-tracker-20260219T192800';
+const CACHE_NAME = 'cyclonesync-tracker-20260220T120300';
 
 const LOCAL_ASSETS = [
     './',
@@ -8,6 +8,8 @@ const LOCAL_ASSETS = [
     './manifest.json',
     './img/bg.webp',
     './img/CycloneSync.svg',
+    './img/CycloneSync-192.png',
+    './img/CycloneSync-512.png',
     './font/Beleren2016-Bold.woff'
 ];
 

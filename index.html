@@ -370,6 +370,16 @@
         </p>
         <button class="close-btn" onclick="toggleHelp()">CLOSE</button>
     </div>
+    <div id="share-modal" class="hidden">
+        <h2>Share</h2>
+        <p>
+            <img src="img/shareQR.png" alt="https://github.com/regularwave/cyclonesync">
+        </p>
+        <p>
+            github.com/regularwave/cyclonesync
+        </p>
+        <button class="close-btn" onclick="toggleShare()">CLOSE</button>
+    </div>
     <div id="sticky-footer">
         <span class="footer-link" onclick="toggleCredits()">
             <i class="ms ss-foil ss-grad ms-artist-nib"></i> & <i class="ms ss-foil ss-grad ms-ability-adventure"></i> Credits
@@ -381,6 +391,10 @@
         <span class="footer-separator">|</span>
         <span class="footer-link">
             Issues? Report on <a href="https://github.com/regularwave/cyclonesync" target="_blank">GitHub</a>
+        </span>
+        <span class="footer-separator">|</span>
+        <span class="footer-link" onclick="toggleShare()">
+            <i class="ss ss-foil ss-grad ss-plc"></i> Share
         </span>
     </div>
     <script type="module" src="script.js"></script>

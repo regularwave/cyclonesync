@@ -1,7 +1,7 @@
 {
     "id": "regularwave-cyclonesync",
     "name": "CycloneSync",
-    "short_name": "Cyclone",
+    "short_name": "CycloneSync",
     "description": "A life and mana tracker for Magic: the Gathering Commander.",
     "start_url": "./index.html",
     "display": "standalone",

@@ -132,6 +132,10 @@ function toggleHelp() {
     document.getElementById('help-modal').classList.toggle('hidden');
 }
 
+function toggleShare() {
+    document.getElementById('share-modal').classList.toggle('hidden');
+}
+
 function toggleCmdModal() {
     document.getElementById('cmd-modal').classList.toggle('hidden');
 }
@@ -569,6 +573,7 @@ function leaveRoom() {
 
 window.toggleCredits = toggleCredits;
 window.toggleHelp = toggleHelp;
+window.toggleShare = toggleShare;
 window.toggleCmdModal = toggleCmdModal;
 window.toggleConnectModal = toggleConnectModal;
 window.toggleLife = toggleLife;

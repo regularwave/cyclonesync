@@ -677,6 +677,14 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 1;
 }
 
+.waiting-text {
+    margin: auto;
+    color: #888;
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
 .modal-input {
     width: 100%;
     background: transparent;

@@ -544,6 +544,7 @@ input[type=number]::-webkit-outer-spin-button {
     display: none;
 }
 
+/* Base State: Unchecked (Now "Lit Up" / Always Shown) */
 .pip-label {
     display: flex;
     flex-direction: row;
@@ -551,9 +552,11 @@ input[type=number]::-webkit-outer-spin-button {
     align-items: center;
     padding: 0.5rem 1rem;
     gap: 1rem;
-    border: 1px solid #444;
+    border: 1px solid #fff;
+    /* Lit up border */
     border-radius: 0.5rem;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    /* Lit up background */
     cursor: pointer;
     transition: all 0.2s;
     height: 100%;
@@ -563,45 +566,44 @@ input[type=number]::-webkit-outer-spin-button {
 .pip-label i {
     flex-shrink: 0;
     transition: opacity 0.2s;
+    opacity: 1;
+    /* Lit up mana symbol */
 }
 
 .pip-label::after {
+    content: "always\ashown";
     white-space: pre;
     text-align: left;
     font-size: 0.85rem;
     line-height: 1.1;
     color: #fff;
-}
-
-.pip-label {
-    border-color: #444;
-}
-
-.pip-label i {
-    opacity: 0.2;
-}
-
-.pip-label::after {
-    content: "always\ashown";
     font-style: normal;
-    font-weight: normal;
-    opacity: 0.8;
+    font-weight: bold;
+    /* Bold text to indicate active state */
+    opacity: 1;
+    /* Lit up text */
 }
 
+/* Checked State: Managed by button (Now "Dim" / Pip Button Hides) */
 .pip-chk:checked+.pip-label {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: var(--text-white);
+    background: rgba(0, 0, 0, 0.4);
+    /* Dim background */
+    border-color: #444;
+    /* Dim border */
 }
 
 .pip-chk:checked+.pip-label i {
-    opacity: 1;
+    opacity: 0.2;
+    /* Dim mana symbol */
 }
 
 .pip-chk:checked+.pip-label::after {
     content: "pip\a button\ahides";
     font-style: italic;
-    font-weight: bold;
-    opacity: 1;
+    font-weight: normal;
+    /* Normal weight to indicate inactive state */
+    opacity: 0.8;
+    /* Dim text */
 }
 
 .room-row {

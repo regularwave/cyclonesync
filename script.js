@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     pipsBtn.addEventListener('pointerleave', () => {
         if (pressTimer) clearTimeout(pressTimer);
-        isLongPress = true;
     });
 
     pipsBtn.addEventListener('click', (e) => {

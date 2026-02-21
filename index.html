@@ -144,13 +144,13 @@
                     <i class="ms ss-foil ss-grad ms-dfc-day"></i>
                 </button>
                 <button onclick="resetAll()" class="control-btn">
-                    <i class="ms ss-foil ss-grad ms-ability-dfc"></i> <span style="font-size: 1rem; margin-left: 0.2rem;">RESET</span>
+                    <i class="ms ss-foil ss-grad ms-ability-dfc"></i> <span class="reset-text">RESET</span>
                 </button>
             </div>
         </div>
     </div>
     <div id="credits-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
             <h2>Credits & Legal</h2>
             <p>Background image:
                 <br>
@@ -304,71 +304,71 @@
         </div>
     </div>
     <div id="connect-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
             <h2>CycloneSync PodConnect</h2>
 
             <div id="connect-step-1">
-                <label class="help-subtext" style="text-align: left; display: block; margin-bottom: 0.2rem;">Your Name (1-12 chars)</label>
+                <label class="help-subtext" class="help-subtext input-label">Your Name (1-12 chars)</label>
                 <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" oninput="validateConnectionInputs()">
 
                 <div class="divider-line"></div>
 
-                <div style="display: flex; gap: 1rem; align-items: stretch; margin-top: 1rem;">
-                    <div style="flex: 2; display: flex; flex-direction: column; gap: 0.5rem;">
-                        <label class="help-subtext" style="text-align: left;">Room Name (5-20 chars)</label>
-                        <input type="text" id="conn-room-code" class="modal-input" placeholder="e.g. EDH-NIGHT" style="text-transform: uppercase; margin-bottom: 0;" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
+                <div class="connect-split-row">
+                    <div class="connect-col-main">
+                        <label class="help-subtext" class="help-subtext input-label">Room Name (5-20 chars)</label>
+                        <input type="text" id="conn-room-code" class="modal-input" placeholder="e.g. EDH-NIGHT" class="modal-input room-code-input" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
                         <button class="control-btn" id="btn-join-room" onclick="joinRoom()" disabled>JOIN / CREATE</button>
                     </div>
 
-                    <div style="width: 1px; background: #333; margin: 0.5rem 0;"></div>
+                    <div class="connect-divider-vertical"></div>
 
-                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.5rem;">
-                        <button class="control-btn" id="btn-scan-qr" onclick="startQRScan()" disabled style="height: 100%; min-height: 4.5rem; flex-direction: column; gap: 0.2rem;">
+                    <div class="connect-col-side">
+                        <button class="control-btn" id="btn-scan-qr" onclick="startQRScan()" disabled class="control-btn btn-scan-qr">
                             <i class="ms ms-beleren ms-2x"></i>SCAN QR
                         </button>
                     </div>
                 </div>
 
-                <p id="conn-status" class="help-subtext" style="margin-top: 1rem;">Enter a name to begin.</p>
+                <p id="conn-status" class="help-subtext" class="help-subtext mt-1">Enter a name to begin.</p>
             </div>
 
-            <div id="connect-step-2" class="hidden" style="text-align: center;">
+            <div id="connect-step-2" class="hidden text-center">
                 <h3>Room: <span id="display-room-code"></span></h3>
-                <div id="room-qr-display" style="width: fit-content; margin: 1rem auto; background: white; padding: 1rem; border-radius: 0.5rem;"></div>
+                <div id="room-qr-display" class="qr-display-box"></div>
                 <p class="help-subtext">Other players can scan this to join the same room!</p>
             </div>
 
-            <button class="close-btn" onclick="toggleConnectModal()" style="margin-top:1rem;">CLOSE</button>
+            <button class="close-btn" onclick="toggleConnectModal()" class="close-btn mt-1">CLOSE</button>
         </div>
     </div>
 
     <div id="qr-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
             <h2>Scan QR Code</h2>
-            <div id="qr-reader" style="width: 100%; margin: 1rem 0; background: #000;"></div>
+            <div id="qr-reader" class="qr-reader-box"></div>
             <button class="close-btn" onclick="stopQRScan()">CANCEL</button>
         </div>
     </div>
-    <div id="confirm-modal" class="hidden modal-overlay" style="z-index: 3000;">
-        <div class="cmd-modal-content" style="height: auto; max-height: 90vh; max-width: 350px; text-align: center;">
-            <h2 style="border-bottom: none; margin-bottom: 0.5rem; color: #fff;">CycloneSync</h2>
-            <p id="confirm-msg" style="font-size: 1.1rem; color: #ddd; margin-bottom: 2rem;">Are you sure?</p>
-            <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: center;">
-                <button class="close-btn" id="confirm-yes" style="margin-top: 0; flex: 1; border-color: #ff5555; color: #ff5555;">YES</button>
-                <button class="close-btn" id="confirm-no" style="margin-top: 0; flex: 1;">CANCEL</button>
+    <div id="confirm-modal" class="hidden modal-overlay modal-topmost">
+        <div class="cmd-modal-content modal-dialog-small">
+            <h2 class="dialog-title">CycloneSync</h2>
+            <p id="confirm-msg" class="dialog-message">Are you sure?</p>
+            <div class="dialog-btn-row">
+                <button class="close-btn btn-dialog btn-danger" id="confirm-yes">YES</button>
+                <button class="close-btn btn-dialog" id="confirm-no">CANCEL</button>
             </div>
         </div>
     </div>
-    <div id="alert-modal" class="hidden modal-overlay" style="z-index: 3000;">
-        <div class="cmd-modal-content" style="height: auto; max-height: 90vh; max-width: 350px; text-align: center;">
-            <h2 style="border-bottom: none; margin-bottom: 0.5rem; color: #fff;">CycloneSync</h2>
-            <p id="alert-msg" style="font-size: 1.1rem; color: #ddd; margin-bottom: 2rem;">Notification message.</p>
-            <button class="close-btn" id="alert-ok" style="margin-top: 0; width: 100%;">OK</button>
+    <div id="alert-modal" class="hidden modal-overlay modal-topmost">
+        <div class="cmd-modal-content modal-dialog-small">
+            <h2 class="dialog-title">CycloneSync</h2>
+            <p id="alert-msg" class="dialog-message">Notification message.</p>
+            <button class="close-btn btn-dialog-full" id="alert-ok">OK</button>
         </div>
     </div>
     <div id="help-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" style="max-height: 85vh; display: flex; flex-direction: column;">
-            <h2 style="margin-bottom: 0.5rem;">Help & Info</h2>
+        <div class="cmd-modal-content modal-content-help">
+            <h2 class="mb-0-5">Help & Info</h2>
 
             <div class="help-tabs">
                 <button class="help-tab-btn active" onclick="switchHelpTab('help-icons')">Icons</button>
@@ -416,15 +416,15 @@
                 <p><strong>Idle Timeout:</strong> The app will automatically disconnect you if it's in the background, if the device is locked, or if you're idle for 30 or more minutes.</p>
             </div>
 
-            <button class="close-btn" onclick="toggleHelp()" style="margin-top: auto;">CLOSE</button>
+            <button class="close-btn mt-auto" onclick="toggleHelp()">CLOSE</button>
         </div>
     </div>
     <div id="share-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
             <h2>Share</h2>
-            <div id="share-qr-display" style="width: fit-content; margin: 1rem auto; background: white; padding: 1rem; border-radius: 0.5rem;"></div>
+            <div id="share-qr-display" class="qr-display-box"></div>
             <p>
-                <a href="https://regularwave.github.io/cyclonesync/" target="_blank" style="color: #4da6ff;">https://regularwave.github.io/cyclonesync/</a>
+                <a href="https://regularwave.github.io/cyclonesync/" target="_blank">https://regularwave.github.io/cyclonesync/</a>
             </p>
             <button class="close-btn" onclick="toggleShare()">CLOSE</button>
         </div>
@@ -440,7 +440,6 @@
         <span class="footer-separator">|</span>
         <span class="footer-link">
             <i class="ss ss-foil ss-grad ss-emn"></i> <a href="https://github.com/regularwave/cyclonesync" target="_blank">GitHub</a>
-            <!-- Issues? Report on <a href="https://github.com/regularwave/cyclonesync" target="_blank">GitHub</a> -->
         </span>
         <span class="footer-separator">|</span>
         <span class="footer-link" onclick="toggleShare()">

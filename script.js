@@ -788,19 +788,8 @@ function showExitToast() {
     if (!toast) {
         toast = document.createElement('div');
         toast.id = 'exit-toast';
+        toast.className = 'exit-toast';
         toast.innerText = "Press back again to exit";
-        toast.style.position = 'fixed';
-        toast.style.bottom = '10%';
-        toast.style.left = '50%';
-        toast.style.transform = 'translateX(-50%)';
-        toast.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        toast.style.color = '#fff';
-        toast.style.padding = '0.75rem 1.5rem';
-        toast.style.borderRadius = '2rem';
-        toast.style.zIndex = '9999';
-        toast.style.fontFamily = '"Beleren Bold", sans-serif';
-        toast.style.fontSize = '0.9rem';
-        toast.style.pointerEvents = 'none';
         document.body.appendChild(toast);
     }
 

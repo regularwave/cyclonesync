@@ -256,14 +256,17 @@ input[type=number]::-webkit-outer-spin-button {
     touch-action: manipulation
 }
 
-.control-btn:hover {
-    background-color: rgba(255, 255, 255, .1)
+.control-btn:not(:disabled):hover {
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .control-btn.disabled,
 .control-btn:disabled {
     opacity: .4;
     filter: grayscale(100%);
+}
+
+.control-btn:disabled {
     cursor: not-allowed;
 }
 
@@ -889,4 +892,155 @@ input[type=number]::-webkit-outer-spin-button {
         grid-area: room;
         margin-bottom: 0;
     }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.mt-auto {
+    margin-top: auto;
+}
+
+.mb-0-5 {
+    margin-bottom: 0.5rem;
+}
+
+.reset-text {
+    font-size: 1rem;
+    margin-left: 0.2rem;
+}
+
+.modal-content-fit {
+    height: auto;
+    max-height: 90vh;
+}
+
+.modal-content-help {
+    max-height: 85vh;
+}
+
+.modal-dialog-small {
+    height: auto;
+    max-height: 90vh;
+    max-width: 350px;
+    text-align: center;
+}
+
+.modal-topmost {
+    z-index: 3000;
+}
+
+.dialog-title {
+    border-bottom: none;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.dialog-message {
+    font-size: 1.1rem;
+    color: #ddd;
+    margin-bottom: 2rem;
+}
+
+.dialog-btn-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-dialog {
+    margin-top: 0;
+    flex: 1;
+}
+
+.btn-dialog-full {
+    margin-top: 0;
+    width: 100%;
+}
+
+.btn-danger {
+    border-color: #ff5555;
+    color: #ff5555;
+}
+
+.qr-display-box {
+    width: fit-content;
+    margin: 1rem auto;
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.qr-reader-box {
+    width: 100%;
+    margin: 1rem 0;
+    background: #000;
+}
+
+.input-label {
+    text-align: left;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.room-code-input {
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.connect-split-row {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+    margin-top: 1rem;
+}
+
+.connect-col-main {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.connect-col-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.connect-divider-vertical {
+    width: 1px;
+    background: #333;
+    margin: 0.5rem 0;
+}
+
+.btn-scan-qr {
+    height: 100%;
+    min-height: 4.5rem;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.exit-toast {
+    position: fixed;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    z-index: 9999;
+    font-family: "Beleren Bold", sans-serif;
+    font-size: 0.9rem;
+    pointer-events: none;
+    opacity: 0;
 }

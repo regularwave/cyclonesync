@@ -57,23 +57,29 @@ document.addEventListener('DOMContentLoaded', () => {
         pressTimer = setTimeout(() => {
             isLongPress = true;
             openPipsModal();
-            pressTimer = null;
             if (navigator.vibrate) navigator.vibrate(50);
         }, 600);
     });
 
     pipsBtn.addEventListener('pointerup', (e) => {
         if (pressTimer) clearTimeout(pressTimer);
-    });
 
-    pipsBtn.addEventListener('pointerleave', () => {
-        if (pressTimer) clearTimeout(pressTimer);
-    });
-
-    pipsBtn.addEventListener('click', (e) => {
         if (!isLongPress) {
+            const controls = document.querySelector('.controls-row');
+            if (controls) {
+                controls.style.pointerEvents = 'none';
+                setTimeout(() => controls.style.pointerEvents = 'auto', 400);
+            }
+
             togglePips();
         }
+
+        isLongPress = false;
+    });
+
+    pipsBtn.addEventListener('pointercancel', () => {
+        if (pressTimer) clearTimeout(pressTimer);
+        isLongPress = true;
     });
 
     if (settings.awake) {

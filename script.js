@@ -275,7 +275,7 @@ function manualUpdate(inputElement) {
 
 function saveValues(input, val) {
     if (val < 0) val = 0;
-    if (val > 99) val = 99;
+    if (val > 999) val = 999;
     input.value = val;
     localStorage.setItem('cyclonesync_tracker_' + input.id, val);
 

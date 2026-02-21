@@ -346,6 +346,23 @@
             <button class="close-btn" onclick="stopQRScan()">CANCEL</button>
         </div>
     </div>
+    <div id="confirm-modal" class="hidden modal-overlay" style="z-index: 3000;">
+        <div class="cmd-modal-content" style="height: auto; max-height: 90vh; max-width: 350px; text-align: center;">
+            <h2 style="border-bottom: none; margin-bottom: 0.5rem; color: #fff;">CycloneSync</h2>
+            <p id="confirm-msg" style="font-size: 1.1rem; color: #ddd; margin-bottom: 2rem;">Are you sure?</p>
+            <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: center;">
+                <button class="close-btn" id="confirm-yes" style="margin-top: 0; flex: 1; border-color: #ff5555; color: #ff5555;">YES</button>
+                <button class="close-btn" id="confirm-no" style="margin-top: 0; flex: 1;">CANCEL</button>
+            </div>
+        </div>
+    </div>
+    <div id="alert-modal" class="hidden modal-overlay" style="z-index: 3000;">
+        <div class="cmd-modal-content" style="height: auto; max-height: 90vh; max-width: 350px; text-align: center;">
+            <h2 style="border-bottom: none; margin-bottom: 0.5rem; color: #fff;">CycloneSync</h2>
+            <p id="alert-msg" style="font-size: 1.1rem; color: #ddd; margin-bottom: 2rem;">Notification message.</p>
+            <button class="close-btn" id="alert-ok" style="margin-top: 0; width: 100%;">OK</button>
+        </div>
+    </div>
     <div id="help-modal" class="hidden">
         <h2>Help</h2>
         <p>

@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (timeAway > SESSION_TIMEOUT) {
                         leaveRoom(true);
-                        setTimeout(() => {
-                            alert("Disconnected from PodConnect session expired due to inactivity.");
+                        setTimeout(async () => {
+                            await customAlert("Disconnected from PodConnect session expired due to inactivity.");
                         }, 500);
                     } else {
                         if (typeof reestablishPresence === 'function') {
@@ -299,8 +299,8 @@ function updateCmdValue(id, change) {
     saveValues(lifeInput, lifeVal);
 }
 
-function resetAll() {
-    if (!confirm("Are you sure you want to reset?")) return;
+async function resetAll() {
+    if (!(await customConfirm("Are you sure you want to reset?"))) return;
 
     const allInputs = document.querySelectorAll('.quantity');
     allInputs.forEach(input => {
@@ -702,8 +702,8 @@ function showRoomQR() {
     document.getElementById('connect-step-2').classList.remove('hidden');
 }
 
-function leaveRoom(force = false) {
-    if (force || confirm("Disconnect from room?")) {
+async function leaveRoom(force = false) {
+    if (force || (await customConfirm("Disconnect from room?"))) {
         if (currentRoomId) {
             const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
             remove(myRef);
@@ -722,6 +722,53 @@ function leaveRoom(force = false) {
 
         document.getElementById('conn-status').innerText = "Enter a room name or scan a QR code.";
     }
+}
+
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirm-modal');
+        const msgBox = document.getElementById('confirm-msg');
+        const btnYes = document.getElementById('confirm-yes');
+        const btnNo = document.getElementById('confirm-no');
+
+        msgBox.innerText = message;
+        modal.classList.remove('hidden');
+
+        const cleanup = () => {
+            modal.classList.add('hidden');
+            btnYes.removeEventListener('click', onYes);
+            btnNo.removeEventListener('click', onNo);
+        };
+
+        const onYes = () => { cleanup(); resolve(true); };
+        const onNo = () => { cleanup(); resolve(false); };
+
+        btnYes.addEventListener('click', onYes);
+        btnNo.addEventListener('click', onNo);
+    });
+}
+
+function customAlert(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('alert-modal');
+        const msgBox = document.getElementById('alert-msg');
+        const btnOk = document.getElementById('alert-ok');
+
+        msgBox.innerText = message;
+        modal.classList.remove('hidden');
+
+        const cleanup = () => {
+            modal.classList.add('hidden');
+            btnOk.removeEventListener('click', onOk);
+        };
+
+        const onOk = () => {
+            cleanup();
+            resolve();
+        };
+
+        btnOk.addEventListener('click', onOk);
+    });
 }
 
 function showExitToast() {

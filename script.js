@@ -771,6 +771,18 @@ function customAlert(message) {
     });
 }
 
+function switchHelpTab(tabId) {
+    const contents = document.querySelectorAll('.help-tab-content');
+    contents.forEach(content => content.classList.add('hidden'));
+
+    const buttons = document.querySelectorAll('.help-tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    document.getElementById(tabId).classList.remove('hidden');
+    const targetBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(tabId));
+    if (targetBtn) targetBtn.classList.add('active');
+}
+
 function showExitToast() {
     let toast = document.getElementById('exit-toast');
     if (!toast) {
@@ -825,3 +837,4 @@ window.startQRScan = startQRScan;
 window.stopQRScan = stopQRScan;
 window.showRoomQR = showRoomQR;
 window.leaveRoom = leaveRoom;
+window.switchHelpTab = switchHelpTab;

@@ -149,23 +149,26 @@
             </div>
         </div>
     </div>
-    <div id="credits-modal" class="hidden">
-        <h2>Credits & Legal</h2>
-        <p>Background image:
-            <br>
-            <i class="ms ss-foil ss-grad ms-artist-nib"></i> <em>black and white clouds in the sky</em> illustration by Mikhail Tyrsyna
-        </p>
-        <p>Fonts:<br>
-            <a href="https://github.com/andrewgioia/keyrune" target="_blank">Keyrune</a> and <a href="https://github.com/andrewgioia/Mana" target="_blank">Mana</a> fonts by <a href="https://andrewgioia.com/">Andrew Gioia</a> (SIL OFL 1.1)
-            <br>
-            Beleren font from Wizards of the Coast
-        </p>
-        <p class="legal-text">
-            CycloneSync is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards of the Coast. Portions of the materials used are property of Wizards of the Coast; those portions &copy; Wizards of the Coast LLC.
-        </p>
-        <button class="close-btn" onclick="toggleCredits()">CLOSE</button>
+    <div id="credits-modal" class="hidden modal-overlay">
+        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+            <h2>Credits & Legal</h2>
+            <p>Background image:
+                <br>
+                <i class="ms ss-foil ss-grad ms-artist-nib"></i> <em>black and white clouds in the sky</em> illustration by Mikhail Tyrsyna
+            </p>
+            <p>Fonts:
+                <br>
+                <a href="https://github.com/andrewgioia/keyrune" target="_blank">Keyrune</a> and <a href="https://github.com/andrewgioia/Mana" target="_blank">Mana</a> fonts by <a href="https://andrewgioia.com/">Andrew Gioia</a> (SIL OFL 1.1)
+                <br>
+                Beleren font from Wizards of the Coast
+            </p>
+            <p class="legal-text">
+                CycloneSync is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards of the Coast. Portions of the materials used are property of Wizards of the Coast; those portions &copy; Wizards of the Coast LLC.
+            </p>
+            <button class="close-btn" onclick="toggleCredits()">CLOSE</button>
+        </div>
     </div>
-    <div id="pips-modal" class="hidden">
+    <div id="pips-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content">
             <h2>Mana Tile Visibility</h2>
             <p class="help-subtext">Choose which mana tiles are always shown and which ones are toggled by the &ensp;<i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>&ensp; button.</p>
@@ -363,37 +366,68 @@
             <button class="close-btn" id="alert-ok" style="margin-top: 0; width: 100%;">OK</button>
         </div>
     </div>
-    <div id="help-modal" class="hidden">
-        <h2>Help</h2>
-        <p>
-            <i class="ms ss-foil ss-grad ms-ability-lifelink ms-2x"></i> - toggle life counter
-        </p>
-        <p>
-            <i class="ss ss-foil ss-grad ss-cmd ss-2x"></i> - toggle commander tax counter
-        </p>
-        <p>
-            <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x"></i> - long press to choose which mana tiles are always visible and which toggle on and off using the &ensp;<i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>&ensp; button
-        </p>
-        <p>
-            <i class="ss ss-foil ss-grad ss-mic ss-2x"></i> - toggle commander damage page
-            <br>
-            <span class="help-subtext">Player and commander labels are editable!</span>
-        </p>
-        <p>
-            <i class="ms ss-foil ss-grad ms-dfc-day ms-2x"></i>/<i class="ms ms-dfc-night ms-2x"></i> - toggle screen wake lock
-        </p>
-        <p>
-            <i class="ms ss-foil ss-grad ms-ability-dfc ms-2x"></i> - reset all counters
-        </p>
-        <button class="close-btn" onclick="toggleHelp()">CLOSE</button>
+    <div id="help-modal" class="hidden modal-overlay">
+        <div class="cmd-modal-content" style="max-height: 85vh; display: flex; flex-direction: column;">
+            <h2 style="margin-bottom: 0.5rem;">Help & Info</h2>
+
+            <div class="help-tabs">
+                <button class="help-tab-btn active" onclick="switchHelpTab('help-icons')">Icons</button>
+                <button class="help-tab-btn" onclick="switchHelpTab('help-basics')">Basics</button>
+                <button class="help-tab-btn" onclick="switchHelpTab('help-multi')">PodConnect</button>
+            </div>
+
+            <div id="help-icons" class="help-tab-content">
+                <div class="help-icon-row">
+                    <i class="ms ss-foil ss-grad ms-ability-lifelink ms-2x"></i> <span>toggle life tracker tile</span>
+                </div>
+                <div class="help-icon-row">
+                    <i class="ss ss-foil ss-grad ss-cmd ss-2x"></i> <span>toggle commander tax tracker tile</span>
+                </div>
+                <div class="help-icon-row">
+                    <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x"></i> <span>toggle mana tracker tiles</span>
+                </div>
+                <div class="help-icon-row">
+                    <i class="ss ss-foil ss-grad ss-mic ss-2x"></i> <span>toggle commander damage tracker</span>
+                </div>
+                <div class="help-icon-row">
+                    <i class="ss ss-foil ss-grad ss-eoe ss-2x"></i> <span>open PodConnect settings</span>
+                </div>
+                <div class="help-icon-row">
+                    <i class="ms ss-foil ss-grad ms-dfc-day ms-2x"></i> <span>screen wake lock enabled</span>
+                </div>
+                <div class="help-icon-row">
+                    <i class="ms ms-dfc-night ms-2x"></i> <span>screen wake lock disabled</span>
+                </div>
+                <div class="help-icon-row">
+                    <i class="ms ss-foil ss-grad ms-ability-dfc ms-2x"></i> <span>reset tracking tile values</span>
+                </div>
+            </div>
+
+            <div id="help-basics" class="help-tab-content hidden">
+                <p><strong>Adjusting Values:</strong> Tap the <strong>+</strong> or <strong>-</strong> buttons to change values, or tap directly on a number to type a specific value.</p>
+                <p><strong>Mana Tiles:</strong> Tap the <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x"></i> button to show or hide mana tracker tiles. <em>Long-press</em> the button to choose which specific tiles are always shown and which are toggled by the button.</p>
+                <p><strong>Custom Names:</strong> You can tap on any name in the commander damage tracker window to edit them.</p>
+            </div>
+
+            <div id="help-multi" class="help-tab-content hidden">
+                <p><strong>Your Name:</strong> You must enter a name to join a room (1 - 12 characters).</p>
+                <p><strong>Join or Create a Room:</strong> Enter a 5+ character room name to create a new room or join an existing room. You can use the <em>SCAN QR</em> button to quickly join an existing room (check with another player and they can display their room's QR).</p>
+                <p><strong>Life Total Syncing:</strong> A "room bar" will appear and show you the life total of the <strong>other</strong> players in the room and will remain synced as long as they're in the room. When you change your life total using your life tracker tile that value will sync and update on the other players' screens.</p>
+                <p><strong>Idle Timeout:</strong> The app will automatically disconnect you if it's in the background, if the device is locked, or if you're idle for 30 or more minutes.</p>
+            </div>
+
+            <button class="close-btn" onclick="toggleHelp()" style="margin-top: auto;">CLOSE</button>
+        </div>
     </div>
-    <div id="share-modal" class="hidden">
-        <h2>Share</h2>
-        <div id="share-qr-display" style="width: fit-content; margin: 1rem auto; background: white; padding: 1rem; border-radius: 0.5rem;"></div>
-        <p>
-            <a href="https://regularwave.github.io/cyclonesync/" target="_blank" style="color: #4da6ff;">https://regularwave.github.io/cyclonesync/</a>
-        </p>
-        <button class="close-btn" onclick="toggleShare()">CLOSE</button>
+    <div id="share-modal" class="hidden modal-overlay">
+        <div class="cmd-modal-content" style="height: auto; max-height: 90vh;">
+            <h2>Share</h2>
+            <div id="share-qr-display" style="width: fit-content; margin: 1rem auto; background: white; padding: 1rem; border-radius: 0.5rem;"></div>
+            <p>
+                <a href="https://regularwave.github.io/cyclonesync/" target="_blank" style="color: #4da6ff;">https://regularwave.github.io/cyclonesync/</a>
+            </p>
+            <button class="close-btn" onclick="toggleShare()">CLOSE</button>
+        </div>
     </div>
     <div id="sticky-footer">
         <span class="footer-link" onclick="toggleHelp()">

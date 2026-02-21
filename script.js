@@ -644,7 +644,7 @@ function syncLifeToRoom(newLife) {
 function reestablishPresence() {
     if (!currentRoomId || !myPlayerId) return;
 
-    const myRef = ref(db, 'rooms/' + currentRoomId + '/players' + myPlayerId);
+    const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
 
     const myData = {
         name: document.getElementById('conn-player-name').value.trim() || localStorage.getItem('name-p1'),

@@ -50,9 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pipsBtn = document.getElementById('btn-pips');
     let pressTimer;
+    let isLongPress = false;
 
     pipsBtn.addEventListener('pointerdown', (e) => {
+        isLongPress = false;
         pressTimer = setTimeout(() => {
+            isLongPress = true;
             openPipsModal();
             pressTimer = null;
             if (navigator.vibrate) navigator.vibrate(50);
@@ -60,14 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     pipsBtn.addEventListener('pointerup', (e) => {
-        if (pressTimer) {
-            clearTimeout(pressTimer);
-            togglePips();
-        }
+        if (pressTimer) clearTimeout(pressTimer);
     });
 
     pipsBtn.addEventListener('pointerleave', () => {
         if (pressTimer) clearTimeout(pressTimer);
+        isLongPress = true;
+    });
+
+    pipsBtn.addEventListener('click', (e) => {
+        if (!isLongPress) {
+            togglePips();
+        }
     });
 
     if (settings.awake) {
@@ -288,6 +295,8 @@ function updateCmdValue(id, change) {
 }
 
 function resetAll() {
+    if (!confirm("Are you sure you want to reset?")) return;
+
     const allInputs = document.querySelectorAll('.quantity');
     allInputs.forEach(input => {
         const defaultVal = (input.id === 'life') ? 40 : 0;

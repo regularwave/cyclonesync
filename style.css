@@ -11,6 +11,11 @@
     box-sizing: border-box
 }
 
+html,
+body {
+    overscroll-behavior-y: none;
+}
+
 body {
     margin: 0;
     background-color: #000;
@@ -18,8 +23,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    overscroll-behavior-y: contain;
+    min-height: 100dvh;
     user-select: none;
     -webkit-user-select: none
 }

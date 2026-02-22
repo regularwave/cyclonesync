@@ -933,10 +933,7 @@ body.symbols-hidden .spinner-btns button {
     }
 
     .cmd-counter-unit {
-        height: 100%
-    }
-
-    .cmd-counter-unit {
+        height: 100%;
         width: auto !important;
         flex: 1
     }

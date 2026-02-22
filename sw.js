@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cyclonesync-tracker-20260221T192000';
+const CACHE_NAME = 'cyclonesync-tracker-20260221T201400';
 
 const LOCAL_ASSETS = [
     './',

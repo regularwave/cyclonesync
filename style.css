@@ -95,7 +95,7 @@ body {
     min-height: 6.5rem;
     padding: 0 0 0 .5rem;
     flex: 1;
-    min-height: 4rem;
+    min-height: 5rem;
     container-type: inline-size;
 }
 
@@ -108,25 +108,27 @@ body {
 }
 
 .manasymbol-container {
+    position: absolute;
+    left: 0.2rem;
+    top: 0;
+    bottom: 0;
     display: flex;
     align-items: center;
-    justify-content: left;
-    width: 1.5rem;
-    flex-shrink: 0;
-    padding: 0;
-    z-index: 5
+    justify-content: flex-start;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .manasymbol-icon,
 .toprow-manasymbol-icon {
-    font-size: 3.5rem;
+    font-size: 4rem;
     width: 1em;
     height: 1em;
     min-width: 1em !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1
+    line-height: 1;
 }
 
 .manasymbol-icon::before {
@@ -162,34 +164,37 @@ input[type=number]::-webkit-outer-spin-button {
 
 .quantity {
     font-family: "Beleren Bold", sans-serif;
-    flex-grow: 1;
-    width: 100%;
-    min-width: 0;
-    height: auto;
     font-size: 4rem;
-    text-align: center;
+    text-align: right;
     background-color: transparent;
     color: #ddd;
     z-index: 1;
-    text-align: right;
     padding-right: 0.25rem;
     transform-origin: right center;
     transition: transform 0.2s ease-out;
 }
 
-@container (max-width: 150px) {
+.tile-wrapper .quantity {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+}
+
+@container (max-width: 180px) {
     .quantity {
         transform: scaleX(0.85);
     }
 }
 
-@container (max-width: 120px) {
+@container (max-width: 140px) {
     .quantity {
         transform: scaleX(0.7);
     }
 }
 
-@container (max-width: 90px) {
+@container (max-width: 110px) {
     .quantity {
         transform: scaleX(0.55);
     }
@@ -1102,4 +1107,43 @@ body.symbols-hidden .spinner-btns button {
     font-size: 0.9rem;
     pointer-events: none;
     opacity: 0;
+}
+
+#tile-w {
+    background-image: linear-gradient(to right, rgba(248, 231, 185, 0.35) 0%, transparent 70%);
+}
+
+#tile-u {
+    background-image: linear-gradient(to right, rgba(170, 224, 250, 0.35) 0%, transparent 70%);
+}
+
+#tile-b {
+    background-image: linear-gradient(to right, rgba(166, 127, 191, 0.35) 0%, transparent 70%);
+}
+
+#tile-r {
+    background-image: linear-gradient(to right, rgba(235, 159, 130, 0.35) 0%, transparent 70%);
+}
+
+#tile-g {
+    background-image: linear-gradient(to right, rgba(196, 211, 202, 0.35) 0%, transparent 70%);
+}
+
+#tile-c {
+    background-image: linear-gradient(to right, rgba(200, 200, 200, 0.3) 0%, transparent 70%);
+}
+
+#tile-w .manasymbol-icon,
+#tile-u .manasymbol-icon,
+#tile-b .manasymbol-icon,
+#tile-r .manasymbol-icon,
+#tile-g .manasymbol-icon,
+#tile-c .manasymbol-icon {
+    color: rgba(0, 0, 0, 0.6);
+    filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.2));
+}
+
+#tile-life .toprow-manasymbol-icon,
+#tile-tax .toprow-manasymbol-icon {
+    opacity: 0.75;
 }

@@ -451,7 +451,7 @@ body.symbols-hidden .spinner-btns button {
     height: 98vh;
     display: flex;
     flex-direction: column;
-    padding: .5rem;
+    padding: 1rem;
     gap: .25rem
 }
 

@@ -906,8 +906,7 @@ body.symbols-hidden .spinner-btns button {
         display: none
     }
 
-    #credits-modal .cmd-modal-content,
-    #share-modal .cmd-modal-content {
+    #credits-modal .cmd-modal-content {
         display: grid !important;
         grid-template-columns: 1fr 1fr;
         gap: .5rem 2rem;
@@ -918,9 +917,7 @@ body.symbols-hidden .spinner-btns button {
 
     #credits-modal .close-btn,
     #credits-modal .legal-text,
-    #credits-modal h2,
-    #share-modal .close-btn,
-    #share-modal h2 {
+    #credits-modal h2 {
         grid-column: 1/span 2 !important;
         width: 100%;
         text-align: center

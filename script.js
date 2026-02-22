@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (timeAway > SESSION_TIMEOUT) {
                         leaveRoom(true);
                         setTimeout(async () => {
-                            await customAlert("Disconnected from PodConnect session expired due to inactivity.");
+                            await customAlert("Disconnected from PodConnect: session expired due to inactivity.");
                         }, 500);
                     } else {
                         if (typeof reestablishPresence === 'function') {

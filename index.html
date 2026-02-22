@@ -34,8 +34,8 @@
                     </div>
                     <input class="quantity" id="life" min="0" max="999" value="40" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('life', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('life', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'life', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'life', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-tax">
@@ -44,8 +44,8 @@
                     </div>
                     <input class="quantity" id="tax" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('tax', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('tax', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'tax', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'tax', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
             </div>
@@ -69,8 +69,8 @@
                     </div>
                     <input class="quantity" id="mana-w" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('mana-w', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('mana-w', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-w', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-w', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-u">
@@ -79,8 +79,8 @@
                     </div>
                     <input class="quantity" id="mana-u" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('mana-u', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('mana-u', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-u', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-u', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-b">
@@ -89,8 +89,8 @@
                     </div>
                     <input class="quantity" id="mana-b" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('mana-b', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('mana-b', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-b', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-b', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-r">
@@ -99,8 +99,8 @@
                     </div>
                     <input class="quantity" id="mana-r" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('mana-r', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('mana-r', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-r', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-r', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-g">
@@ -109,8 +109,8 @@
                     </div>
                     <input class="quantity" id="mana-g" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('mana-g', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('mana-g', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-g', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-g', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-c">
@@ -119,8 +119,8 @@
                     </div>
                     <input class="quantity" id="mana-c" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onclick="updateValue('mana-c', 1)">&plus;</button>
-                        <button class="minus" onclick="updateValue('mana-c', -1)">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-c', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-c', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
             </div>
@@ -214,8 +214,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p1-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p1-c1', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p1-c1', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p1-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p1-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -224,8 +224,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p1-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p1-c2', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p1-c2', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p1-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p1-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -239,8 +239,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p2-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p2-c1', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p2-c1', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p2-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p2-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -249,8 +249,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p2-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p2-c2', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p2-c2', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p2-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p2-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -264,8 +264,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p3-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p3-c1', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p3-c1', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p3-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p3-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -274,8 +274,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p3-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p3-c2', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p3-c2', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p3-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p3-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -289,8 +289,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p4-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p4-c1', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p4-c1', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p4-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p4-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -299,8 +299,8 @@
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p4-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onclick="updateCmdValue('cmd-p4-c2', 1)">&plus;</button>
-                                    <button class="minus" onclick="updateCmdValue('cmd-p4-c2', -1)">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p4-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p4-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>

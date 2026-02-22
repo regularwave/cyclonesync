@@ -270,6 +270,47 @@ function updateValue(id, change) {
     saveValues(input, val);
 }
 
+let holdTimer = null;
+let repeatInterval = null;
+let holdDuration = 0;
+
+function startHold(e, targetId, change, isCmd = false) {
+    if (e) e.preventDefault();
+
+    if (isCmd) {
+        updateCmdValue(targetId, change);
+    } else {
+        updateValue(targetId, change);
+    }
+    if (navigator.vibrate) navigator.vibrate(10);
+
+    holdDuration = 0;
+
+    holdTimer = setTimeout(() => {
+        repeatInterval = setInterval(() => {
+            holdDuration += 100;
+
+            const multiplier = holdDuration >= 2000 ? 5 : 1;
+            const finalChange = change * multiplier;
+
+            if (isCmd) {
+                updateCmdValue(targetId, finalChange);
+            } else {
+                updateValue(targetId, finalChange);
+            }
+
+            if (navigator.vibrate) navigator.vibrate(5);
+        }, 100);
+    }, 400);
+}
+
+function stopHold() {
+    if (holdTimer) clearTimeout(holdTimer);
+    if (repeatInterval) clearInterval(repeatInterval);
+    holdTimer = null;
+    repeatInterval = null;
+}
+
 function saveValues(input, val) {
     if (val < 0) val = 0;
     if (val > 999) val = 999;
@@ -852,3 +893,5 @@ window.showRoomQR = showRoomQR;
 window.leaveRoom = leaveRoom;
 window.switchHelpTab = switchHelpTab;
 window.toggleUDLR = toggleUDLR;
+window.startHold = startHold;
+window.stopHold = stopHold;

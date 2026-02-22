@@ -33,6 +33,8 @@ let settings = {
 };
 
 let currentRoomId = null;
+let roomListenerUnsubscribe = null;
+
 let myPlayerId = 'player_' + Math.random().toString(36).substr(2, 9);
 let html5QrcodeScanner = null;
 
@@ -700,7 +702,7 @@ async function joinRoom() {
 function listenToRoom() {
     const playersRef = ref(db, 'rooms/' + currentRoomId + '/players');
 
-    onValue(playersRef, (snapshot) => {
+    roomListenerUnsubscribe = onValue(playersRef, (snapshot) => {
         const players = snapshot.val() || {};
         renderRemotePlayers(players);
     });
@@ -799,6 +801,11 @@ async function leaveRoom(force = false) {
         if (currentRoomId) {
             const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
             remove(myRef);
+        }
+
+        if (roomListenerUnsubscribe) {
+            roomListenerUnsubscribe();
+            roomListenerUnsubscribe = null;
         }
 
         currentRoomId = null;

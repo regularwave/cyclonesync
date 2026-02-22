@@ -277,6 +277,10 @@ function toggleShare() {
             height: 150
         });
     }
+
+    if (navigator.share) {
+        document.getElementById('btn-native-share').classList.remove('hidden');
+    }
 }
 
 function toggleCmdModal() {
@@ -911,6 +915,16 @@ function triggerSymbolFade() {
     document.body.classList.add('symbols-hidden');
 }
 
+function shareNatively() {
+    if (navigator.share) {
+        navigator.share({
+            title: 'CycloneSync',
+            text: 'Check out CycloneSync, a synchronized Magic: the Gathering tracker!',
+            url: 'https://regularwave.github.io/cyclonesync/'
+        }).catch(err => console.log('User canceled share or error:', err));
+    }
+}
+
 window.toggleCredits = toggleCredits;
 window.toggleHelp = toggleHelp;
 window.toggleShare = toggleShare;
@@ -936,3 +950,4 @@ window.switchHelpTab = switchHelpTab;
 window.toggleUDLR = toggleUDLR;
 window.startHold = startHold;
 window.stopHold = stopHold;
+window.shareNatively = shareNatively;

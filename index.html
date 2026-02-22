@@ -139,7 +139,6 @@
                 <button class="control-btn" id="btn-life" onclick="toggleLife()">
                     <i class="ms ss-foil ss-grad ms-ability-lifelink"></i>
                 </button>
-                <!-- <button class="control-btn disabled" id="btn-tax" onclick="toggleTax()"> -->
                 <button class="control-btn disabled" id="btn-tax" oncontextmenu="return false;">
                     <i class="ss ss-foil ss-grad ss-cmd"></i>
                 </button>
@@ -458,6 +457,11 @@
             <p>
                 <a href="https://regularwave.github.io/cyclonesync/" target="_blank">https://regularwave.github.io/cyclonesync/</a>
             </p>
+
+            <button id="btn-native-share" class="control-btn hidden mt-1" onclick="shareNatively()" style="width: 100%;">
+                <i class="ss ss-foil ss-grad ss-plc"></i> SHARE APP
+            </button>
+
             <button class="close-btn" onclick="toggleShare()">CLOSE</button>
         </div>
     </div>
@@ -479,7 +483,7 @@
         </span>
     </div>
     <div id="update-toast" class="update-toast hidden">
-        <span>Update!</span>
+        <span>Update found!</span>
         <div class="update-toast-btns">
             <button id="btn-update-refresh" class="btn-update-yes">UPDATE</button>
             <button id="btn-update-dismiss" class="btn-update-no">IGNORE</button>

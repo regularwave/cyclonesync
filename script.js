@@ -34,8 +34,11 @@ let settings = {
 
 let currentRoomId = null;
 let roomListenerUnsubscribe = null;
-
 let myPlayerId = 'player_' + Math.random().toString(36).substr(2, 9);
+
+let syncDebounceTimer = null;
+let isSyncLocked = false;
+
 let html5QrcodeScanner = null;
 
 let pipsOpen = false;
@@ -371,7 +374,7 @@ async function resetAll() {
         localStorage.setItem('cyclonesync_tracker_' + input.id, defaultVal);
 
         if (input.id === 'life') {
-            syncLifeToRoom(defaultVal);
+            syncLifeToRoom(defaultVal, true);
         }
     });
     if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
@@ -761,10 +764,26 @@ function renderRemotePlayers(players) {
     }
 }
 
-function syncLifeToRoom(newLife) {
-    if (!currentRoomId) return;
-    const myLifeRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId + '/life');
-    set(myLifeRef, newLife);
+function syncLifeToRoom(newLife, immediate = false) {
+    if (!currentRoomId || isSyncLocked) return;
+
+    if (immediate) {
+        clearTimeout(syncDebounceTimer);
+
+        const myLifeRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId + '/life');
+        set(myLifeRef, newLife);
+
+        isSyncLocked = true;
+        setTimeout(() => { isSyncLocked = false; }, 2000);
+
+        return;
+    }
+
+    if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
+    syncDebounceTimer = setTimeout(() => {
+        const myLifeRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId + '/life');
+        set(myLifeRef, newLife);
+    }, 500);
 }
 
 function reestablishPresence() {

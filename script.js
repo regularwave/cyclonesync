@@ -27,7 +27,8 @@ let exitTimer = null;
 let settings = {
     life: true,
     tax: false,
-    awake: true
+    awake: true,
+    layoutLR: false
 };
 
 let currentRoomId = null;
@@ -99,6 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
             } else if (document.visibilityState === 'visible') {
                 if (settings.awake) requestWakeLock();
+
+                triggerSymbolFade();
 
                 if (currentRoomId) {
                     const lastBackgrounded = localStorage.getItem('cyclonesync_last_backgrounded');
@@ -267,12 +270,6 @@ function updateValue(id, change) {
     saveValues(input, val);
 }
 
-function manualUpdate(inputElement) {
-    let val = parseInt(inputElement.value);
-    if (isNaN(val)) val = 0;
-    saveValues(inputElement, val);
-}
-
 function saveValues(input, val) {
     if (val < 0) val = 0;
     if (val > 999) val = 999;
@@ -346,6 +343,7 @@ function loadSettings() {
 
     applySettings();
     updateManaGrid();
+    triggerSymbolFade();
 }
 
 function saveSettings() {
@@ -391,6 +389,12 @@ function applySettings() {
     } else {
         btnAwake.classList.add('disabled');
         iconAwake.className = "ms ms-dfc-night";
+    }
+
+    if (settings.layoutLR) {
+        document.body.classList.add('layout-lr');
+    } else {
+        document.body.classList.remove('layout-lr');
     }
 }
 
@@ -804,6 +808,21 @@ function showExitToast() {
     }, 2000);
 }
 
+function toggleUDLR() {
+    settings.layoutLR = !settings.layoutLR;
+    applySettings();
+    saveSettings();
+    triggerSymbolFade();
+}
+
+function triggerSymbolFade() {
+    document.body.classList.remove('symbols-hidden');
+
+    void document.body.offsetWidth;
+
+    document.body.classList.add('symbols-hidden');
+}
+
 window.toggleCredits = toggleCredits;
 window.toggleHelp = toggleHelp;
 window.toggleShare = toggleShare;
@@ -814,7 +833,6 @@ window.toggleTax = toggleTax;
 window.togglePips = togglePips;
 window.toggleWakeLock = toggleWakeLock;
 window.updateValue = updateValue;
-window.manualUpdate = manualUpdate;
 window.updateCmdValue = updateCmdValue;
 window.resetAll = resetAll;
 window.savePlayerName = savePlayerName;
@@ -827,3 +845,4 @@ window.stopQRScan = stopQRScan;
 window.showRoomQR = showRoomQR;
 window.leaveRoom = leaveRoom;
 window.switchHelpTab = switchHelpTab;
+window.toggleUDLR = toggleUDLR;

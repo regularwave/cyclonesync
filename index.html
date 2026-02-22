@@ -32,7 +32,7 @@
                     <div class="manasymbol-container">
                         <i class="ms ss-foil ss-grad ms-ability-lifelink toprow-manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="life" min="0" max="999" value="40" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="life" min="0" max="999" value="40" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('life', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('life', -1)">&minus;</button>
@@ -42,7 +42,7 @@
                     <div class="manasymbol-container">
                         <i class="ss ss-foil ss-grad ss-cmd ss-5x toprow-manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="tax" min="0" max="999" value="0" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="tax" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('tax', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('tax', -1)">&minus;</button>
@@ -67,7 +67,7 @@
                     <div class="manasymbol-container">
                         <i class="ms ms-w ms-cost ms-fw manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-w" min="0" max="999" value="0" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="mana-w" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('mana-w', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('mana-w', -1)">&minus;</button>
@@ -77,7 +77,7 @@
                     <div class="manasymbol-container">
                         <i class="ms ms-u ms-cost manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-u" min="0" max="999" value="0" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="mana-u" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('mana-u', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('mana-u', -1)">&minus;</button>
@@ -87,7 +87,7 @@
                     <div class="manasymbol-container">
                         <i class="ms ms-b ms-cost manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-b" min="0" max="999" value="0" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="mana-b" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('mana-b', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('mana-b', -1)">&minus;</button>
@@ -97,7 +97,7 @@
                     <div class="manasymbol-container">
                         <i class="ms ms-r ms-cost ms-fw manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-r" min="0" max="999" value="0" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="mana-r" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('mana-r', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('mana-r', -1)">&minus;</button>
@@ -107,7 +107,7 @@
                     <div class="manasymbol-container">
                         <i class="ms ms-g ms-cost manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-g" min="0" max="999" value="0" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="mana-g" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('mana-g', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('mana-g', -1)">&minus;</button>
@@ -117,7 +117,7 @@
                     <div class="manasymbol-container">
                         <i class="ms ms-c ms-cost manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-c" min="0" max="999" value="0" type="number" oninput="manualUpdate(this)">
+                    <input class="quantity" id="mana-c" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onclick="updateValue('mana-c', 1)">&plus;</button>
                         <button class="minus" onclick="updateValue('mana-c', -1)">&minus;</button>
@@ -139,6 +139,12 @@
                 </button>
                 <button class="control-btn" id="btn-connect" onclick="toggleConnectModal()">
                     <i class="ss ss-foil ss-grad ss-eoe"></i>
+                </button>
+                <button class="control-btn" id="btn-udlrswap" onclick="toggleUDLR()">
+                    <div id="icon-udlrswap" class="udlr-wrapper">
+                        <i class="ms ss-foil ss-grad ms-dfc-front"></i>
+                        <span class="udlr-plus ss-foil ss-grad">&plus;</span>
+                    </div>
                 </button>
                 <button class="control-btn" id="btn-awake" onclick="toggleWakeLock()">
                     <i class="ms ss-foil ss-grad ms-dfc-day"></i>
@@ -205,7 +211,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p1-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p1-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p1-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p1-c1', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p1-c1', -1)">&minus;</button>
@@ -215,7 +221,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p1-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p1-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p1-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p1-c2', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p1-c2', -1)">&minus;</button>
@@ -230,7 +236,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p2-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p2-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p2-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p2-c1', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p2-c1', -1)">&minus;</button>
@@ -240,7 +246,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p2-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p2-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p2-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p2-c2', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p2-c2', -1)">&minus;</button>
@@ -255,7 +261,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p3-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p3-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p3-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p3-c1', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p3-c1', -1)">&minus;</button>
@@ -265,7 +271,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p3-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p3-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p3-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p3-c2', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p3-c2', -1)">&minus;</button>
@@ -280,7 +286,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p4-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p4-c1" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p4-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p4-c1', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p4-c1', -1)">&minus;</button>
@@ -290,7 +296,7 @@
                         <div class="cmd-wrapper">
                             <input type="text" class="cmd-name-input" id="name-cmd-p4-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p4-c2" value="0" type="number" oninput="manualUpdate(this)">
+                                <input class="quantity cmd-qty" id="cmd-p4-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
                                     <button class="plus" onclick="updateCmdValue('cmd-p4-c2', 1)">&plus;</button>
                                     <button class="minus" onclick="updateCmdValue('cmd-p4-c2', -1)">&minus;</button>
@@ -404,7 +410,13 @@
             </div>
 
             <div id="help-basics" class="help-tab-content hidden">
-                <p><strong>Adjusting Values:</strong> Tap the <strong>+</strong> or <strong>-</strong> buttons to change values, or tap directly on a number to type a specific value.</p>
+                <p><strong>Adjusting Values:</strong> Tap the tile to change its value. By default, the top half increases and the bottom half decreases. Use the
+                    <span class="udlr-wrapper inline-help-wrapper">
+                        <i class="ms ss-foil ss-grad ms-dfc-front"></i>
+                        <span class="udlr-plus ss-foil ss-grad">&plus;</span>
+                    </span>
+                    button to switch to left/right tap zones!
+                </p>
                 <p><strong>Mana Tiles:</strong> Tap the <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x"></i> button to show or hide mana tracker tiles. <em>Long-press</em> the button to choose which specific tiles are always shown and which are toggled by the button.</p>
                 <p><strong>Custom Names:</strong> You can tap on any name in the commander damage tracker window to edit them.</p>
             </div>

@@ -478,14 +478,61 @@
             <i class="ss ss-foil ss-grad ss-plc"></i> <span class="footer-text">Share</span>
         </span>
     </div>
+    <div id="update-toast" class="update-toast hidden">
+        <span>Update!</span>
+        <div class="update-toast-btns">
+            <button id="btn-update-refresh" class="btn-update-yes">UPDATE</button>
+            <button id="btn-update-dismiss" class="btn-update-no">IGNORE</button>
+        </div>
+    </div>
     <script type="module" src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW Registered'))
-                    .catch(err => console.log('SW Registration Failed: ', err));
+            let refreshing = false;
+            let newWorker;
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
             });
+
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    console.log('SW Registered');
+
+                    if (reg.waiting) {
+                        newWorker = reg.waiting;
+                        showUpdatePrompt();
+                    }
+
+                    reg.addEventListener('updatefound', () => {
+                        newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showUpdatePrompt();
+                            }
+                        });
+                    });
+                }).catch(err => console.log('SW Registration Failed: ', err));
+            });
+
+            function showUpdatePrompt() {
+                const toast = document.getElementById('update-toast');
+                toast.classList.remove('hidden');
+
+                document.getElementById('btn-update-refresh').addEventListener('click', () => {
+                    toast.classList.add('hidden');
+                    if (newWorker) {
+                        newWorker.postMessage('SKIP_WAITING');
+                    }
+                });
+
+                document.getElementById('btn-update-dismiss').addEventListener('click', () => {
+                    toast.classList.add('hidden');
+                });
+            }
         }
     </script>
 </body>

@@ -475,12 +475,11 @@ body.symbols-hidden .spinner-btns button {
 
 .cmd-quarters {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
     gap: .75rem;
     height: 100%;
     width: 100%;
-    overflow: auto;
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: .25rem
@@ -494,20 +493,42 @@ body.symbols-hidden .spinner-btns button {
     border-radius: .5rem;
     padding: .5rem;
     height: 100%;
-    min-height: 0
+    min-height: 0;
+    min-width: 0
+}
+
+.player-name-wrapper {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr 1.5rem;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid #555;
+    margin-bottom: .5rem;
+    padding-bottom: .2rem;
+}
+
+.player-name-wrapper i {
+    grid-column: 1;
+    justify-self: start;
+    font-size: 1.1rem;
 }
 
 .player-name {
+    grid-column: 2;
     width: 100%;
     background: 0 0;
     border: 0;
-    border-bottom: 1px solid #555;
     color: #fff;
     font-family: "Beleren Bold", sans-serif;
     text-align: center;
     font-size: 1rem;
-    margin-bottom: .5rem;
-    padding-bottom: .2rem
+    min-width: 0;
+}
+
+.player-name:disabled {
+    opacity: 1;
+    color: #fff;
+    cursor: default;
 }
 
 .cmd-counters-flex {
@@ -924,7 +945,7 @@ body.symbols-hidden .spinner-btns button {
     }
 
     .cmd-quarters {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         grid-template-rows: 1fr;
         overflow-y: hidden
     }

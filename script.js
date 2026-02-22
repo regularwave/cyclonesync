@@ -665,6 +665,14 @@ async function joinRoom() {
     currentRoomId = roomId;
     localStorage.setItem('name-p1', playerName);
 
+    const p1Input = document.getElementById('name-p1');
+    const p1Icon = document.getElementById('sync-icon-p1');
+    if (p1Input && p1Icon) {
+        p1Input.value = playerName;
+        p1Input.disabled = true;
+        p1Icon.classList.remove('hidden');
+    }
+
     const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
 
     const myData = {
@@ -708,6 +716,18 @@ function renderRemotePlayers(players) {
     container.innerHTML = '';
 
     let hasRemotePlayers = false;
+    let remoteIndex = 2;
+
+    for (let i = 2; i <= 4; i++) {
+        const input = document.getElementById(`name-p${i}`);
+        const icon = document.getElementById(`sync-icon-p${i}`);
+        if (input && icon) {
+            const savedName = localStorage.getItem(`name-p${i}`);
+            input.value = savedName || `Player ${i}`;
+            input.disabled = false;
+            icon.classList.add('hidden');
+        }
+    }
 
     Object.keys(players).forEach(key => {
         if (key === myPlayerId) return;
@@ -723,6 +743,17 @@ function renderRemotePlayers(players) {
             <div class="remote-life">${p.life}</div>
         `;
         container.appendChild(tile);
+
+        if (remoteIndex <= 4) {
+            const cmdInput = document.getElementById(`name-p${remoteIndex}`);
+            const cmdIcon = document.getElementById(`sync-icon-p${remoteIndex}`);
+            if (cmdInput && cmdIcon) {
+                cmdInput.value = p.name;
+                cmdInput.disabled = true;
+                cmdIcon.classList.remove('hidden');
+            }
+            remoteIndex++;
+        }
     });
 
     if (!hasRemotePlayers) {
@@ -801,6 +832,17 @@ async function leaveRoom(force = false) {
         if (roomListenerUnsubscribe) {
             roomListenerUnsubscribe();
             roomListenerUnsubscribe = null;
+        }
+
+        for (let i = 1; i <= 4; i++) {
+            const input = document.getElementById(`name-p${i}`);
+            const icon = document.getElementById(`sync-icon-p${i}`);
+            if (input && icon) {
+                const savedName = localStorage.getItem(`name-p${i}`);
+                input.value = savedName || `Player ${i}`;
+                input.disabled = false;
+                icon.classList.add('hidden');
+            }
         }
 
         currentRoomId = null;

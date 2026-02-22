@@ -902,7 +902,7 @@ body.symbols-hidden .spinner-btns button {
         font-size: 1.2rem
     }
 
-    .controls-row .control-btn span {
+    .controls-row .control-btn span:not(.udlr-plus) {
         display: none
     }
 

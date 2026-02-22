@@ -111,6 +111,19 @@ body {
     container-type: inline-size;
 }
 
+.tax-half {
+    position: relative;
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    container-type: inline-size;
+}
+
+#tax-half-2 {
+    border-left: 2px solid rgba(255, 255, 255, 0.15);
+    padding-left: 0.25rem;
+}
+
 .hidden {
     display: none !important
 }

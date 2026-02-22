@@ -27,6 +27,7 @@ let exitTimer = null;
 let settings = {
     life: true,
     tax: false,
+    taxSplit: false,
     awake: true,
     layoutLR: false
 };
@@ -81,6 +82,32 @@ document.addEventListener('DOMContentLoaded', () => {
     pipsBtn.addEventListener('pointercancel', () => {
         if (pressTimer) clearTimeout(pressTimer);
         isLongPress = true;
+    });
+
+    const taxBtn = document.getElementById('btn-tax');
+    let taxPressTimer;
+    let taxIsLongPress = false;
+
+    taxBtn.addEventListener('pointerdown', (e) => {
+        taxIsLongPress = false;
+        taxPressTimer = setTimeout(() => {
+            taxIsLongPress = true;
+            toggleTaxSplit();
+            if (navigator.vibrate) navigator.vibrate(50);
+        }, 600);
+    });
+
+    taxBtn.addEventListener('pointerup', (e) => {
+        if (taxPressTimer) clearTimeout(taxPressTimer);
+        if (!taxIsLongPress) {
+            toggleTax();
+        }
+        taxIsLongPress = false;
+    });
+
+    taxBtn.addEventListener('pointercancel', () => {
+        if (taxPressTimer) clearTimeout(taxPressTimer);
+        taxIsLongPress = true;
     });
 
     if (settings.awake) {
@@ -422,6 +449,13 @@ function applySettings() {
         btnTax.classList.add('disabled');
     }
 
+    const taxHalf2 = document.getElementById('tax-half-2');
+    if (settings.taxSplit) {
+        taxHalf2.classList.remove('hidden');
+    } else {
+        taxHalf2.classList.add('hidden');
+    }
+
     const btnAwake = document.getElementById('btn-awake');
     const iconAwake = btnAwake.querySelector('i');
     if (settings.awake) {
@@ -447,6 +481,15 @@ function toggleLife() {
 
 function toggleTax() {
     settings.tax = !settings.tax;
+    applySettings();
+    saveSettings();
+}
+
+function toggleTaxSplit() {
+    if (!settings.tax) {
+        settings.tax = true;
+    }
+    settings.taxSplit = !settings.taxSplit;
     applySettings();
     saveSettings();
 }

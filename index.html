@@ -40,12 +40,23 @@
                 </div>
                 <div class="tile-wrapper hidden" id="tile-tax">
                     <div class="manasymbol-container">
-                        <i class="ss ss-foil ss-grad ss-cmd ss-5x toprow-manasymbol-icon"></i>
+                        <i class="ss ss-foil ss-grad ss-cmd toprow-manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="tax" min="0" max="999" value="0" type="number" readonly tabindex="-1">
-                    <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'tax', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'tax', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+
+                    <div class="tax-half" id="tax-half-1">
+                        <input class="quantity" id="tax" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                        <div class="spinner-btns">
+                            <button class="plus" onpointerdown="startHold(event, 'tax', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                            <button class="minus" onpointerdown="startHold(event, 'tax', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        </div>
+                    </div>
+
+                    <div class="tax-half hidden" id="tax-half-2">
+                        <input class="quantity" id="tax2" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                        <div class="spinner-btns">
+                            <button class="plus" onpointerdown="startHold(event, 'tax2', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                            <button class="minus" onpointerdown="startHold(event, 'tax2', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,7 +139,8 @@
                 <button class="control-btn" id="btn-life" onclick="toggleLife()">
                     <i class="ms ss-foil ss-grad ms-ability-lifelink"></i>
                 </button>
-                <button class="control-btn disabled" id="btn-tax" onclick="toggleTax()">
+                <!-- <button class="control-btn disabled" id="btn-tax" onclick="toggleTax()"> -->
+                <button class="control-btn disabled" id="btn-tax" oncontextmenu="return false;">
                     <i class="ss ss-foil ss-grad ss-cmd"></i>
                 </button>
                 <button class="control-btn" id="btn-pips" oncontextmenu="return false;">
@@ -388,7 +400,7 @@
                     <i class="ms ss-foil ss-grad ms-ability-lifelink ms-2x"></i> <span>toggle life tracker tile</span>
                 </div>
                 <div class="help-icon-row">
-                    <i class="ss ss-foil ss-grad ss-cmd ss-2x"></i> <span>toggle commander tax tracker tile</span>
+                    <i class="ss ss-foil ss-grad ss-cmd ss-2x"></i> <span>toggle commander tax tracker tile, long press for partners</span>
                 </div>
                 <div class="help-icon-row">
                     <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x"></i> <span>toggle mana tracker tiles</span>

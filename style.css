@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Beleren Bold";
-    src: url(./font/Beleren2016-Bold.woff) format("woff");
+    src: url(./font/Beleren2016-Bold.woff)format("woff");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -36,7 +36,7 @@ body::before {
     background-size: cover;
     background-repeat: no-repeat;
     filter: brightness(1.9) contrast(1.1);
-    z-index: -1;
+    z-index: -1
 }
 
 .floatcontainer {
@@ -73,55 +73,50 @@ body {
     margin-bottom: 2rem
 }
 
-@media (max-width: 440px) {
+@media (max-width:440px) {
     .tracker-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr)
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width:360px) {
 
-    .footer-text,
-    .footer-separator {
-        display: none;
+    .footer-separator,
+    .footer-text {
+        display: none
     }
 
     #sticky-footer {
-        gap: 2rem;
+        gap: 2rem
     }
 
     .footer-link i {
-        font-size: 1.2rem;
+        font-size: 1.2rem
     }
 }
 
 .tile-wrapper {
-    position: relative;
-    display: flex;
     align-items: stretch;
     border: 2px solid #ddd;
     border-radius: .5rem;
-    overflow: hidden;
     background-color: rgba(0, 0, 0, .2);
     gap: .25rem;
-    min-height: 6.5rem;
     padding: 0 0 0 .5rem;
-    flex: 1;
-    min-height: 5rem;
-    container-type: inline-size;
+    min-height: 5rem
 }
 
-.tax-half {
+.tax-half,
+.tile-wrapper {
     position: relative;
     flex: 1;
     display: flex;
     overflow: hidden;
-    container-type: inline-size;
+    container-type: inline-size
 }
 
 #tax-half-2 {
-    border-left: 2px solid rgba(255, 255, 255, 0.15);
-    padding-left: 0.25rem;
+    border-left: 2px solid rgba(255, 255, 255, .15);
+    padding-left: .25rem
 }
 
 .hidden {
@@ -134,14 +129,14 @@ body {
 
 .manasymbol-container {
     position: absolute;
-    left: 0.2rem;
+    left: .2rem;
     top: 0;
     bottom: 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     z-index: 0;
-    pointer-events: none;
+    pointer-events: none
 }
 
 .manasymbol-icon,
@@ -153,7 +148,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
+    line-height: 1
 }
 
 .manasymbol-icon::before {
@@ -161,7 +156,7 @@ body {
 }
 
 .toprow-manasymbol-icon {
-    translate: 0 -3px
+    translate: 0-3px
 }
 
 input[type=number] {
@@ -194,9 +189,9 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: transparent;
     color: #ddd;
     z-index: 1;
-    padding-right: 0.25rem;
+    padding-right: .25rem;
     transform-origin: right center;
-    transition: transform 0.2s ease-out;
+    transition: transform .2s ease-out
 }
 
 .tile-wrapper .quantity {
@@ -204,24 +199,24 @@ input[type=number]::-webkit-outer-spin-button {
     right: 0;
     top: 0;
     bottom: 0;
-    width: 250px;
+    width: 250px
 }
 
 @container (max-width: 180px) {
     .quantity {
-        transform: scaleX(0.85);
+        transform: scaleX(.85)
     }
 }
 
 @container (max-width: 140px) {
     .quantity {
-        transform: scaleX(0.7);
+        transform: scaleX(.7)
     }
 }
 
 @container (max-width: 110px) {
     .quantity {
-        transform: scaleX(0.55);
+        transform: scaleX(.55)
     }
 }
 
@@ -234,7 +229,7 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     flex-direction: column;
     z-index: 10;
-    border: 0;
+    border: 0
 }
 
 .spinner-btns button {
@@ -243,50 +238,50 @@ input[type=number]::-webkit-outer-spin-button {
     cursor: pointer;
     position: relative;
     outline: 0;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, .2);
     font-size: 1.2rem;
     font-family: sans-serif;
     display: flex;
     line-height: 1;
     touch-action: manipulation;
-    padding: 0.2rem 0.3rem;
-    transition: color 30s linear, background-color 0.2s;
+    padding: .2rem .3rem;
+    transition: color 30s linear, background-color .2s
 }
 
 .spinner-btns button:active {
     background-color: rgba(255, 255, 255, .05);
     color: rgba(255, 255, 255, .8) !important;
-    transition: none;
+    transition: none
 }
 
 body.symbols-hidden .spinner-btns button {
-    color: transparent;
+    color: transparent
 }
 
+.spinner-btns .minus,
 .spinner-btns .plus {
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .spinner-btns .minus {
-    justify-content: flex-start;
-    align-items: flex-end;
+    align-items: flex-end
 }
 
 .layout-lr .spinner-btns {
-    flex-direction: row;
+    flex-direction: row
 }
 
 .layout-lr .spinner-btns .plus {
     order: 2;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .layout-lr .spinner-btns .minus {
     order: 1;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 #icon-udlrswap,
@@ -295,15 +290,15 @@ body.symbols-hidden .spinner-btns button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s;
+    transition: transform .3s
 }
 
 .inline-help-wrapper {
-    transform: translateY(3px);
+    transform: translateY(3px)
 }
 
 .layout-lr #icon-udlrswap {
-    transform: rotate(90deg);
+    transform: rotate(90deg)
 }
 
 .udlr-plus {
@@ -311,17 +306,12 @@ body.symbols-hidden .spinner-btns button {
     top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 0.85rem;
+    font-size: .85rem;
     font-family: sans-serif;
     font-weight: 900;
     line-height: 1;
-    text-shadow:
-        -1px -1px 0 #000,
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000,
-        0 0 5px #000;
-    pointer-events: none;
+    text-shadow: -1px -1px 0#000, 1px -1px 0#000, -1px 1px 0#000, 1px 1px 0#000, 0 0 5px #000;
+    pointer-events: none
 }
 
 .controls-row {
@@ -330,7 +320,7 @@ body.symbols-hidden .spinner-btns button {
     align-items: center;
     gap: 1rem;
     width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 .control-btn,
@@ -354,17 +344,17 @@ body.symbols-hidden .spinner-btns button {
 }
 
 .control-btn:not(:disabled):hover {
-    background-color: rgba(255, 255, 255, .1);
+    background-color: rgba(255, 255, 255, .1)
 }
 
 .control-btn.disabled,
 .control-btn:disabled {
     opacity: .4;
-    filter: grayscale(100%);
+    filter: grayscale(100%)
 }
 
 .control-btn:disabled {
-    cursor: not-allowed;
+    cursor: not-allowed
 }
 
 .control-btn,
@@ -376,10 +366,7 @@ body.symbols-hidden .spinner-btns button {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center
-}
-
-#sticky-footer {
+    justify-content: center;
     gap: .75rem;
     font-size: .8rem;
     padding: .5rem;
@@ -403,7 +390,8 @@ body.symbols-hidden .spinner-btns button {
     gap: .25rem
 }
 
-.footer-link:hover {
+.footer-link:hover,
+.help-tab-content strong {
     color: #fff
 }
 
@@ -416,21 +404,20 @@ body.symbols-hidden .spinner-btns button {
     color: #fff;
     border-bottom: 1px solid #555;
     padding-bottom: .5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem
 }
 
 .modal-overlay p {
-    margin-bottom: 1rem;
     font-size: 1rem;
     line-height: 1.4;
     max-width: 600px;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto
 }
 
 .modal-overlay a {
     color: #4da6ff;
-    text-align: center;
+    text-align: center
 }
 
 .legal-text {
@@ -440,7 +427,9 @@ body.symbols-hidden .spinner-btns button {
     line-height: 1.3
 }
 
-.credits-section {
+.credits-section,
+.help-tab-content p,
+.modal-overlay p {
     margin-bottom: 1rem
 }
 
@@ -494,7 +483,7 @@ body.symbols-hidden .spinner-btns button {
     overflow: auto;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 0.25rem;
+    padding-right: .25rem
 }
 
 .cmd-quarter {
@@ -545,37 +534,37 @@ body.symbols-hidden .spinner-btns button {
     text-align: center
 }
 
-.cmd-counters-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: .25rem;
-    flex-grow: 1;
-    height: 100%;
-    min-height: 0
-}
-
+.cmd-counters-vertical,
 .cmd-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     gap: .25rem;
+    min-height: 0
+}
+
+.cmd-counters-vertical {
+    flex-grow: 1;
+    height: 100%
+}
+
+.cmd-wrapper {
+    align-items: stretch;
     flex: 1;
     width: 100%;
-    overflow: hidden;
-    min-height: 0;
+    overflow: hidden
 }
 
 .cmd-name-input {
     background: 0 0;
     border: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
     color: #aaa;
     font-family: "Beleren Bold", sans-serif;
     text-align: center;
     height: auto;
     width: 100%;
-    padding: 0.2rem 0;
-    font-size: 0.9rem;
+    padding: .2rem 0;
+    font-size: .9rem
 }
 
 .cmd-name-input:focus {
@@ -601,11 +590,11 @@ body.symbols-hidden .spinner-btns button {
     max-width: 420px;
     margin: 1rem auto;
     max-height: 60vh;
-    overflow-y: auto;
+    overflow-y: auto
 }
 
 .pip-chk {
-    display: none;
+    display: none
 }
 
 .pip-label {
@@ -613,49 +602,49 @@ body.symbols-hidden .spinner-btns button {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 0.5rem 1rem;
+    padding: .5rem 1rem;
     gap: 1rem;
     border: 1px solid #fff;
-    border-radius: 0.5rem;
-    background: rgba(255, 255, 255, 0.15);
+    border-radius: .5rem;
+    background: rgba(255, 255, 255, .15);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
     height: 100%;
-    min-height: 4.5rem;
+    min-height: 4.5rem
 }
 
 .pip-label i {
     flex-shrink: 0;
-    transition: opacity 0.2s;
-    opacity: 1;
+    transition: opacity .2s;
+    opacity: 1
 }
 
 .pip-label::after {
     content: "always\ashown";
     white-space: pre;
     text-align: left;
-    font-size: 0.85rem;
+    font-size: .85rem;
     line-height: 1.1;
     color: #fff;
     font-style: normal;
-    font-weight: bold;
-    opacity: 1;
+    font-weight: 700;
+    opacity: 1
 }
 
 .pip-chk:checked+.pip-label {
-    background: rgba(0, 0, 0, 0.4);
-    border-color: #444;
+    background: rgba(0, 0, 0, .4);
+    border-color: #444
 }
 
 .pip-chk:checked+.pip-label i {
-    opacity: 0.2;
+    opacity: .2
 }
 
 .pip-chk:checked+.pip-label::after {
     content: "pip\a button\ahides";
     font-style: italic;
-    font-weight: normal;
-    opacity: 0.8;
+    font-weight: 400;
+    opacity: .8
 }
 
 .room-row {
@@ -663,170 +652,164 @@ body.symbols-hidden .spinner-btns button {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    gap: 0.5rem;
+    gap: .5rem;
     margin-bottom: 1.5rem;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.4);
+    padding: .5rem;
+    background: rgba(0, 0, 0, .4);
     border: 1px solid #333;
-    border-radius: 0.5rem;
+    border-radius: .5rem
 }
 
-.room-qr-trigger,
-.room-exit-btn {
-    display: flex;
+.room-exit-btn,
+.room-qr-trigger {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     width: 3rem;
     height: 3rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, .05);
     border: 1px solid #444;
-    border-radius: 0.5rem;
+    border-radius: .5rem;
     cursor: pointer;
-    font-size: 0.8rem;
-    color: #aaa;
+    font-size: .8rem;
+    color: #aaa
 }
 
 .room-qr-trigger i {
     font-size: 1.2rem;
-    margin-bottom: 0.1rem;
+    margin-bottom: .1rem
+}
+
+.remote-players-grid,
+.remote-tile,
+.room-exit-btn,
+.room-qr-trigger {
+    display: flex;
+    justify-content: center
 }
 
 .remote-players-grid {
-    display: flex;
     flex: 1;
-    justify-content: center;
-    gap: 0.5rem;
-    overflow-x: auto;
+    gap: .5rem;
+    overflow-x: auto
 }
 
 .remote-tile {
-    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     background: #111;
     border: 1px solid #444;
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.5rem;
+    border-radius: .5rem;
+    padding: .25rem .5rem;
     min-width: 0;
     flex: 1 1 0;
-    overflow: hidden;
+    overflow: hidden
 }
 
 .remote-name {
-    font-size: 0.8rem;
+    font-size: .8rem;
     color: #aaa;
-    margin-bottom: 0.2rem;
+    margin-bottom: .2rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
+    max-width: 100%
 }
 
 .remote-life {
     font-size: 2rem;
     font-family: "Beleren Bold", sans-serif;
     color: #fff;
-    line-height: 1;
+    line-height: 1
 }
 
 .waiting-text {
     margin: auto;
     color: #888;
-    font-size: 0.9rem;
+    font-size: .9rem;
     font-style: italic;
-    opacity: 0.8;
+    opacity: .8
 }
 
 .modal-input {
     width: 100%;
-    background: transparent;
+    background: 0 0;
     border: 1px solid #555;
-    color: white;
-    padding: 0.8rem;
+    color: #fff;
+    padding: .8rem;
     font-size: 1.2rem;
     text-align: center;
-    border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-family: "Beleren Bold", sans-serif;
+    border-radius: .5rem;
+    margin-bottom: .5rem;
+    font-family: "Beleren Bold", sans-serif
 }
 
 .modal-input:disabled {
-    opacity: 0.4;
+    opacity: .4;
     cursor: not-allowed;
-    border-color: #333;
+    border-color: #333
 }
 
 .connect-actions {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: .5rem;
+    margin-top: 1rem
 }
 
 .divider-line {
     width: 100%;
     height: 1px;
     background: #333;
-    margin: 1rem 0;
+    margin: 1rem 0
 }
 
 .help-tabs {
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid #444;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem
 }
 
 .help-tab-btn {
     flex: 1;
-    background: transparent;
-    border: none;
+    background: 0 0;
+    border: 0;
     color: #888;
     font-family: "Beleren Bold", sans-serif;
     font-size: 1rem;
-    padding: 0.5rem 0;
+    padding: .5rem 0;
     cursor: pointer;
-    transition: color 0.2s, border-bottom 0.2s;
+    transition: color .2s, border-bottom .2s;
     border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
+    margin-bottom: -2px
 }
 
 .help-tab-btn.active {
     color: #fff;
-    border-bottom: 2px solid #4da6ff;
+    border-bottom: 2px solid #4da6ff
 }
 
 .help-tab-content {
     flex-grow: 1;
     overflow-y: auto;
     text-align: left;
-    font-size: 0.95rem;
+    font-size: .95rem;
     color: #ccc;
     line-height: 1.5;
-    padding-right: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.help-tab-content p {
-    margin-bottom: 1rem;
-}
-
-.help-tab-content strong {
-    color: #fff;
+    padding-right: .5rem;
+    margin-bottom: 1rem
 }
 
 .help-icon-row {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem
 }
 
 .help-icon-row i {
     flex-shrink: 0;
     width: 2.5rem;
-    text-align: center;
+    text-align: center
 }
 
 @media (min-width:768px),
@@ -846,14 +829,12 @@ body.symbols-hidden .spinner-btns button {
         grid-template-columns: auto 1fr 50px;
         grid-template-areas: "stats mana controls";
         gap: 1rem;
-        align-items: center;
+        align-items: center
     }
 
     .content:has(.room-row:not(.hidden)) {
         grid-template-rows: min-content auto;
-        grid-template-areas:
-            "room room controls"
-            "stats mana controls";
+        grid-template-areas: "room room controls" "stats mana controls"
     }
 
     .top-row {
@@ -882,9 +863,9 @@ body.symbols-hidden .spinner-btns button {
         align-self: stretch;
         position: sticky;
         top: 1rem;
-        gap: 0.4rem;
+        gap: .4rem;
         height: 100%;
-        width: 50px;
+        width: 50px
     }
 
     .controls-row .control-btn {
@@ -893,7 +874,7 @@ body.symbols-hidden .spinner-btns button {
         flex: 1;
         min-height: 2rem;
         padding: 0;
-        border-radius: 0.5rem;
+        border-radius: .5rem
     }
 
     .controls-row .control-btn i {
@@ -908,28 +889,28 @@ body.symbols-hidden .spinner-btns button {
     #share-modal .cmd-modal-content {
         display: grid !important;
         grid-template-columns: 1fr 1fr;
-        gap: 0.5rem 2rem;
+        gap: .5rem 2rem;
         text-align: left;
         padding: 1.5rem;
-        height: auto;
+        height: auto
     }
 
     #credits-modal .close-btn,
+    #credits-modal .legal-text,
     #credits-modal h2,
     #share-modal .close-btn,
     #share-modal h2 {
         grid-column: 1/span 2 !important;
         width: 100%;
-        text-align: center;
+        text-align: center
     }
 
     #credits-modal .legal-text {
-        grid-column: 1/span 2 !important;
         width: 100% !important;
         max-width: none !important;
         text-align: left;
         margin-top: .5rem;
-        box-sizing: border-box;
+        box-sizing: border-box
     }
 
     .cmd-counter-unit {
@@ -945,7 +926,7 @@ body.symbols-hidden .spinner-btns button {
     .cmd-quarters {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: 1fr;
-        overflow-y: hidden;
+        overflow-y: hidden
     }
 
     .player-name {
@@ -956,151 +937,149 @@ body.symbols-hidden .spinner-btns button {
 
     .room-row {
         grid-area: room;
-        margin-bottom: 0;
+        margin-bottom: 0
     }
 
     .tile-wrapper {
-        min-height: 6.5rem;
+        min-height: 6.5rem
     }
 
     .quantity {
-        font-size: 5rem;
+        font-size: 5rem
     }
 }
 
 .text-center {
-    text-align: center;
+    text-align: center
 }
 
 .mt-1 {
-    margin-top: 1rem;
+    margin-top: 1rem
 }
 
 .mt-auto {
-    margin-top: auto;
+    margin-top: auto
 }
 
 .mb-0-5 {
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem
 }
 
 .reset-text {
     font-size: 1rem;
-    margin-left: 0.2rem;
+    margin-left: .2rem
 }
 
 .modal-content-fit {
     height: auto;
-    max-height: 90vh;
+    max-height: 90vh
 }
 
 .modal-content-help {
-    max-height: 85vh;
+    max-height: 85vh
 }
 
 .modal-dialog-small {
     height: auto;
     max-height: 90vh;
     max-width: 350px;
-    text-align: center;
+    text-align: center
 }
 
 .modal-topmost {
-    z-index: 3000;
+    z-index: 3000
 }
 
 .dialog-title {
     border-bottom: none;
-    margin-bottom: 0.5rem;
-    color: #fff;
+    margin-bottom: .5rem;
+    color: #fff
 }
 
 .dialog-message {
     font-size: 1.1rem;
     color: #ddd;
-    margin-bottom: 2rem;
+    margin-bottom: 2rem
 }
 
 .dialog-btn-row {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    justify-content: center;
+    justify-content: center
 }
 
 .btn-dialog {
     margin-top: 0;
-    flex: 1;
+    flex: 1
 }
 
 .btn-dialog-full {
     margin-top: 0;
-    width: 100%;
+    width: 100%
 }
 
 .btn-danger {
-    border-color: #ff5555;
-    color: #ff5555;
+    border-color: #f55;
+    color: #f55
 }
 
 .qr-display-box {
     width: fit-content;
     margin: 1rem auto;
-    background: white;
+    background: #fff;
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: .5rem
 }
 
 .qr-reader-box {
     width: 100%;
     margin: 1rem 0;
-    background: #000;
+    background: #000
 }
 
 .input-label {
     text-align: left;
     display: block;
-    margin-bottom: 0.2rem;
+    margin-bottom: .2rem
 }
 
 .room-code-input {
     text-transform: uppercase;
-    margin-bottom: 0;
+    margin-bottom: 0
 }
 
 .connect-split-row {
     display: flex;
     gap: 1rem;
     align-items: stretch;
-    margin-top: 1rem;
+    margin-top: 1rem
 }
 
-.connect-col-main {
+.connect-col-main,
+.connect-col-side {
     flex: 2;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: .5rem
 }
 
 .connect-col-side {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 0.5rem;
+    justify-content: flex-end
 }
 
 .connect-divider-vertical {
     width: 1px;
     background: #333;
-    margin: 0.5rem 0;
+    margin: .5rem 0
 }
 
 .btn-scan-qr {
     height: 100%;
     min-height: 4.5rem;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: .2rem
 }
 
 .exit-toast {
@@ -1108,39 +1087,39 @@ body.symbols-hidden .spinner-btns button {
     bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, .8);
     color: #fff;
-    padding: 0.75rem 1.5rem;
+    padding: .75rem 1.5rem;
     border-radius: 2rem;
     z-index: 9999;
     font-family: "Beleren Bold", sans-serif;
-    font-size: 0.9rem;
+    font-size: .9rem;
     pointer-events: none;
-    opacity: 0;
+    opacity: 0
 }
 
 #tile-w {
-    background-image: linear-gradient(to right, rgba(248, 231, 185, 0.35) 0%, transparent 70%);
+    background-image: linear-gradient(to right, rgba(248, 231, 185, .35)0, transparent 70%)
 }
 
 #tile-u {
-    background-image: linear-gradient(to right, rgba(170, 224, 250, 0.35) 0%, transparent 70%);
+    background-image: linear-gradient(to right, rgba(170, 224, 250, .35)0, transparent 70%)
 }
 
 #tile-b {
-    background-image: linear-gradient(to right, rgba(166, 127, 191, 0.35) 0%, transparent 70%);
+    background-image: linear-gradient(to right, rgba(166, 127, 191, .35)0, transparent 70%)
 }
 
 #tile-r {
-    background-image: linear-gradient(to right, rgba(235, 159, 130, 0.35) 0%, transparent 70%);
+    background-image: linear-gradient(to right, rgba(235, 159, 130, .35)0, transparent 70%)
 }
 
 #tile-g {
-    background-image: linear-gradient(to right, rgba(196, 211, 202, 0.35) 0%, transparent 70%);
+    background-image: linear-gradient(to right, rgba(196, 211, 202, .35)0, transparent 70%)
 }
 
 #tile-c {
-    background-image: linear-gradient(to right, rgba(200, 200, 200, 0.3) 0%, transparent 70%);
+    background-image: linear-gradient(to right, rgba(200, 200, 200, .3)0, transparent 70%)
 }
 
 #tile-w .manasymbol-icon,
@@ -1149,11 +1128,11 @@ body.symbols-hidden .spinner-btns button {
 #tile-r .manasymbol-icon,
 #tile-g .manasymbol-icon,
 #tile-c .manasymbol-icon {
-    color: rgba(0, 0, 0, 0.6);
-    filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.2));
+    color: rgba(0, 0, 0, .6);
+    filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, .2))
 }
 
 #tile-life .toprow-manasymbol-icon,
 #tile-tax .toprow-manasymbol-icon {
-    opacity: 0.75;
+    opacity: .75
 }

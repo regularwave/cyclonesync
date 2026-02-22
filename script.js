@@ -117,40 +117,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('visibilitychange', async () => {
-        const connectedRef = ref(db, ".info/connected");
-        onValue(connectedRef, (snap) => {
-            if (snap.val() === true && currentRoomId) {
-                reestablishPresence();
-            }
-        });
+        if (document.visibilityState === 'hidden') {
+            localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
+        } else if (document.visibilityState === 'visible') {
+            if (settings.awake) requestWakeLock();
 
-        document.addEventListener('visibilitychange', async () => {
-            if (document.visibilityState === 'hidden') {
-                localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
-            } else if (document.visibilityState === 'visible') {
-                if (settings.awake) requestWakeLock();
+            triggerSymbolFade();
 
-                triggerSymbolFade();
+            if (currentRoomId) {
+                const lastBackgrounded = localStorage.getItem('cyclonesync_last_backgrounded');
+                const timeAway = lastBackgrounded ? (Date.now() - parseInt(lastBackgrounded)) : 0;
 
-                if (currentRoomId) {
-                    const lastBackgrounded = localStorage.getItem('cyclonesync_last_backgrounded');
-                    const timeAway = lastBackgrounded ? (Date.now() - parseInt(lastBackgrounded)) : 0;
+                const SESSION_TIMEOUT = 30 * 60 * 1000;
 
-                    const SESSION_TIMEOUT = 30 * 60 * 1000;
-
-                    if (timeAway > SESSION_TIMEOUT) {
-                        leaveRoom(true);
-                        setTimeout(async () => {
-                            await customAlert("Disconnected from PodConnect: session expired due to inactivity.");
-                        }, 500);
-                    } else {
-                        if (typeof reestablishPresence === 'function') {
-                            reestablishPresence();
-                        }
+                if (timeAway > SESSION_TIMEOUT) {
+                    leaveRoom(true);
+                    setTimeout(async () => {
+                        await customAlert("Disconnected from PodConnect: session expired due to inactivity.");
+                    }, 500);
+                } else {
+                    if (typeof reestablishPresence === 'function') {
+                        reestablishPresence();
                     }
                 }
             }
-        });
+        }
     });
 
     const names = ['name-p1', 'name-p2', 'name-p3', 'name-p4'];

@@ -1093,6 +1093,25 @@ body.symbols-hidden .spinner-btns button {
     margin: .5rem 0
 }
 
+.copyable-code {
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.2s, color 0.2s;
+    display: inline-block;
+}
+
+.copyable-code:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.copyable-code:active {
+    background: rgba(77, 166, 255, 0.3);
+    color: #4da6ff;
+    transition: none;
+}
+
 .btn-scan-qr {
     height: 100%;
     min-height: 4.5rem;

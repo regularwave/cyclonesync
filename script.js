@@ -967,6 +967,26 @@ function shareNatively() {
     }
 }
 
+function copyRoomCode() {
+    if (!currentRoomId) return;
+
+    navigator.clipboard.writeText(currentRoomId).then(() => {
+        const display = document.getElementById('display-room-code');
+
+        display.innerText = "COPIED!";
+        display.style.color = "#4da6ff";
+
+        setTimeout(() => {
+            display.innerText = currentRoomId;
+            display.style.color = "";
+        }, 1500);
+
+        if (navigator.vibrate) navigator.vibrate(20);
+    }).catch(err => {
+        console.error("Clipboard copy failed", err);
+    });
+}
+
 window.toggleCredits = toggleCredits;
 window.toggleHelp = toggleHelp;
 window.toggleShare = toggleShare;
@@ -993,3 +1013,4 @@ window.toggleUDLR = toggleUDLR;
 window.startHold = startHold;
 window.stopHold = stopHold;
 window.shareNatively = shareNatively;
+window.copyRoomCode = copyRoomCode;

@@ -491,6 +491,10 @@ function toggleConnectModal() {
     const modal = document.getElementById('connect-modal');
     modal.classList.toggle('hidden');
 
+    if (!modal.classList.contains('hidden')) {
+        validateConnectionInputs();
+    }
+
     if (modal.classList.contains('hidden') && html5QrcodeScanner) {
         html5QrcodeScanner.clear();
     }
@@ -725,6 +729,8 @@ async function leaveRoom(force = false) {
         document.getElementById('connect-modal').classList.add('hidden');
 
         document.getElementById('conn-status').innerText = "Enter a room name or scan a QR code.";
+
+        validateConnectionInputs();
     }
 }
 

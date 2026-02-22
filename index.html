@@ -156,7 +156,7 @@
         </div>
     </div>
     <div id="credits-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
+        <div class="cmd-modal-content modal-content-fit">
             <h2>Credits & Legal</h2>
             <p>Background image:
                 <br>
@@ -204,6 +204,7 @@
     </div>
     <div id="cmd-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content">
+            <h2>Commander Damage</h2>
             <div class="cmd-quarters">
                 <div class="cmd-quarter">
                     <input type="text" id="name-p1" class="player-name" value="Player 1" placeholder="Name" oninput="savePlayerName(this)">
@@ -310,18 +311,18 @@
         </div>
     </div>
     <div id="connect-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
+        <div class="cmd-modal-content modal-content-fit">
             <h2>CycloneSync PodConnect</h2>
 
             <div id="connect-step-1">
-                <label class="help-subtext" class="help-subtext input-label">Your Name (1-12 chars)</label>
+                <label class="help-subtext input-label">Your Name (1-12 chars)</label>
                 <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" oninput="validateConnectionInputs()">
 
                 <div class="divider-line"></div>
 
                 <div class="connect-split-row">
                     <div class="connect-col-main">
-                        <label class="help-subtext" class="help-subtext input-label">Room Name (5-20 chars)</label>
+                        <label class="help-subtext input-label">Room Name (5-20 chars)</label>
                         <input type="text" id="conn-room-code" class="modal-input room-code-input" placeholder="e.g. EDH-NIGHT" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
                         <button class="control-btn" id="btn-join-room" onclick="joinRoom()" disabled>JOIN / CREATE</button>
                     </div>
@@ -329,13 +330,13 @@
                     <div class="connect-divider-vertical"></div>
 
                     <div class="connect-col-side">
-                        <button class="control-btn" id="btn-scan-qr" onclick="startQRScan()" disabled class="control-btn btn-scan-qr">
+                        <button class="control-btn btn-scan-qr" id="btn-scan-qr" onclick="startQRScan()" disabled>
                             <i class="ms ms-beleren ms-2x"></i>SCAN QR
                         </button>
                     </div>
                 </div>
 
-                <p id="conn-status" class="help-subtext" class="help-subtext mt-1">Enter a name to begin.</p>
+                <p id="conn-status" class="help-subtext mt-1">Enter a name to begin.</p>
             </div>
 
             <div id="connect-step-2" class="hidden text-center">
@@ -344,12 +345,12 @@
                 <p class="help-subtext">Other players can scan this to join the same room!</p>
             </div>
 
-            <button class="close-btn" onclick="toggleConnectModal()" class="close-btn mt-1">CLOSE</button>
+            <button class="close-btn mt-1" onclick="toggleConnectModal()">CLOSE</button>
         </div>
     </div>
 
     <div id="qr-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
+        <div class="cmd-modal-content modal-content-fit">
             <h2>Scan QR Code</h2>
             <div id="qr-reader" class="qr-reader-box"></div>
             <button class="close-btn" onclick="stopQRScan()">CANCEL</button>
@@ -439,7 +440,7 @@
         </div>
     </div>
     <div id="share-modal" class="hidden modal-overlay">
-        <div class="cmd-modal-content" class="cmd-modal-content modal-content-fit">
+        <div class="cmd-modal-content modal-content-fit">
             <h2>Share</h2>
             <div id="share-qr-display" class="qr-display-box"></div>
             <p>

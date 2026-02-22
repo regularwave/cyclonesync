@@ -491,7 +491,10 @@ body.symbols-hidden .spinner-btns button {
     gap: .75rem;
     height: 100%;
     width: 100%;
-    overflow: hidden
+    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.25rem;
 }
 
 .cmd-quarter {
@@ -553,27 +556,26 @@ body.symbols-hidden .spinner-btns button {
 
 .cmd-wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: stretch;
-    gap: .5rem;
+    gap: .25rem;
     flex: 1;
     width: 100%;
     overflow: hidden;
-    min-height: 0
+    min-height: 0;
 }
 
 .cmd-name-input {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    transform: rotate(180deg);
     background: 0 0;
     border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: #aaa;
     font-family: "Beleren Bold", sans-serif;
     text-align: center;
-    height: 100%;
-    width: 1.5rem;
-    padding: 0
+    height: auto;
+    width: 100%;
+    padding: 0.2rem 0;
+    font-size: 0.9rem;
 }
 
 .cmd-name-input:focus {
@@ -934,26 +936,6 @@ body.symbols-hidden .spinner-btns button {
         height: 100%
     }
 
-    .cmd-counters-vertical {
-        flex-direction: row !important;
-        gap: .5rem
-    }
-
-    .cmd-wrapper {
-        width: 50%;
-        height: 100%
-    }
-
-    .cmd-name-input {
-        writing-mode: vertical-rl !important;
-        text-orientation: mixed;
-        transform: rotate(180deg);
-        width: 1.5rem !important;
-        height: 100% !important;
-        margin-bottom: .25rem;
-        text-align: center
-    }
-
     .cmd-counter-unit {
         width: auto !important;
         flex: 1
@@ -961,6 +943,12 @@ body.symbols-hidden .spinner-btns button {
 
     .cmd-qty {
         font-size: 3rem !important
+    }
+
+    .cmd-quarters {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 1fr;
+        overflow-y: hidden;
     }
 
     .player-name {

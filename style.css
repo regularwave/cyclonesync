@@ -73,9 +73,25 @@ body {
     margin-bottom: 2rem
 }
 
-@media (max-width:440px) {
+@media (max-width: 440px) {
     .tracker-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 360px) {
+
+    .footer-text,
+    .footer-separator {
+        display: none;
+    }
+
+    #sticky-footer {
+        gap: 2rem;
+    }
+
+    .footer-link i {
+        font-size: 1.2rem;
     }
 }
 

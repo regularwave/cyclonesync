@@ -21,6 +21,15 @@ const appCheck = initializeAppCheck(app, {
 
 const db = getDatabase(app);
 
+function getStored(key, defaultValue = null) {
+    const val = localStorage.getItem(key);
+    return val !== null ? val : defaultValue;
+}
+
+function setStored(key, value) {
+    localStorage.setItem(key, value);
+}
+
 let wakeLock = null;
 let exitTimer = null;
 
@@ -304,7 +313,7 @@ function saveValues(input, val) {
     if (val < 0) val = 0;
     if (val > 999) val = 999;
     input.value = val;
-    localStorage.setItem('cyclonesync_tracker_' + input.id, val);
+    setStored('cyclonesync_tracker_' + input.id, val);
 
     if (currentRoomId && input.id === 'life') {
         syncLifeToRoom(val);
@@ -343,32 +352,23 @@ async function resetAll() {
 }
 
 function savePlayerName(input) {
-    localStorage.setItem(input.id, input.value);
+    setStored(input.id, input.value);
 }
 
 function saveCmdName(input) {
-    localStorage.setItem('cyclonesync_tracker_' + input.id, input.value);
+    setStored('cyclonesync_tracker_' + input.id, input.value);
 }
 
 function loadSettings() {
-    const savedSettings = localStorage.getItem('cyclonesync_settings');
-    if (savedSettings) {
-        settings = JSON.parse(savedSettings);
-    }
+    const savedSettings = getStored('cyclonesync_settings');
+    if (savedSettings) settings = JSON.parse(savedSettings);
 
-    const savedPips = localStorage.getItem('cyclonesync_tracker_pipsOpen');
-    if (savedPips !== null) {
-        pipsOpen = (savedPips === 'true');
-    }
+    pipsOpen = getStored('cyclonesync_tracker_pipsOpen') === 'true';
 
-    const savedMask = localStorage.getItem('cyclonesync_tracker_pipsMask');
+    const savedMask = getStored('cyclonesync_tracker_pipsMask');
     if (savedMask) {
-        try {
-            pipsMask = JSON.parse(savedMask);
-        } catch (e) {
-            console.error('Error parsing pips mask', e);
-            pipsMask = ['white', 'blue', 'black', 'red', 'green', 'colorless'];
-        }
+        try { pipsMask = JSON.parse(savedMask); }
+        catch (e) { pipsMask = ['white', 'blue', 'black', 'red', 'green', 'colorless']; }
     }
 
     applySettings();

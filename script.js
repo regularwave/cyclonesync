@@ -584,15 +584,27 @@ async function requestWakeLock() {
 }
 
 function validateConnectionInputs() {
-    const nameInput = document.getElementById('conn-player-name').value.trim();
-    const roomInputValue = document.getElementById('conn-room-code').value.trim();
+    const nameInputEl = document.getElementById('conn-player-name');
+    const roomInputEl = document.getElementById('conn-room-code');
+    const nameInput = nameInputEl.value.trim();
+    const roomInputValue = roomInputEl.value.trim();
     const joinBtn = document.getElementById('btn-join-room');
     const scanBtn = document.getElementById('btn-scan-qr');
-    const roomInput = document.getElementById('conn-room-code');
     const status = document.getElementById('conn-status');
 
+    if (nameInput.length === 0) {
+        nameInputEl.classList.add('needs-attention');
+        roomInputEl.classList.remove('needs-attention');
+    } else if (roomInputValue.length < 5) {
+        nameInputEl.classList.remove('needs-attention');
+        roomInputEl.classList.add('needs-attention');
+    } else {
+        nameInputEl.classList.remove('needs-attention');
+        roomInputEl.classList.remove('needs-attention');
+    }
+
     if (nameInput.length > 0) {
-        roomInput.disabled = false;
+        roomInputEl.disabled = false;
         scanBtn.disabled = false;
 
         if (roomInputValue.length >= 5) {
@@ -603,7 +615,7 @@ function validateConnectionInputs() {
             status.innerText = "Enter a room name (5+ chars) or scan a QR code.";
         }
     } else {
-        roomInput.disabled = true;
+        roomInputEl.disabled = true;
         joinBtn.disabled = true;
         scanBtn.disabled = true;
         status.innerText = "Enter a name to begin.";

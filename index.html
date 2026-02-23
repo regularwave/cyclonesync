@@ -217,7 +217,7 @@
                 <label for="chk-colorless" class="pip-label"><i class="ms ms-c ms-cost ms-2x"></i></label>
             </div>
 
-            <button class="close-btn" onclick="savePipsConfig()">SAVE & CLOSE</button>
+            <button class="close-btn btn-primary" onclick="savePipsConfig()">SAVE & CLOSE</button>
         </div>
     </div>
     <div id="cmd-modal" class="hidden modal-overlay">
@@ -354,7 +354,7 @@
                     <div class="connect-col-main">
                         <label class="help-subtext input-label">Room Name (5-20 chars)</label>
                         <input type="text" id="conn-room-code" class="modal-input room-code-input" placeholder="e.g. EDH-NIGHT" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
-                        <button class="control-btn" id="btn-join-room" onclick="joinRoom()" disabled>JOIN / CREATE</button>
+                        <button class="control-btn btn-primary" id="btn-join-room" onclick="joinRoom()" disabled>JOIN / CREATE</button>
                     </div>
 
                     <div class="connect-divider-vertical"></div>

@@ -983,6 +983,27 @@ function shareNatively() {
     }
 }
 
+function shareRoomLink() {
+    if (!AppState.roomId) return;
+
+    const joinUrl = `https://regularwave.github.io/cyclonesync/?room=${AppState.roomId}`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: 'Join my CycloneSync Pod',
+            text: `Join my Magic: The Gathering pod on CycloneSync! Room code: ${AppState.roomId}`,
+            url: joinUrl
+        }).catch(err => console.log('User canceled share or error:', err));
+    } else {
+        navigator.clipboard.writeText(joinUrl).then(async () => {
+            if (navigator.vibrate) navigator.vibrate(20);
+            await customAlert("Room link copied to clipboard!");
+        }).catch(err => {
+            console.error("Clipboard copy failed", err);
+        });
+    }
+}
+
 function copyRoomCode() {
     if (!AppState.roomId) return;
 
@@ -1008,5 +1029,5 @@ Object.assign(window, {
     toggleLife, toggleTax, togglePips, toggleWakeLock, updateValue, updateCmdValue,
     resetAll, savePlayerName, saveCmdName, savePipsConfig, validateConnectionInputs,
     joinRoom, startQRScan, stopQRScan, showRoomQR, leaveRoom, switchHelpTab,
-    toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode
+    toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode, shareRoomLink
 });

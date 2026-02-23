@@ -373,6 +373,15 @@
                 <h3>Room: <span id="display-room-code" class="copyable-code" onclick="copyRoomCode()" title="Tap to copy"></span></h3>
                 <div id="room-qr-display" class="qr-display-box"></div>
                 <p class="help-subtext">Other players can scan this to join the same room!</p>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; width: 100%;">
+                    <button class="control-btn btn-danger" onclick="leaveRoom()" style="flex: 1;">
+                        <i class="ss ss-foil ss-grad ss-bfz"></i>&ensp;DISCONNECT
+                    </button>
+                    <button class="control-btn" onclick="shareRoomLink()" style="flex: 1;">
+                        <i class="ss ss-foil ss-grad ss-plc"></i>&ensp;SHARE LINK
+                    </button>
+                </div>
             </div>
 
             <button class="close-btn mt-1" onclick="toggleConnectModal()">CLOSE</button>

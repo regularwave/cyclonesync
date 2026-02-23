@@ -8,6 +8,9 @@
     "orientation": "any",
     "background_color": "#000000",
     "theme_color": "#000000",
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    },
     "icons": [
         {
             "src": "img/CycloneSync-192.png",

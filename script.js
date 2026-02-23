@@ -172,6 +172,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomFromUrl = urlParams.get('room');
+
+    if (roomFromUrl) {
+        document.getElementById('conn-room-code').value = roomFromUrl.toUpperCase();
+
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        const hasSavedName = document.getElementById('conn-player-name').value.trim().length > 0;
+
+        if (hasSavedName) {
+            joinRoom();
+        } else {
+            toggleConnectModal();
+            validateConnectionInputs();
+        }
+    }
+
     history.pushState(null, '', window.location.href);
 
     window.addEventListener('popstate', (e) => {
@@ -650,8 +668,11 @@ async function joinRoom() {
 
     const qrContainer = document.getElementById('room-qr-display');
     qrContainer.innerHTML = "";
+
+    const joinUrl = `https://regularwave.github.io/cyclonesync/?room=${roomId}`;
+
     new QRCode(qrContainer, {
-        text: roomId,
+        text: joinUrl,
         width: 150,
         height: 150
     });
@@ -770,9 +791,29 @@ function startQRScan() {
         { facingMode: "environment" },
         { fps: 10, qrbox: 250 },
         (decodedText, decodedResult) => {
-            document.getElementById('conn-room-code').value = decodedText;
-            stopQRScan();
-            joinRoom();
+            let scannedRoomId = decodedText;
+
+            if (decodedText.startsWith('http')) {
+                try {
+                    const url = new URL(decodedText);
+                    const param = url.searchParams.get('room');
+
+                    if (param) {
+                        scannedRoomId = param;
+                    } else {
+                        scannedRoomId = "";
+                    }
+                } catch (e) { console.error("Invalid URL scanned"); }
+            }
+
+            if (scannedRoomId) {
+                document.getElementById('conn-room-code').value = scannedRoomId.toUpperCase();
+                stopQRScan();
+                joinRoom();
+            } else {
+                document.getElementById('conn-status').innerText = "Invalid room code scanned.";
+                stopQRScan();
+            }
         },
         (errorMessage) => {
         }

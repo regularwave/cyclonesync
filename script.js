@@ -302,8 +302,6 @@ let repeatInterval = null;
 let holdDuration = 0;
 
 function startHold(e, targetId, change, isCmd = false) {
-    if (e) e.preventDefault();
-
     if (isCmd) {
         updateCmdValue(targetId, change);
     } else {

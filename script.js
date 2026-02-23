@@ -971,30 +971,10 @@ function copyRoomCode() {
     });
 }
 
-window.toggleCredits = toggleCredits;
-window.toggleHelp = toggleHelp;
-window.toggleShare = toggleShare;
-window.toggleCmdModal = toggleCmdModal;
-window.toggleConnectModal = toggleConnectModal;
-window.toggleLife = toggleLife;
-window.toggleTax = toggleTax;
-window.togglePips = togglePips;
-window.toggleWakeLock = toggleWakeLock;
-window.updateValue = updateValue;
-window.updateCmdValue = updateCmdValue;
-window.resetAll = resetAll;
-window.savePlayerName = savePlayerName;
-window.saveCmdName = saveCmdName;
-window.savePipsConfig = savePipsConfig;
-window.validateConnectionInputs = validateConnectionInputs;
-window.joinRoom = joinRoom;
-window.startQRScan = startQRScan;
-window.stopQRScan = stopQRScan;
-window.showRoomQR = showRoomQR;
-window.leaveRoom = leaveRoom;
-window.switchHelpTab = switchHelpTab;
-window.toggleUDLR = toggleUDLR;
-window.startHold = startHold;
-window.stopHold = stopHold;
-window.shareNatively = shareNatively;
-window.copyRoomCode = copyRoomCode;
+Object.assign(window, {
+    toggleCredits, toggleHelp, toggleShare, toggleCmdModal, toggleConnectModal,
+    toggleLife, toggleTax, togglePips, toggleWakeLock, updateValue, updateCmdValue,
+    resetAll, savePlayerName, saveCmdName, savePipsConfig, validateConnectionInputs,
+    joinRoom, startQRScan, stopQRScan, showRoomQR, leaveRoom, switchHelpTab,
+    toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode
+});

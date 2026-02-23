@@ -599,8 +599,11 @@ async function toggleWakeLock() {
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator) {
+            if (wakeLock !== null) return;
             wakeLock = await navigator.wakeLock.request('screen');
-            wakeLock.addEventListener('release', () => { });
+            wakeLock.addEventListener('release', () => {
+                wakeLock = null;
+            });
         }
     } catch (err) {
         console.error(`${err.name}, ${err.message}`);

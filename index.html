@@ -345,6 +345,15 @@
             <h2>CycloneSync PodConnect</h2>
 
             <div id="connect-step-1">
+                <div id="ios-pwa-warning" class="ios-warning-box hidden">
+                    <span class="ios-warning-text">
+                        <i class="ms ms-dfc-day"></i> <strong>iOS User?</strong> If you have the CycloneSync app installed, open it from your Home Screen to keep your saved settings!
+                    </span>
+                    <div id="ios-room-code-section" class="ios-code-section hidden">
+                        Tap to copy room code: <br>
+                        <strong id="ios-room-code-display" class="copyable-code ios-code-display" onclick="copyPendingRoomCode()" title="Tap to copy"></strong>
+                    </div>
+                </div>
                 <label class="help-subtext input-label">Your Name (1-12 chars)</label>
                 <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" oninput="validateConnectionInputs()">
 

@@ -548,6 +548,7 @@ function toggleConnectModal() {
 
     if (!modal.classList.contains('hidden')) {
         validateConnectionInputs();
+        checkIOSBrowserEnvironment();
     }
 
     if (modal.classList.contains('hidden') && AppState.html5QrcodeScanner) {
@@ -1036,10 +1037,59 @@ function copyRoomCode() {
     });
 }
 
+function checkIOSBrowserEnvironment() {
+    const warningBox = document.getElementById('ios-pwa-warning');
+    if (!warningBox) return;
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+    if (isIOS && !isStandalone) {
+        warningBox.classList.remove('hidden');
+
+        const roomCodeInput = document.getElementById('conn-room-code').value.trim();
+        const codeSection = document.getElementById('ios-room-code-section');
+        const codeDisplay = document.getElementById('ios-room-code-display');
+
+        if (roomCodeInput && roomCodeInput.length >= 5) {
+            codeDisplay.innerText = roomCodeInput;
+            codeSection.classList.remove('hidden');
+        } else {
+            codeSection.classList.add('hidden');
+        }
+    } else {
+        warningBox.classList.add('hidden');
+    }
+}
+
+function copyPendingRoomCode() {
+    const roomCode = document.getElementById('conn-room-code').value.trim();
+    if (!roomCode) return;
+
+    navigator.clipboard.writeText(roomCode).then(() => {
+        const display = document.getElementById('ios-room-code-display');
+        const originalText = display.innerText;
+
+        display.innerText = "COPIED!";
+        display.style.color = "#09a6e9";
+
+        setTimeout(() => {
+            display.innerText = originalText;
+            display.style.color = "";
+        }, 1500);
+
+        if (navigator.vibrate) navigator.vibrate(20);
+    }).catch(err => {
+        console.error("Clipboard copy failed", err);
+    });
+}
+
 Object.assign(window, {
     toggleCredits, toggleHelp, toggleShare, toggleCmdModal, toggleConnectModal,
     toggleLife, toggleTax, togglePips, toggleWakeLock, updateValue, updateCmdValue,
     resetAll, savePlayerName, saveCmdName, savePipsConfig, validateConnectionInputs,
     joinRoom, startQRScan, stopQRScan, showRoomQR, leaveRoom, switchHelpTab,
-    toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode, shareRoomLink
+    toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode, shareRoomLink,
+    copyPendingRoomCode
 });

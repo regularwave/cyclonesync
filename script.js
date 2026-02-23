@@ -21,6 +21,20 @@ const appCheck = initializeAppCheck(app, {
 
 const db = getDatabase(app);
 
+const AppState = {
+    settings: { life: true, tax: false, taxSplit: false, awake: true, layoutLR: false },
+    roomId: null,
+    playerId: 'player_' + Math.random().toString(36).substr(2, 9),
+    roomListener: null,
+    debounceTimer: null,
+    isSyncLocked: false,
+    html5QrcodeScanner: null,
+    wakeLock: null,
+    exitTimer: null,
+    pipsOpen: false,
+    pipsMask: ['white', 'blue', 'black', 'red', 'green', 'colorless']
+};
+
 function getStored(key, defaultValue = null) {
     const val = localStorage.getItem(key);
     return val !== null ? val : defaultValue;
@@ -29,29 +43,6 @@ function getStored(key, defaultValue = null) {
 function setStored(key, value) {
     localStorage.setItem(key, value);
 }
-
-let wakeLock = null;
-let exitTimer = null;
-
-let settings = {
-    life: true,
-    tax: false,
-    taxSplit: false,
-    awake: true,
-    layoutLR: false
-};
-
-let currentRoomId = null;
-let roomListenerUnsubscribe = null;
-let myPlayerId = 'player_' + Math.random().toString(36).substr(2, 9);
-
-let syncDebounceTimer = null;
-let isSyncLocked = false;
-
-let html5QrcodeScanner = null;
-
-let pipsOpen = false;
-let pipsMask = ['white', 'blue', 'black', 'red', 'green', 'colorless'];
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -127,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         taxIsLongPress = true;
     });
 
-    if (settings.awake) {
+    if (AppState.settings.awake) {
         requestWakeLock();
     }
 
@@ -135,10 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.visibilityState === 'hidden') {
             localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
         } else if (document.visibilityState === 'visible') {
-            if (settings.awake) requestWakeLock();
+            if (AppState.settings.awake) requestWakeLock();
             triggerSymbolFade();
 
-            if (currentRoomId) {
+            if (AppState.roomId) {
                 const lastBackgrounded = localStorage.getItem('cyclonesync_last_backgrounded');
                 const timeAway = lastBackgrounded ? (Date.now() - parseInt(lastBackgrounded)) : 0;
                 const SESSION_TIMEOUT = 30 * 60 * 1000;
@@ -175,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const connectedRef = ref(db, ".info/connected");
     onValue(connectedRef, (snap) => {
         if (snap.val() === true) {
-            if (currentRoomId) {
+            if (AppState.roomId) {
                 reestablishPresence();
             }
         }
@@ -221,14 +212,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (exitTimer) {
-            clearTimeout(exitTimer);
+        if (AppState.exitTimer) {
+            clearTimeout(AppState.exitTimer);
             history.back();
         } else {
             showExitToast();
             history.pushState(null, '', window.location.href);
-            exitTimer = setTimeout(() => {
-                exitTimer = null;
+            AppState.exitTimer = setTimeout(() => {
+                AppState.exitTimer = null;
             }, 2000);
         }
     });
@@ -315,7 +306,7 @@ function saveValues(input, val) {
     input.value = val;
     setStored('cyclonesync_tracker_' + input.id, val);
 
-    if (currentRoomId && input.id === 'life') {
+    if (AppState.roomId && input.id === 'life') {
         syncLifeToRoom(val);
     }
 }
@@ -361,14 +352,14 @@ function saveCmdName(input) {
 
 function loadSettings() {
     const savedSettings = getStored('cyclonesync_settings');
-    if (savedSettings) settings = JSON.parse(savedSettings);
+    if (savedSettings) AppState.settings = JSON.parse(savedSettings);
 
-    pipsOpen = getStored('cyclonesync_tracker_pipsOpen') === 'true';
+    AppState.pipsOpen = getStored('cyclonesync_tracker_pipsOpen') === 'true';
 
     const savedMask = getStored('cyclonesync_tracker_pipsMask');
     if (savedMask) {
-        try { pipsMask = JSON.parse(savedMask); }
-        catch (e) { pipsMask = ['white', 'blue', 'black', 'red', 'green', 'colorless']; }
+        try { AppState.pipsMask = JSON.parse(savedMask); }
+        catch (e) { AppState.pipsMask = ['white', 'blue', 'black', 'red', 'green', 'colorless']; }
     }
 
     applySettings();
@@ -377,9 +368,9 @@ function loadSettings() {
 }
 
 function saveSettings() {
-    localStorage.setItem('cyclonesync_settings', JSON.stringify(settings));
-    localStorage.setItem('cyclonesync_tracker_pipsOpen', pipsOpen);
-    localStorage.setItem('cyclonesync_tracker_pipsMask', JSON.stringify(pipsMask));
+    setStored('cyclonesync_settings', JSON.stringify(AppState.settings));
+    setStored('cyclonesync_tracker_pipsOpen', AppState.pipsOpen);
+    setStored('cyclonesync_tracker_pipsMask', JSON.stringify(AppState.pipsMask));
 }
 
 function applySettings() {
@@ -389,13 +380,13 @@ function applySettings() {
     const tileTax = document.getElementById('tile-tax');
     const btnTax = document.getElementById('btn-tax');
 
-    if (!settings.life && !settings.tax) {
+    if (!AppState.settings.life && !AppState.settings.tax) {
         topRow.classList.add('hidden');
     } else {
         topRow.classList.remove('hidden');
     }
 
-    if (settings.life) {
+    if (AppState.settings.life) {
         tileLife.classList.remove('hidden');
         btnLife.classList.remove('disabled');
     } else {
@@ -403,7 +394,7 @@ function applySettings() {
         btnLife.classList.add('disabled');
     }
 
-    if (settings.tax) {
+    if (AppState.settings.tax) {
         tileTax.classList.remove('hidden');
         btnTax.classList.remove('disabled');
     } else {
@@ -412,7 +403,7 @@ function applySettings() {
     }
 
     const taxHalf2 = document.getElementById('tax-half-2');
-    if (settings.taxSplit) {
+    if (AppState.settings.taxSplit) {
         taxHalf2.classList.remove('hidden');
     } else {
         taxHalf2.classList.add('hidden');
@@ -420,7 +411,7 @@ function applySettings() {
 
     const btnAwake = document.getElementById('btn-awake');
     const iconAwake = btnAwake.querySelector('i');
-    if (settings.awake) {
+    if (AppState.settings.awake) {
         btnAwake.classList.remove('disabled');
         iconAwake.className = "ms ss-foil ss-grad ms-dfc-day";
     } else {
@@ -428,7 +419,7 @@ function applySettings() {
         iconAwake.className = "ms ms-dfc-night";
     }
 
-    if (settings.layoutLR) {
+    if (AppState.settings.layoutLR) {
         document.body.classList.add('layout-lr');
     } else {
         document.body.classList.remove('layout-lr');
@@ -436,28 +427,28 @@ function applySettings() {
 }
 
 function toggleLife() {
-    settings.life = !settings.life;
+    AppState.settings.life = !AppState.settings.life;
     applySettings();
     saveSettings();
 }
 
 function toggleTax() {
-    settings.tax = !settings.tax;
+    AppState.settings.tax = !AppState.settings.tax;
     applySettings();
     saveSettings();
 }
 
 function toggleTaxSplit() {
-    if (!settings.tax) {
-        settings.tax = true;
+    if (!AppState.settings.tax) {
+        AppState.settings.tax = true;
     }
-    settings.taxSplit = !settings.taxSplit;
+    AppState.settings.taxSplit = !AppState.settings.taxSplit;
     applySettings();
     saveSettings();
 }
 
 function togglePips() {
-    pipsOpen = !pipsOpen;
+    AppState.pipsOpen = !AppState.pipsOpen;
     updateManaGrid();
     saveSettings();
 }
@@ -481,8 +472,8 @@ function updateManaGrid() {
 
         wrapper.classList.remove('span-full');
 
-        const isManaged = pipsMask.includes(color);
-        const shouldHide = isManaged && !pipsOpen;
+        const isManaged = AppState.pipsMask.includes(color);
+        const shouldHide = isManaged && !AppState.pipsOpen;
 
         if (shouldHide) {
             wrapper.classList.add('hidden');
@@ -498,7 +489,7 @@ function updateManaGrid() {
     }
 
     const btn = document.getElementById('btn-pips');
-    if (pipsOpen) {
+    if (AppState.pipsOpen) {
         btn.classList.remove('disabled');
         btn.style.opacity = '1';
     } else {
@@ -512,7 +503,7 @@ function openPipsModal() {
 
     const checkboxes = document.querySelectorAll('.pip-chk');
     checkboxes.forEach(chk => {
-        chk.checked = pipsMask.includes(chk.value);
+        chk.checked = AppState.pipsMask.includes(chk.value);
     });
 }
 
@@ -520,10 +511,10 @@ function savePipsConfig() {
     const modal = document.getElementById('pips-modal');
     const checkboxes = document.querySelectorAll('.pip-chk');
 
-    pipsMask = [];
+    AppState.pipsMask = [];
     checkboxes.forEach(chk => {
         if (chk.checked) {
-            pipsMask.push(chk.value);
+            AppState.pipsMask.push(chk.value);
         }
     });
 
@@ -541,19 +532,19 @@ function toggleConnectModal() {
         validateConnectionInputs();
     }
 
-    if (modal.classList.contains('hidden') && html5QrcodeScanner) {
-        html5QrcodeScanner.clear();
+    if (modal.classList.contains('hidden') && AppState.html5QrcodeScanner) {
+        AppState.html5QrcodeScanner.clear();
     }
 }
 
 async function toggleWakeLock() {
-    settings.awake = !settings.awake;
-    if (settings.awake) {
+    AppState.settings.awake = !AppState.settings.awake;
+    if (AppState.settings.awake) {
         await requestWakeLock();
     } else {
-        if (wakeLock !== null) {
-            await wakeLock.release();
-            wakeLock = null;
+        if (AppState.wakeLock !== null) {
+            await AppState.wakeLock.release();
+            AppState.wakeLock = null;
         }
     }
     applySettings();
@@ -563,10 +554,10 @@ async function toggleWakeLock() {
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator) {
-            if (wakeLock !== null) return;
-            wakeLock = await navigator.wakeLock.request('screen');
-            wakeLock.addEventListener('release', () => {
-                wakeLock = null;
+            if (AppState.wakeLock !== null) return;
+            AppState.wakeLock = await navigator.wakeLock.request('screen');
+            AppState.wakeLock.addEventListener('release', () => {
+                AppState.wakeLock = null;
             });
         }
     } catch (err) {
@@ -624,13 +615,13 @@ async function joinRoom() {
     const snapshot = await get(roomRef);
 
     if (snapshot.exists() && snapshot.size >= 4) {
-        if (!snapshot.hasChild(myPlayerId)) {
+        if (!snapshot.hasChild(AppState.playerId)) {
             status.innerText = "Room is full (4/4 players).";
             return;
         }
     }
 
-    currentRoomId = roomId;
+    AppState.roomId = roomId;
     localStorage.setItem('name-p1', playerName);
 
     const p1Input = document.getElementById('name-p1');
@@ -641,7 +632,7 @@ async function joinRoom() {
         p1Icon.classList.remove('hidden');
     }
 
-    const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
+    const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
 
     const myData = {
         name: playerName,
@@ -671,9 +662,9 @@ async function joinRoom() {
 }
 
 function listenToRoom() {
-    const playersRef = ref(db, 'rooms/' + currentRoomId + '/players');
+    const playersRef = ref(db, 'rooms/' + AppState.roomId + '/players');
 
-    roomListenerUnsubscribe = onValue(playersRef, (snapshot) => {
+    AppState.roomListener = onValue(playersRef, (snapshot) => {
         const players = snapshot.val() || {};
         renderRemotePlayers(players);
     });
@@ -698,7 +689,7 @@ function renderRemotePlayers(players) {
     }
 
     Object.keys(players).forEach(key => {
-        if (key === myPlayerId) return;
+        if (key === AppState.playerId) return;
 
         hasRemotePlayers = true;
 
@@ -730,31 +721,31 @@ function renderRemotePlayers(players) {
 }
 
 function syncLifeToRoom(newLife, immediate = false) {
-    if (!currentRoomId || isSyncLocked) return;
+    if (!AppState.roomId || AppState.isSyncLocked) return;
 
     if (immediate) {
-        clearTimeout(syncDebounceTimer);
+        clearTimeout(AppState.debounceTimer);
 
-        const myLifeRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId + '/life');
+        const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, newLife);
 
-        isSyncLocked = true;
-        setTimeout(() => { isSyncLocked = false; }, 2000);
+        AppState.isSyncLocked = true;
+        setTimeout(() => { AppState.isSyncLocked = false; }, 2000);
 
         return;
     }
 
-    if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
-    syncDebounceTimer = setTimeout(() => {
-        const myLifeRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId + '/life');
+    if (AppState.debounceTimer) clearTimeout(AppState.debounceTimer);
+    AppState.debounceTimer = setTimeout(() => {
+        const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, newLife);
     }, 500);
 }
 
 function reestablishPresence() {
-    if (!currentRoomId || !myPlayerId) return;
+    if (!AppState.roomId || !AppState.playerId) return;
 
-    const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
+    const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
 
     const myData = {
         name: document.getElementById('conn-player-name').value.trim() || localStorage.getItem('name-p1'),
@@ -773,9 +764,9 @@ function startQRScan() {
 
     document.getElementById('qr-modal').classList.remove('hidden');
 
-    html5QrcodeScanner = new Html5Qrcode("qr-reader");
+    AppState.html5QrcodeScanner = new Html5Qrcode("qr-reader");
 
-    html5QrcodeScanner.start(
+    AppState.html5QrcodeScanner.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: 250 },
         (decodedText, decodedResult) => {
@@ -793,8 +784,8 @@ function startQRScan() {
 
 function stopQRScan() {
     document.getElementById('qr-modal').classList.add('hidden');
-    if (html5QrcodeScanner) {
-        html5QrcodeScanner.stop().then(() => {
+    if (AppState.html5QrcodeScanner) {
+        AppState.html5QrcodeScanner.stop().then(() => {
             document.getElementById('qr-reader').innerHTML = "";
         }).catch(err => console.error("Failed to stop scanner", err));
     }
@@ -808,14 +799,14 @@ function showRoomQR() {
 
 async function leaveRoom(force = false) {
     if (force || (await customConfirm("Disconnect from room?"))) {
-        if (currentRoomId) {
-            const myRef = ref(db, 'rooms/' + currentRoomId + '/players/' + myPlayerId);
+        if (AppState.roomId) {
+            const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
             remove(myRef);
         }
 
-        if (roomListenerUnsubscribe) {
-            roomListenerUnsubscribe();
-            roomListenerUnsubscribe = null;
+        if (AppState.roomListener) {
+            AppState.roomListener();
+            AppState.roomListener = null;
         }
 
         for (let i = 1; i <= 4; i++) {
@@ -829,7 +820,7 @@ async function leaveRoom(force = false) {
             }
         }
 
-        currentRoomId = null;
+        AppState.roomId = null;
 
         document.getElementById('room-row').classList.add('hidden');
         document.getElementById('btn-connect').classList.remove('hidden');
@@ -927,7 +918,7 @@ function showExitToast() {
 }
 
 function toggleUDLR() {
-    settings.layoutLR = !settings.layoutLR;
+    AppState.settings.layoutLR = !AppState.settings.layoutLR;
     applySettings();
     saveSettings();
     triggerSymbolFade();
@@ -952,16 +943,16 @@ function shareNatively() {
 }
 
 function copyRoomCode() {
-    if (!currentRoomId) return;
+    if (!AppState.roomId) return;
 
-    navigator.clipboard.writeText(currentRoomId).then(() => {
+    navigator.clipboard.writeText(AppState.roomId).then(() => {
         const display = document.getElementById('display-room-code');
 
         display.innerText = "COPIED!";
         display.style.color = "#4da6ff";
 
         setTimeout(() => {
-            display.innerText = currentRoomId;
+            display.innerText = AppState.roomId;
             display.style.color = "";
         }, 1500);
 

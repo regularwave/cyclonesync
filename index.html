@@ -20,9 +20,9 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript" defer></script>
 
     <link rel="shortcut icon" type="image/svg" href="img/CycloneSync.svg">
+    <link rel="preload" href="./font/Beleren2016-Bold.woff" as="font" type="font/woff" crossorigin="anonymous">
 
     <title>CycloneSync</title>
-    <meta name="title" content="CycloneSync">
     <meta name="description" content="Synchronize life totals with your pod! No ads, no sign-ups, no having to touch another person's phone!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://regularwave.github.io/cyclonesync/">
@@ -33,7 +33,7 @@
 
 <body>
     <div id="container" class="floatcontainer">
-        <div id="content" class="content">
+        <main id="content" class="content">
             <div id="top-row" class="top-row">
                 <div class="tile-wrapper" id="tile-life">
                     <div class="manasymbol-container">
@@ -171,7 +171,7 @@
                     <i class="ms ss-foil ss-grad ms-ability-dfc"></i> <span class="reset-text">RESET</span>
                 </button>
             </div>
-        </div>
+        </main>
     </div>
     <div id="credits-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content modal-content-fit">
@@ -378,7 +378,6 @@
             <button class="close-btn mt-1" onclick="toggleConnectModal()">CLOSE</button>
         </div>
     </div>
-
     <div id="qr-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content modal-content-fit">
             <h2>Scan QR Code</h2>
@@ -484,7 +483,7 @@
             <button class="close-btn" onclick="toggleShare()">CLOSE</button>
         </div>
     </div>
-    <div id="sticky-footer">
+    <footer id="sticky-footer">
         <span class="footer-link" onclick="toggleHelp()">
             <i class="ss ss-foil ss-grad ss-mb2"></i> <span class="footer-text">Help</span>
         </span>
@@ -500,7 +499,7 @@
         <span class="footer-link" onclick="toggleShare()">
             <i class="ss ss-foil ss-grad ss-plc"></i> <span class="footer-text">Share</span>
         </span>
-    </div>
+    </footer>
     <div id="update-toast" class="update-toast hidden">
         <span>Update found!</span>
         <div class="update-toast-btns">

@@ -553,7 +553,7 @@ async function toggleWakeLock() {
 
 async function requestWakeLock() {
     try {
-        if ('wakeLock' in navigator) {
+        if ('wakeLock' in navigator && document.visibilityState === 'visible') {
             if (AppState.wakeLock !== null) return;
             AppState.wakeLock = await navigator.wakeLock.request('screen');
             AppState.wakeLock.addEventListener('release', () => {

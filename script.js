@@ -45,13 +45,19 @@ let pipsOpen = false;
 let pipsMask = ['white', 'blue', 'black', 'red', 'green', 'colorless'];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('.quantity');
-    inputs.forEach(input => {
-        const savedValue = localStorage.getItem('cyclonesync_tracker_' + input.id);
-        if (savedValue !== null) {
-            input.value = savedValue;
-        }
+
+    document.querySelectorAll('.quantity, .cmd-name-input').forEach(input => {
+        const saved = localStorage.getItem('cyclonesync_tracker_' + input.id);
+        if (saved !== null) input.value = saved;
     });
+
+    for (let i = 1; i <= 4; i++) {
+        const savedName = localStorage.getItem(`name-p${i}`);
+        if (savedName) {
+            const nameInput = document.getElementById(`name-p${i}`);
+            if (nameInput) nameInput.value = savedName;
+        }
+    }
 
     loadSettings();
 
@@ -70,17 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     pipsBtn.addEventListener('pointerup', (e) => {
         if (pressTimer) clearTimeout(pressTimer);
-
         if (!isLongPress) {
             const controls = document.querySelector('.controls-row');
             if (controls) {
                 controls.style.pointerEvents = 'none';
                 setTimeout(() => controls.style.pointerEvents = 'auto', 400);
             }
-
             togglePips();
         }
-
         isLongPress = false;
     });
 
@@ -124,13 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
         } else if (document.visibilityState === 'visible') {
             if (settings.awake) requestWakeLock();
-
             triggerSymbolFade();
 
             if (currentRoomId) {
                 const lastBackgrounded = localStorage.getItem('cyclonesync_last_backgrounded');
                 const timeAway = lastBackgrounded ? (Date.now() - parseInt(lastBackgrounded)) : 0;
-
                 const SESSION_TIMEOUT = 30 * 60 * 1000;
 
                 if (timeAway > SESSION_TIMEOUT) {
@@ -147,40 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const names = ['name-p1', 'name-p2', 'name-p3', 'name-p4'];
-    names.forEach(id => {
-        const savedName = localStorage.getItem(id);
-        if (savedName) {
-            document.getElementById(id).value = savedName;
-        }
-    });
-
-    const cmdNames = document.querySelectorAll('.cmd-name-input');
-    cmdNames.forEach(input => {
-        const savedName = localStorage.getItem('cyclonesync_tracker_' + input.id);
-        if (savedName) input.value = savedName;
-    });
-
-    for (let p = 1; p <= 4; p++) {
-        for (let c = 1; c <= 2; c++) {
-            const id = `cmd-p${p}-c${c}`;
-            const element = document.getElementById(id);
-            if (element) {
-                const savedVal = localStorage.getItem(id);
-                if (savedVal) element.value = savedVal;
-            }
-        }
-    }
-
     const allNameInputs = document.querySelectorAll('.player-name, .cmd-name-input');
-
     allNameInputs.forEach(input => {
-        input.addEventListener('focus', function () {
-            this.select();
-        });
-        input.addEventListener('click', function () {
-            this.select();
-        });
+        input.addEventListener('focus', function () { this.select(); });
+        input.addEventListener('click', function () { this.select(); });
         input.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -188,8 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const savedName = localStorage.getItem('name-p1');
-    if (savedName) document.getElementById('conn-player-name').value = savedName;
+    const savedNameP1 = localStorage.getItem('name-p1');
+    if (savedNameP1) document.getElementById('conn-player-name').value = savedNameP1;
     validateConnectionInputs();
 
     const connectedRef = ref(db, ".info/connected");
@@ -204,44 +175,37 @@ document.addEventListener('DOMContentLoaded', () => {
     history.pushState(null, '', window.location.href);
 
     window.addEventListener('popstate', (e) => {
-
         if (!document.getElementById('qr-modal').classList.contains('hidden')) {
             stopQRScan();
             history.pushState(null, '', window.location.href);
             return;
         }
-
         if (!document.getElementById('connect-modal').classList.contains('hidden')) {
             toggleConnectModal();
             history.pushState(null, '', window.location.href);
             return;
         }
-
         if (!document.getElementById('pips-modal').classList.contains('hidden')) {
             savePipsConfig();
             history.pushState(null, '', window.location.href);
             return;
         }
-
         if (!document.getElementById('cmd-modal').classList.contains('hidden')) {
             toggleCmdModal();
             history.pushState(null, '', window.location.href);
             return;
         }
-
         const shareModal = document.getElementById('share-modal');
         if (shareModal && !shareModal.classList.contains('hidden')) {
             toggleShare();
             history.pushState(null, '', window.location.href);
             return;
         }
-
         if (!document.getElementById('help-modal').classList.contains('hidden')) {
             toggleHelp();
             history.pushState(null, '', window.location.href);
             return;
         }
-
         if (!document.getElementById('credits-modal').classList.contains('hidden')) {
             toggleCredits();
             history.pushState(null, '', window.location.href);

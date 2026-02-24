@@ -727,21 +727,30 @@ function renderRemotePlayers(players) {
 
         hasRemotePlayers = true;
 
-        const p = players[key];
+        const p = players[key] || {};
+        const safeName = typeof p.name === 'string' ? p.name : '';
+        const safeLife = (p.life === 0 || p.life) ? String(p.life) : '';
 
         const tile = document.createElement('div');
         tile.className = 'remote-tile';
-        tile.innerHTML = `
-            <div class="remote-name">${p.name}</div>
-            <div class="remote-life">${p.life}</div>
-        `;
+
+        const nameEl = document.createElement('div');
+        nameEl.className = 'remote-name';
+        nameEl.textContent = safeName;
+
+        const lifeEl = document.createElement('div');
+        lifeEl.className = 'remote-life';
+        lifeEl.textContent = safeLife;
+
+        tile.appendChild(nameEl);
+        tile.appendChild(lifeEl);
         container.appendChild(tile);
 
         if (remoteIndex <= 4) {
             const cmdInput = document.getElementById(`name-p${remoteIndex}`);
             const cmdIcon = document.getElementById(`sync-icon-p${remoteIndex}`);
             if (cmdInput && cmdIcon) {
-                cmdInput.value = p.name;
+                cmdInput.value = safeName;
                 cmdInput.disabled = true;
                 cmdIcon.classList.remove('hidden');
             }
@@ -750,7 +759,10 @@ function renderRemotePlayers(players) {
     });
 
     if (!hasRemotePlayers) {
-        container.innerHTML = `<span class="waiting-text">waiting for players...</span>`;
+        const waiting = document.createElement('span');
+        waiting.className = 'waiting-text';
+        waiting.textContent = 'waiting for players...';
+        container.appendChild(waiting);
     }
 }
 

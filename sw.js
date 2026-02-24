@@ -24,8 +24,6 @@ const EXTERNAL_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-    self.skipWaiting();
-
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             console.log('[Service Worker] Caching App Shell');

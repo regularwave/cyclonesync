@@ -17,7 +17,7 @@ CycloneSync provides the shared, synchronized life totals of a centralized track
 To make things easy at the table, CycloneSync is designed to make setup quick:
 * **No downloads:** Runs entirely in the browser.
 * **No accounts:** No sign-ups, emails, or logins required.
-* **Quick connection:** Players can join a synchronized pod in seconds by scanning a QR code or entering a short room name.
+* **Quick connection:** Players can join a synchronized pod in seconds through a direct link, by scanning a QR code, or entering a short room name.
 
 ## Features
 
@@ -32,8 +32,8 @@ To make things easy at the table, CycloneSync is designed to make setup quick:
 * **Browser:** Navigate to the [CycloneSync](https://regularwave.github.io/cyclonesync/) page.
 * **Connecting to a Pod:**
   1. Enter your preferred display name.
-  2. The host enters a Room Name to create a room.
-  3. Other players can either type in the Room Name, or tap "Scan QR" to scan the QR code displayed on the host's screen.
+  2. The host enters a room name to create a room.
+  3. Other players can use a link sent to them by the host, type in the room name manually, or tap "Scan QR" to scan the QR code displayed on the host's screen.
 
 ### Installing (Optional)
 

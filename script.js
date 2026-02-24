@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, onDisconnect, remove, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { getDatabase, ref, set, onValue, onDisconnect, remove, get, child, query, orderByKey, limitToFirst, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check.js";
 
 const firebaseConfig = {
@@ -31,6 +31,7 @@ const AppState = {
     html5QrcodeScanner: null,
     wakeLock: null,
     exitTimer: null,
+    syncedPlayers: {},
     pipsOpen: false,
     pipsMask: ['white', 'blue', 'black', 'red', 'green', 'colorless']
 };
@@ -642,8 +643,9 @@ async function joinRoom() {
 
     status.innerText = "Connecting...";
 
-    const roomRef = ref(db, 'rooms/' + roomId + '/players');
-    const snapshot = await get(roomRef);
+    const playersRef = ref(db, 'rooms/' + roomId + '/players');
+    const playersQ = query(playersRef, orderByKey(), limitToFirst(4));
+    const snapshot = await get(playersQ);
 
     if (snapshot.exists() && snapshot.size >= 4) {
         if (!snapshot.hasChild(AppState.playerId)) {
@@ -698,10 +700,31 @@ async function joinRoom() {
 function listenToRoom() {
     const playersRef = ref(db, 'rooms/' + AppState.roomId + '/players');
 
-    AppState.roomListener = onValue(playersRef, (snapshot) => {
-        const players = snapshot.val() || {};
-        renderRemotePlayers(players);
-    });
+    const playersQ = query(playersRef, orderByKey(), limitToFirst(4));
+
+    AppState.syncedPlayers = {};
+
+    const applyPlayerSnapshot = (snap) => {
+        if (!snap.key) return;
+        AppState.syncedPlayers[snap.key] = snap.val() || {};
+        renderRemotePlayers(AppState.syncedPlayers);
+    };
+
+    const removePlayer = (snap) => {
+        if (!snap.key) return;
+        delete AppState.syncedPlayers[snap.key];
+        renderRemotePlayers(AppState.syncedPlayers);
+    };
+
+    const unsubAdd = onChildAdded(playersQ, applyPlayerSnapshot);
+    const unsubChg = onChildChanged(playersQ, applyPlayerSnapshot);
+    const unsubRem = onChildRemoved(playersQ, removePlayer);
+
+    AppState.roomListener = () => {
+        unsubAdd();
+        unsubChg();
+        unsubRem();
+    };
 }
 
 function renderRemotePlayers(players) {
@@ -874,6 +897,8 @@ async function leaveRoom(force = false) {
             AppState.roomListener();
             AppState.roomListener = null;
         }
+
+        AppState.syncedPlayers = {};
 
         for (let i = 1; i <= 4; i++) {
             const input = document.getElementById(`name-p${i}`);

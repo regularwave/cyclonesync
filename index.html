@@ -23,13 +23,11 @@
     <link rel="preload" href="./font/Beleren2016-Bold.woff" as="font" type="font/woff" crossorigin="anonymous">
 
     <title>CycloneSync</title>
-    <meta name="description"
-        content="Synchronize life totals with your pod! No ads, no sign-ups, no having to touch another person's phone!">
+    <meta name="description" content="Synchronize life totals with your pod! No ads, no sign-ups, no having to touch another person's phone!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://regularwave.github.io/cyclonesync/">
     <meta property="og:title" content="CycloneSync">
-    <meta property="og:description"
-        content="Synchronize life totals with your pod! No ads, no sign-ups, no having to touch another person's phone!">
+    <meta property="og:description" content="Synchronize life totals with your pod! No ads, no sign-ups, no having to touch another person's phone!">
     <meta property="og:image" content="https://regularwave.github.io/cyclonesync/img/og-preview.png">
 </head>
 
@@ -43,12 +41,8 @@
                     </div>
                     <input class="quantity" id="life" min="0" max="999" value="40" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'life', 1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'life', -1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'life', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'life', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-tax">
@@ -57,28 +51,18 @@
                     </div>
 
                     <div class="tax-half" id="tax-half-1">
-                        <input class="quantity" id="tax" min="0" max="999" value="0" type="number" readonly
-                            tabindex="-1">
+                        <input class="quantity" id="tax" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                         <div class="spinner-btns">
-                            <button class="plus" onpointerdown="startHold(event, 'tax', 1)" onpointerup="stopHold()"
-                                onpointerleave="stopHold()" onpointercancel="stopHold()"
-                                oncontextmenu="return false;">&plus;</button>
-                            <button class="minus" onpointerdown="startHold(event, 'tax', -1)" onpointerup="stopHold()"
-                                onpointerleave="stopHold()" onpointercancel="stopHold()"
-                                oncontextmenu="return false;">&minus;</button>
+                            <button class="plus" onpointerdown="startHold(event, 'tax', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                            <button class="minus" onpointerdown="startHold(event, 'tax', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                         </div>
                     </div>
 
                     <div class="tax-half hidden" id="tax-half-2">
-                        <input class="quantity" id="tax2" min="0" max="999" value="0" type="number" readonly
-                            tabindex="-1">
+                        <input class="quantity" id="tax2" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                         <div class="spinner-btns">
-                            <button class="plus" onpointerdown="startHold(event, 'tax2', 1)" onpointerup="stopHold()"
-                                onpointerleave="stopHold()" onpointercancel="stopHold()"
-                                oncontextmenu="return false;">&plus;</button>
-                            <button class="minus" onpointerdown="startHold(event, 'tax2', -1)" onpointerup="stopHold()"
-                                onpointerleave="stopHold()" onpointercancel="stopHold()"
-                                oncontextmenu="return false;">&minus;</button>
+                            <button class="plus" onpointerdown="startHold(event, 'tax2', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                            <button class="minus" onpointerdown="startHold(event, 'tax2', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                         </div>
                     </div>
                 </div>
@@ -101,90 +85,60 @@
                     <div class="manasymbol-container">
                         <i class="ms ms-w ms-fw manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-w" min="0" max="999" value="0" type="number" readonly
-                        tabindex="-1">
+                    <input class="quantity" id="mana-w" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'mana-w', 1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'mana-w', -1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-w', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-w', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-u">
                     <div class="manasymbol-container">
                         <i class="ms ms-u manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-u" min="0" max="999" value="0" type="number" readonly
-                        tabindex="-1">
+                    <input class="quantity" id="mana-u" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'mana-u', 1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'mana-u', -1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-u', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-u', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-b">
                     <div class="manasymbol-container">
                         <i class="ms ms-b manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-b" min="0" max="999" value="0" type="number" readonly
-                        tabindex="-1">
+                    <input class="quantity" id="mana-b" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'mana-b', 1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'mana-b', -1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-b', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-b', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-r">
                     <div class="manasymbol-container">
                         <i class="ms ms-r ms-fw manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-r" min="0" max="999" value="0" type="number" readonly
-                        tabindex="-1">
+                    <input class="quantity" id="mana-r" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'mana-r', 1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'mana-r', -1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-r', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-r', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-g">
                     <div class="manasymbol-container">
                         <i class="ms ms-g manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-g" min="0" max="999" value="0" type="number" readonly
-                        tabindex="-1">
+                    <input class="quantity" id="mana-g" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'mana-g', 1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'mana-g', -1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-g', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-g', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
                 <div class="tile-wrapper hidden" id="tile-c">
                     <div class="manasymbol-container">
                         <i class="ms ms-c manasymbol-icon"></i>
                     </div>
-                    <input class="quantity" id="mana-c" min="0" max="999" value="0" type="number" readonly
-                        tabindex="-1">
+                    <input class="quantity" id="mana-c" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'mana-c', 1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'mana-c', -1)" onpointerup="stopHold()"
-                            onpointerleave="stopHold()" onpointercancel="stopHold()"
-                            oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'mana-c', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'mana-c', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
             </div>
@@ -229,9 +183,7 @@
             </p>
             <p>Fonts:
                 <br>
-                <a href="https://github.com/andrewgioia/keyrune" target="_blank">Keyrune</a> and <a
-                    href="https://github.com/andrewgioia/Mana" target="_blank">Mana</a> fonts by <a
-                    href="https://andrewgioia.com/">Andrew Gioia</a> (SIL OFL 1.1)
+                <a href="https://github.com/andrewgioia/keyrune" target="_blank">Keyrune</a> and <a href="https://github.com/andrewgioia/Mana" target="_blank">Mana</a> fonts by <a href="https://andrewgioia.com/">Andrew Gioia</a> (SIL OFL 1.1)
                 <br>
                 Beleren font from Wizards of the Coast
             </p>
@@ -246,8 +198,7 @@
     <div id="pips-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content">
             <h2>Mana Tile Visibility</h2>
-            <p class="help-subtext">Choose which mana tiles are always shown and which ones are toggled by the &ensp;<i
-                    class="ms ss-foil ss-grad ms-watermark-colorpie"></i>&ensp; button.</p>
+            <p class="help-subtext">Choose which mana tiles are always shown and which ones are toggled by the &ensp;<i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>&ensp; button.</p>
 
             <div class="pips-grid">
                 <input type="checkbox" id="chk-white" class="pip-chk" value="white">
@@ -279,39 +230,26 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p1" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p1" class="player-name" value="Player 1" placeholder="Name"
-                            oninput="savePlayerName(this)">
+                        <input type="text" id="name-p1" class="player-name" value="Player 1" placeholder="Name" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c1" value="Commander 1"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p1-c1" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p1-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p1-c1', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p1-c1', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p1-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p1-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c2" value="Commander 2"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p1-c2" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p1-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p1-c2', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p1-c2', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p1-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p1-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -320,39 +258,26 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p2" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p2" class="player-name" value="Player 2" placeholder="Name"
-                            oninput="savePlayerName(this)">
+                        <input type="text" id="name-p2" class="player-name" value="Player 2" placeholder="Name" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c1" value="Commander 1"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p2-c1" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p2-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p2-c1', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p2-c1', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p2-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p2-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c2" value="Commander 2"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p2-c2" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p2-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p2-c2', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p2-c2', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p2-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p2-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -361,39 +286,26 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p3" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p3" class="player-name" value="Player 3" placeholder="Name"
-                            oninput="savePlayerName(this)">
+                        <input type="text" id="name-p3" class="player-name" value="Player 3" placeholder="Name" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c1" value="Commander 1"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p3-c1" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p3-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p3-c1', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p3-c1', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p3-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p3-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c2" value="Commander 2"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p3-c2" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p3-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p3-c2', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p3-c2', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p3-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p3-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -402,39 +314,26 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p4" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p4" class="player-name" value="Player 4" placeholder="Name"
-                            oninput="savePlayerName(this)">
+                        <input type="text" id="name-p4" class="player-name" value="Player 4" placeholder="Name" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c1" value="Commander 1"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c1" value="Commander 1" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p4-c1" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p4-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p4-c1', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p4-c1', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p4-c1', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p4-c1', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c2" value="Commander 2"
-                                oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c2" value="Commander 2" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
-                                <input class="quantity cmd-qty" id="cmd-p4-c2" value="0" type="number" readonly
-                                    tabindex="-1">
+                                <input class="quantity cmd-qty" id="cmd-p4-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
-                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p4-c2', 1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p4-c2', -1, true)"
-                                        onpointerup="stopHold()" onpointerleave="stopHold()"
-                                        onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                                    <button class="plus" onpointerdown="startHold(event, 'cmd-p4-c2', 1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                                    <button class="minus" onpointerdown="startHold(event, 'cmd-p4-c2', -1, true)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                                 </div>
                             </div>
                         </div>
@@ -456,22 +355,18 @@
                     </span>
                     <div id="ios-room-code-section" class="ios-code-section hidden">
                         Tap to copy room code: <br>
-                        <strong id="ios-room-code-display" class="copyable-code ios-code-display"
-                            onclick="copyPendingRoomCode()" title="Tap to copy"></strong>
+                        <strong id="ios-room-code-display" class="copyable-code ios-code-display" onclick="copyPendingRoomCode()" title="Tap to copy"></strong>
                     </div>
                 </div>
-                <label class="help-subtext input-label">Your Name (1-12 chars)</label>
-                <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" minlength="1"
-                    maxlength="12" oninput="validateConnectionInputs()">
+                <label for="conn-player-name" class="help-subtext input-label">Your Name (1-12 chars)</label>
+                <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" oninput="validateConnectionInputs()">
 
                 <div class="divider-line"></div>
 
                 <div class="connect-split-row">
                     <div class="connect-col-main">
-                        <label class="help-subtext input-label">Room Name (5-20 chars)</label>
-                        <input type="text" id="conn-room-code" class="modal-input room-code-input"
-                            placeholder="e.g. EDH-NIGHT" minlength="5" maxlength="20"
-                            oninput="validateConnectionInputs()" disabled>
+                        <label for="conn-room-code" class="help-subtext input-label">Room Name (5-20 chars)</label>
+                        <input type="text" id="conn-room-code" class="modal-input room-code-input" placeholder="e.g. EDH-NIGHT" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
                         <button class="control-btn btn-primary" id="btn-join-room" onclick="joinRoom()" disabled>JOIN /
                             CREATE</button>
                     </div>
@@ -489,8 +384,7 @@
             </div>
 
             <div id="connect-step-2" class="hidden text-center">
-                <h3>Room: <span id="display-room-code" class="copyable-code" onclick="copyRoomCode()"
-                        title="Tap to copy"></span></h3>
+                <h3>Room: <span id="display-room-code" class="copyable-code" onclick="copyRoomCode()" title="Tap to copy"></span></h3>
                 <div id="room-qr-display" class="qr-display-box"></div>
                 <p class="help-subtext">Other players can scan this to join the same room!</p>
 
@@ -601,7 +495,8 @@
                 <p><strong>Life Total Syncing:</strong> A "room bar" will appear and show you the life total of the
                     <strong>other</strong> players in the room and will remain synced as long as they're in the room.
                     When you change your life total using your life tracker tile that value will sync and update on the
-                    other players' screens.</p>
+                    other players' screens.
+                </p>
                 <p><strong>Idle Timeout:</strong> The app will automatically disconnect you if it's in the background,
                     if the device is locked, or if you're idle for 30 or more minutes.</p>
             </div>
@@ -614,12 +509,10 @@
             <h2>Share</h2>
             <div id="share-qr-display" class="qr-display-box"></div>
             <p>
-                <a href="https://regularwave.github.io/cyclonesync/"
-                    target="_blank">https://regularwave.github.io/cyclonesync/</a>
+                <a href="https://regularwave.github.io/cyclonesync/" target="_blank">https://regularwave.github.io/cyclonesync/</a>
             </p>
 
-            <button id="btn-native-share" class="control-btn hidden mt-1" onclick="shareNatively()"
-                style="width: 100%;">
+            <button id="btn-native-share" class="control-btn hidden mt-1" onclick="shareNatively()" style="width: 100%;">
                 <i class="ss ss-foil ss-grad ss-plc"></i> SHARE APP
             </button>
 

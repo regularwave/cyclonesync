@@ -34,8 +34,23 @@ const AppState = {
     syncedPlayers: {},
     pipsOpen: true,
     pipsMask: ['white', 'blue', 'black', 'red', 'green', 'colorless'],
-    dockMask: ['btn-life', 'btn-pips', 'btn-cmd', 'btn-connect']
+    dockMask: ['btn-life', 'btn-pips', 'btn-cmd', 'btn-connect'],
+    countersMask: ['poison', 'exp', 'energy', 'rad'],
+    customCounters: {
+        custom1: { name: 'Custom 1', icon: 'ms ms-acorn' },
+        custom2: { name: 'Custom 2', icon: 'ms ms-rarity' }
+    }
 };
+
+const CURATED_ICONS = [
+    'ms ms-acorn', 'ms ms-rarity', 'ms ms-artifact', 'ms ms-creature', 'ms ms-enchantment',
+    'ms ms-instant', 'ms ms-land', 'ms ms-planeswalker', 'ms ms-sorcery', 'ms ms-token',
+    'ms ms-s', 'ms ms-counter-void', 'ms ms-counter-charge', 'ms ms-ability-d20', 'ms ms-counter-flood',
+    'ms ms-counter-lore', 'ms ms-counter-loyalty', 'ms ms-counter-plus', 'ms ms-counter-minus', 'ms ms-counter-slime',
+    'ms ms-counter-stun', 'ms ms-counter-time', 'ms ms-counter-brick-print', 'ss ss-1e', 'ss ss-2e',
+    'ms ms-guild-azorius', 'ms ms-guild-boros', 'ms ms-guild-dimir', 'ms ms-guild-golgari', 'ms ms-guild-gruul',
+    'ms ms-guild-izzet', 'ms ms-guild-orzhov', 'ms ms-guild-rakdos', 'ms ms-guild-selesnya', 'ms ms-guild-simic'
+];
 
 function getStored(key, defaultValue = null) {
     const val = localStorage.getItem(key);
@@ -118,6 +133,32 @@ document.addEventListener('DOMContentLoaded', () => {
     taxBtn.addEventListener('pointercancel', () => {
         if (taxPressTimer) clearTimeout(taxPressTimer);
         taxIsLongPress = true;
+    });
+
+    const countersBtn = document.getElementById('btn-counters');
+    let countersPressTimer;
+    let countersIsLongPress = false;
+
+    countersBtn.addEventListener('pointerdown', (e) => {
+        countersIsLongPress = false;
+        countersPressTimer = setTimeout(() => {
+            countersIsLongPress = true;
+            openCountersModal();
+            if (navigator.vibrate) navigator.vibrate(50);
+        }, 600);
+    });
+
+    countersBtn.addEventListener('pointerup', (e) => {
+        if (countersPressTimer) clearTimeout(countersPressTimer);
+        if (!countersIsLongPress) {
+            toggleCounters();
+        }
+        countersIsLongPress = false;
+    });
+
+    countersBtn.addEventListener('pointercancel', () => {
+        if (countersPressTimer) clearTimeout(countersPressTimer);
+        countersIsLongPress = true;
     });
 
     if (AppState.settings.awake) {
@@ -233,6 +274,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (!document.getElementById('dock-modal').classList.contains('hidden')) {
             closeDockModal();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+        if (!document.getElementById('counters-modal').classList.contains('hidden')) {
+            closeCountersModal();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
+        if (!document.getElementById('icon-picker-modal').classList.contains('hidden')) {
+            closeIconPicker();
             history.pushState(null, '', window.location.href);
             return;
         }
@@ -394,8 +445,21 @@ function loadSettings() {
     }
     renderDock();
 
+    const savedCountersMask = getStored('cyclonesync_countersMask');
+    if (savedCountersMask) {
+        try { AppState.countersMask = JSON.parse(savedCountersMask); }
+        catch (e) { AppState.countersMask = ['poison', 'exp', 'energy', 'rad']; }
+    }
+
+    const savedCustomCounters = getStored('cyclonesync_customCounters');
+    if (savedCustomCounters) {
+        try { AppState.customCounters = JSON.parse(savedCustomCounters); }
+        catch (e) { }
+    }
+
     applySettings();
     updateManaGrid();
+    updateCountersGrid();
     triggerSymbolFade();
 }
 
@@ -451,7 +515,6 @@ function applySettings() {
         iconAwake.className = "ms ms-dfc-night";
     }
 
-    // Inside applySettings():
     const countersRow = document.getElementById('counters-row');
     const btnCounters = document.getElementById('btn-counters');
 
@@ -554,8 +617,8 @@ function renderDock() {
         dockContainer.style.display = 'none';
         resetBtn.style.flex = '1';
     } else {
-        dockContainer.style.display = 'flex';
-        resetBtn.style.flex = '0 0 auto';
+        dockContainer.style.display = 'content';
+        resetBtn.style.flex = '';
     }
 }
 
@@ -652,6 +715,110 @@ function updateManaGrid() {
     } else {
         btn.style.opacity = '0.5';
     }
+}
+
+function updateCountersGrid() {
+    const countersMap = {
+        'poison': 'tile-poison',
+        'exp': 'tile-exp',
+        'energy': 'tile-energy',
+        'rad': 'tile-rad',
+        'custom1': 'tile-custom1',
+        'custom2': 'tile-custom2'
+    };
+
+    let visibleTiles = [];
+
+    Object.keys(countersMap).forEach(cnt => {
+        const wrapper = document.getElementById(countersMap[cnt]);
+        if (!wrapper) return;
+
+        wrapper.classList.remove('span-full');
+
+        if (AppState.countersMask.includes(cnt)) {
+            wrapper.classList.remove('hidden');
+            visibleTiles.push(wrapper);
+        } else {
+            wrapper.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('label-custom1').innerText = AppState.customCounters.custom1.name;
+    document.getElementById('icon-custom1').className = AppState.customCounters.custom1.icon + ' ms-2x counter-icon';
+    document.getElementById('label-custom2').innerText = AppState.customCounters.custom2.name;
+    document.getElementById('icon-custom2').className = AppState.customCounters.custom2.icon + ' ms-2x counter-icon';
+}
+
+function openCountersModal() {
+    const modal = document.getElementById('counters-modal');
+    modal.classList.remove('hidden');
+
+    const checkboxes = document.querySelectorAll('.cnt-chk');
+    checkboxes.forEach(chk => {
+        chk.checked = AppState.countersMask.includes(chk.value);
+    });
+
+    document.getElementById('input-name-custom1').value = AppState.customCounters.custom1.name;
+    document.getElementById('preview-icon-custom1').className = AppState.customCounters.custom1.icon;
+    document.getElementById('input-name-custom2').value = AppState.customCounters.custom2.name;
+    document.getElementById('preview-icon-custom2').className = AppState.customCounters.custom2.icon;
+}
+
+function closeCountersModal() {
+    document.getElementById('counters-modal').classList.add('hidden');
+}
+
+function saveCountersConfig() {
+    const checkboxes = document.querySelectorAll('.cnt-chk');
+    AppState.countersMask = [];
+    checkboxes.forEach(chk => {
+        if (chk.checked) AppState.countersMask.push(chk.value);
+    });
+
+    AppState.customCounters.custom1.name = document.getElementById('input-name-custom1').value || 'Custom 1';
+    AppState.customCounters.custom2.name = document.getElementById('input-name-custom2').value || 'Custom 2';
+
+    setStored('cyclonesync_countersMask', JSON.stringify(AppState.countersMask));
+    setStored('cyclonesync_customCounters', JSON.stringify(AppState.customCounters));
+
+    updateCountersGrid();
+    closeCountersModal();
+}
+
+let editingCustomCounter = null;
+
+function openIconPicker(counterNum) {
+    editingCustomCounter = counterNum;
+    const modal = document.getElementById('icon-picker-modal');
+    const grid = document.getElementById('icon-picker-grid');
+
+    if (grid.children.length === 0) {
+        CURATED_ICONS.forEach(iconClass => {
+            const btn = document.createElement('button');
+            btn.className = 'icon-picker-btn';
+            btn.innerHTML = `<i class="${iconClass}"></i>`;
+            btn.onclick = () => selectIcon(iconClass);
+            grid.appendChild(btn);
+        });
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function selectIcon(iconClass) {
+    if (editingCustomCounter === 1) {
+        AppState.customCounters.custom1.icon = iconClass;
+        document.getElementById('preview-icon-custom1').className = iconClass;
+    } else if (editingCustomCounter === 2) {
+        AppState.customCounters.custom2.icon = iconClass;
+        document.getElementById('preview-icon-custom2').className = iconClass;
+    }
+    closeIconPicker();
+}
+
+function closeIconPicker() {
+    document.getElementById('icon-picker-modal').classList.add('hidden');
+    editingCustomCounter = null;
 }
 
 function openPipsModal() {
@@ -1267,5 +1434,7 @@ Object.assign(window, {
     joinRoom, startQRScan, stopQRScan, showRoomQR, leaveRoom, switchHelpTab,
     toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode, shareRoomLink,
     copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
-    saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters
+    saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters,
+    openCountersModal, closeCountersModal, saveCountersConfig, openIconPicker,
+    closeIconPicker, selectIcon
 });

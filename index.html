@@ -49,7 +49,6 @@
                     <div class="manasymbol-container">
                         <i class="ss ss-foil ss-grad ss-cmd toprow-manasymbol-icon"></i>
                     </div>
-
                     <div class="tax-half" id="tax-half-1">
                         <input class="quantity" id="tax" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                         <div class="spinner-btns">
@@ -57,7 +56,6 @@
                             <button class="minus" onpointerdown="startHold(event, 'tax', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                         </div>
                     </div>
-
                     <div class="tax-half hidden" id="tax-half-2">
                         <input class="quantity" id="tax2" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                         <div class="spinner-btns">
@@ -72,10 +70,8 @@
                     <i class="ms ms-counter-brick"></i>
                     <span>QR</span>
                 </div>
-
                 <div id="remote-players-container" class="remote-players-grid">
                 </div>
-
                 <div class="room-exit-btn" onclick="leaveRoom()">
                     <i class="ss ss-foil ss-grad ss-bfz ss-2x"></i>
                 </div>
@@ -145,6 +141,7 @@
             <div id="counters-row" class="counters-grid hidden">
                 <div class="counter-tile" id="tile-poison">
                     <i class="ms ms-h ms-2x counter-icon"></i>
+                    <div class="counter-name">Poison</div>
                     <input class="quantity counter-qty" id="cnt-poison" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onpointerdown="startHold(event, 'cnt-poison', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
@@ -153,6 +150,7 @@
                 </div>
                 <div class="counter-tile" id="tile-exp">
                     <i class="ss ss-c15 ss-2x counter-icon"></i>
+                    <div class="counter-name">Experience</div>
                     <input class="quantity counter-qty" id="cnt-exp" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onpointerdown="startHold(event, 'cnt-exp', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
@@ -161,10 +159,38 @@
                 </div>
                 <div class="counter-tile" id="tile-energy">
                     <i class="ms ms-energy ms-2x counter-icon"></i>
+                    <div class="counter-name">Energy</div>
                     <input class="quantity counter-qty" id="cnt-energy" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
                         <button class="plus" onpointerdown="startHold(event, 'cnt-energy', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
                         <button class="minus" onpointerdown="startHold(event, 'cnt-energy', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                    </div>
+                </div>
+                <div class="counter-tile" id="tile-rad">
+                    <i class="ms ms-counter-rad ms-2x counter-icon"></i>
+                    <div class="counter-name">Rads</div>
+                    <input class="quantity counter-qty" id="cnt-rad" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                    <div class="spinner-btns">
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-rad', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-rad', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                    </div>
+                </div>
+                <div class="counter-tile hidden" id="tile-custom1">
+                    <i id="icon-custom1" class="ms ms-star ms-2x counter-icon"></i>
+                    <div id="label-custom1" class="counter-name">Custom 1</div>
+                    <input class="quantity counter-qty" id="cnt-custom1" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                    <div class="spinner-btns">
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-custom1', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-custom1', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                    </div>
+                </div>
+                <div class="counter-tile hidden" id="tile-custom2">
+                    <i id="icon-custom2" class="ms ms-star ms-2x counter-icon"></i>
+                    <div id="label-custom2" class="counter-name">Custom 2</div>
+                    <input class="quantity counter-qty" id="cnt-custom2" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                    <div class="spinner-btns">
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-custom2', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-custom2', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
             </div>
@@ -182,7 +208,7 @@
                     <button class="control-btn" id="btn-connect" onclick="toggleConnectModal()">
                         <i class="ss ss-foil ss-grad ss-eoe"></i>
                     </button>
-                    <button class="control-btn disabled" id="btn-counters" onclick="toggleCounters();">
+                    <button class="control-btn disabled" id="btn-counters" oncontextmenu="return false;">
                         <i class="ss ss-foil ss-grad ss-nph"></i>
                     </button>
                 </div>
@@ -240,27 +266,20 @@
         <div class="cmd-modal-content">
             <h2>Mana Tile Visibility</h2>
             <p class="help-subtext">Choose which mana tiles are always shown and which ones are toggled by the &ensp;<i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>&ensp; button.</p>
-
             <div class="pips-grid">
                 <input type="checkbox" id="chk-white" class="pip-chk" value="white">
                 <label for="chk-white" class="pip-label"><i class="ms ms-w ms-cost ms-2x"></i></label>
-
                 <input type="checkbox" id="chk-blue" class="pip-chk" value="blue">
                 <label for="chk-blue" class="pip-label"><i class="ms ms-u ms-cost ms-2x"></i></label>
-
                 <input type="checkbox" id="chk-black" class="pip-chk" value="black">
                 <label for="chk-black" class="pip-label"><i class="ms ms-b ms-cost ms-2x"></i></label>
-
                 <input type="checkbox" id="chk-red" class="pip-chk" value="red">
                 <label for="chk-red" class="pip-label"><i class="ms ms-r ms-cost ms-2x"></i></label>
-
                 <input type="checkbox" id="chk-green" class="pip-chk" value="green">
                 <label for="chk-green" class="pip-label"><i class="ms ms-g ms-cost ms-2x"></i></label>
-
                 <input type="checkbox" id="chk-colorless" class="pip-chk" value="colorless">
                 <label for="chk-colorless" class="pip-label"><i class="ms ms-c ms-cost ms-2x"></i></label>
             </div>
-
             <button class="close-btn btn-primary" onclick="savePipsConfig()">SAVE & CLOSE</button>
         </div>
     </div>
@@ -387,7 +406,6 @@
     <div id="connect-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content modal-content-fit">
             <h2>CycloneSync PodConnect</h2>
-
             <div id="connect-step-1">
                 <div id="ios-pwa-warning" class="ios-warning-box hidden">
                     <span class="ios-warning-text">
@@ -401,9 +419,7 @@
                 </div>
                 <label for="conn-player-name" class="help-subtext input-label">Your Name (1-12 chars)</label>
                 <input type="text" id="conn-player-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" oninput="validateConnectionInputs()">
-
                 <div class="divider-line"></div>
-
                 <div class="connect-split-row">
                     <div class="connect-col-main">
                         <label for="conn-room-code" class="help-subtext input-label">Room Name (5-20 chars)</label>
@@ -411,24 +427,19 @@
                         <button class="control-btn btn-primary" id="btn-join-room" onclick="joinRoom()" disabled>JOIN /
                             CREATE</button>
                     </div>
-
                     <div class="connect-divider-vertical"></div>
-
                     <div class="connect-col-side">
                         <button class="control-btn btn-scan-qr" id="btn-scan-qr" onclick="startQRScan()" disabled>
                             <i class="ms ms-beleren ms-2x"></i>SCAN QR
                         </button>
                     </div>
                 </div>
-
                 <p id="conn-status" class="help-subtext mt-1">Enter a name to begin.</p>
             </div>
-
             <div id="connect-step-2" class="hidden text-center">
                 <h3>Room: <span id="display-room-code" class="copyable-code" onclick="copyRoomCode()" title="Tap to copy"></span></h3>
                 <div id="room-qr-display" class="qr-display-box"></div>
                 <p class="help-subtext">Other players can scan this to join the same room!</p>
-
                 <div style="display: flex; gap: 1rem; margin-top: 1rem; width: 100%;">
                     <button class="control-btn btn-danger" onclick="leaveRoom()" style="flex: 1;">
                         <i class="ss ss-foil ss-grad ss-bfz"></i>&ensp;DISCONNECT
@@ -438,7 +449,6 @@
                     </button>
                 </div>
             </div>
-
             <button class="close-btn mt-1" onclick="toggleConnectModal()">CLOSE</button>
         </div>
     </div>
@@ -464,6 +474,54 @@
             <h2 class="dialog-title">CycloneSync</h2>
             <p id="alert-msg" class="dialog-message">Notification message.</p>
             <button class="close-btn btn-dialog-full" id="alert-ok">OK</button>
+        </div>
+    </div>
+    <div id="counters-modal" class="hidden modal-overlay">
+        <div class="cmd-modal-content">
+            <h2>Counters Config</h2>
+            <p class="help-subtext mb-0-5">Choose which counters are shown when the <i class="ss ss-foil ss-grad ss-nph"></i> button is active.</p>
+            <div class="dock-grid" style="margin-bottom: 0;">
+                <input type="checkbox" id="chk-cnt-poison" class="cnt-chk hidden" value="poison">
+                <label for="chk-cnt-poison" class="dock-chk-label">
+                    <i class="ms ms-h ms-2x dock-icon"></i>
+                    <span>Poison</span>
+                </label>
+                <input type="checkbox" id="chk-cnt-exp" class="cnt-chk hidden" value="exp">
+                <label for="chk-cnt-exp" class="dock-chk-label">
+                    <i class="ss ss-c15 ss-2x dock-icon"></i>
+                    <span>Experience</span>
+                </label>
+                <input type="checkbox" id="chk-cnt-energy" class="cnt-chk hidden" value="energy">
+                <label for="chk-cnt-energy" class="dock-chk-label">
+                    <i class="ms ms-energy ms-2x dock-icon"></i>
+                    <span>Energy</span>
+                </label>
+                <input type="checkbox" id="chk-cnt-rad" class="cnt-chk hidden" value="rad">
+                <label for="chk-cnt-rad" class="dock-chk-label">
+                    <i class="ms ms-counter-rad ms-2x dock-icon"></i>
+                    <span>Rads</span>
+                </label>
+            </div>
+            <h3 style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left; border-bottom: 1px solid #333; padding-bottom: 0.25rem;">Custom Counters</h3>
+            <div class="custom-counter-config" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;">
+                    <input type="checkbox" id="chk-cnt-custom1" class="cnt-chk" value="custom1" style="width: 1.5rem; height: 1.5rem; flex-shrink: 0;">
+                    <input type="text" id="input-name-custom1" class="modal-input" placeholder="Name (e.g. Acorn)" style="margin-bottom: 0; padding: 0.5rem; font-size: 0.9rem; flex-grow: 1;">
+                    <button class="control-btn" onclick="openIconPicker(1)" style="flex-shrink: 0; width: 3.5rem; height: 100%; margin: 0;">
+                        <i id="preview-icon-custom1" class="ms ms-acorn"></i>
+                    </button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;">
+                    <input type="checkbox" id="chk-cnt-custom2" class="cnt-chk" value="custom2" style="width: 1.5rem; height: 1.5rem; flex-shrink: 0;">
+                    <input type="text" id="input-name-custom2" class="modal-input" placeholder="Name (e.g. Rarity)" style="margin-bottom: 0; padding: 0.5rem; font-size: 0.9rem; flex-grow: 1;">
+                    <button class="control-btn" onclick="openIconPicker(2)" style="flex-shrink: 0; width: 3.5rem; height: 100%; margin: 0;">
+                        <i id="preview-icon-custom2" class="ms ms-rarity"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="dialog-btn-row mt-auto">
+                <button class="close-btn btn-dialog-full btn-primary" onclick="saveCountersConfig()">SAVE & CLOSE</button>
+            </div>
         </div>
     </div>
     <div id="dock-modal" class="hidden modal-overlay">
@@ -603,6 +661,16 @@
                 <i class="ss ss-foil ss-grad ss-plc"></i> SHARE APP
             </button>
             <button class="close-btn" onclick="toggleShare()">CLOSE</button>
+        </div>
+    </div>
+    <div id="icon-picker-modal" class="hidden modal-overlay modal-topmost">
+        <div class="cmd-modal-content">
+            <h2>Select Icon</h2>
+            <div id="icon-picker-grid" class="icon-picker-grid">
+            </div>
+            <div class="dialog-btn-row mt-auto">
+                <button class="close-btn btn-dialog-full" onclick="closeIconPicker()">CANCEL</button>
+            </div>
         </div>
     </div>
     <footer id="sticky-footer">

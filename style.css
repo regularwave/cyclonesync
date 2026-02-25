@@ -154,7 +154,8 @@ input[type=number]::-webkit-outer-spin-button {
     border: none;
     padding: 0;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: stretch;
     gap: 0.5rem;
     z-index: 1000;
@@ -162,16 +163,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dock-container {
-    display: flex;
-    flex: 1;
-    gap: 0.5rem;
+    display: contents;
     pointer-events: none;
-}
-
-.floating-controls>.control-btn,
-.flyout-wrapper>#btn-settings {
-    flex: 0 0 auto;
-    width: 3.5rem;
 }
 
 .floating-controls .control-btn {
@@ -188,8 +181,17 @@ input[type=number]::-webkit-outer-spin-button {
 
 .flyout-wrapper {
     position: relative;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    display: flex;
     pointer-events: auto;
+    min-width: 3.5rem;
+    max-width: 6rem;
+}
+
+.flyout-wrapper>#btn-settings {
+    flex-grow: 1;
+    width: 100%;
+    margin: 0;
 }
 
 .flyout-bubble {
@@ -283,7 +285,8 @@ input[type=number]::-webkit-outer-spin-button {
     transition: all 0.2s;
 }
 
-.dock-chk:checked+.dock-chk-label .dock-icon {
+.dock-chk:checked+.dock-chk-label .dock-icon,
+.cnt-chk:checked+.dock-chk-label .dock-icon {
     filter: none;
     opacity: 1;
 }
@@ -294,7 +297,8 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center;
 }
 
-.dock-chk:checked+.dock-chk-label {
+.dock-chk:checked+.dock-chk-label,
+.cnt-chk:checked+.dock-chk-label {
     background: rgba(255, 255, 255, 0.15);
     border-color: var(--text-light);
     color: var(--text-light);
@@ -499,8 +503,10 @@ body.symbols-hidden .spinner-btns button {
     background-color: transparent;
     border: solid 1px var(--border-light);
     border-radius: 0.5rem;
-    height: 3rem;
+    height: 2.5rem;
     flex-grow: 1;
+    min-width: 3.5rem;
+    max-width: 6rem;
     justify-content: center;
     transition: background 0.2s, opacity 0.2s;
     touch-action: manipulation;
@@ -1035,7 +1041,6 @@ body.symbols-hidden .spinner-btns button {
     opacity: 0.8;
 }
 
-/* Custom Counters Grid & Tiles */
 .counters-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1043,6 +1048,41 @@ body.symbols-hidden .spinner-btns button {
     margin-top: 1rem;
     margin-bottom: 0;
     width: 100%;
+}
+
+.counter-name {
+    position: absolute;
+    bottom: 0.1rem;
+    width: 100%;
+    text-align: center;
+    font-size: 0.5rem;
+    color: var(--text-muted);
+    font-family: var(--font-ui);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: var(--z-base);
+    pointer-events: none;
+}
+
+.counter-qty {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    font-size: 2.5rem;
+    padding-right: 0.25rem;
+    z-index: var(--z-above);
+    translate: 0 -4px;
+}
+
+#counters-modal .dock-chk-label::after {
+    content: "Hidden";
+}
+
+#counters-modal .cnt-chk:checked+.dock-chk-label::after {
+    content: "Visible";
+    color: var(--accent-blue);
 }
 
 .counter-tile {
@@ -1054,7 +1094,6 @@ body.symbols-hidden .spinner-btns button {
     border-radius: 0.5rem;
     padding: 0;
     min-height: 4rem;
-    /* Shorter than standard tiles */
     overflow: hidden;
 }
 
@@ -1073,7 +1112,6 @@ body.symbols-hidden .spinner-btns button {
     bottom: 0;
     width: 100%;
     font-size: 2.5rem;
-    /* Smaller font to fit the 4rem height */
     padding-right: 0.25rem;
     z-index: var(--z-above);
 }
@@ -1367,6 +1405,34 @@ body.symbols-hidden .spinner-btns button {
 .ios-code-display {
     margin-top: 0.5rem;
     font-size: 1.2rem;
+}
+
+.icon-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3.5rem, 1fr));
+    gap: 0.5rem;
+    overflow-y: auto;
+    padding: 0.5rem;
+    max-height: 70vh;
+}
+
+.icon-picker-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-dark);
+    border-radius: 0.5rem;
+    height: 3.5rem;
+    font-size: 1.5rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.icon-picker-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--accent-blue);
 }
 
 @media (max-width: 440px) {

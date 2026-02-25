@@ -1,12 +1,3 @@
-@font-face {
-    font-family: "Beleren Bold";
-    src: url(./font/Beleren2016-Bold.woff) format("woff");
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    text-rendering: optimizeLegibility;
-}
-
 :root {
     --bg-main: #000;
     --bg-panel: rgba(0, 0, 0, 0.75);

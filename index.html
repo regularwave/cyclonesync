@@ -142,6 +142,32 @@
                     </div>
                 </div>
             </div>
+            <div id="counters-row" class="counters-grid hidden">
+                <div class="counter-tile" id="tile-poison">
+                    <i class="ms ms-h ms-2x counter-icon"></i>
+                    <input class="quantity counter-qty" id="cnt-poison" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                    <div class="spinner-btns">
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-poison', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-poison', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                    </div>
+                </div>
+                <div class="counter-tile" id="tile-exp">
+                    <i class="ss ss-c15 ss-2x counter-icon"></i>
+                    <input class="quantity counter-qty" id="cnt-exp" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                    <div class="spinner-btns">
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-exp', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-exp', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                    </div>
+                </div>
+                <div class="counter-tile" id="tile-energy">
+                    <i class="ms ms-energy ms-2x counter-icon"></i>
+                    <input class="quantity counter-qty" id="cnt-energy" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                    <div class="spinner-btns">
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-energy', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-energy', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                    </div>
+                </div>
+            </div>
             <div class="floating-controls">
                 <div id="dock-container" class="dock-container">
                     <button class="control-btn" id="btn-life" onclick="toggleLife();">
@@ -156,13 +182,16 @@
                     <button class="control-btn" id="btn-connect" onclick="toggleConnectModal()">
                         <i class="ss ss-foil ss-grad ss-eoe"></i>
                     </button>
+                    <button class="control-btn disabled" id="btn-counters" onclick="toggleCounters();">
+                        <i class="ss ss-foil ss-grad ss-nph"></i>
+                    </button>
                 </div>
                 <button class="control-btn btn-danger" id="btn-reset" onclick="resetAll()">
                     <i class="ms ss-foil ss-grad ms-ability-dfc"></i>
                 </button>
                 <div class="flyout-wrapper" id="flyout-wrapper">
                     <button class="control-btn" id="btn-settings" onpointerdown="startDockHold(event)" onpointerup="stopDockHold()" onpointercancel="cancelDockHold()" oncontextmenu="return false;">
-                        <i class="ss ss-foil ss-grad ss-bro"></i>
+                        <i class="ss ss-foil ss-grad ss-usg"></i>
                     </button>
                     <div class="flyout-bubble hidden" id="flyout-bubble">
                         <button class="control-btn disabled hidden" id="flyout-empty-msg" style="width: 100%; font-size: 0.9rem; font-family: var(--font-ui);" disabled>
@@ -456,6 +485,11 @@
                 <label for="chk-dock-pips" class="dock-chk-label">
                     <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x dock-icon"></i>
                     <span>Mana Tracker Tile Control</span>
+                </label>
+                <input type="checkbox" id="chk-dock-counters" class="dock-chk hidden" value="btn-counters">
+                <label for="chk-dock-counters" class="dock-chk-label">
+                    <i class="ss ss-foil ss-grad ss-nph ss-2x dock-icon"></i>
+                    <span>Other Counters</span>
                 </label>
                 <input type="checkbox" id="chk-dock-cmd" class="dock-chk hidden" value="btn-cmd">
                 <label for="chk-dock-cmd" class="dock-chk-label">

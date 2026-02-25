@@ -1035,6 +1035,49 @@ body.symbols-hidden .spinner-btns button {
     opacity: 0.8;
 }
 
+/* Custom Counters Grid & Tiles */
+.counters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.counter-tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-darker);
+    border-radius: 0.5rem;
+    padding: 0;
+    min-height: 4rem;
+    /* Shorter than standard tiles */
+    overflow: hidden;
+}
+
+.counter-icon {
+    position: absolute;
+    left: 0.5rem;
+    color: rgba(255, 255, 255, 0.2);
+    z-index: var(--z-base);
+    pointer-events: none;
+}
+
+.counter-qty {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    font-size: 2.5rem;
+    /* Smaller font to fit the 4rem height */
+    padding-right: 0.25rem;
+    z-index: var(--z-above);
+}
+
 .modal-input {
     width: 100%;
     background: transparent;

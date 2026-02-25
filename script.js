@@ -22,7 +22,7 @@ const appCheck = initializeAppCheck(app, {
 const db = getDatabase(app);
 
 const AppState = {
-    settings: { life: true, tax: false, taxSplit: false, awake: true, layoutLR: false },
+    settings: { life: true, tax: false, taxSplit: false, awake: true, layoutLR: false, counters: false },
     roomId: null,
     playerId: 'player_' + Math.random().toString(36).substr(2, 9),
     roomListener: null,
@@ -451,6 +451,18 @@ function applySettings() {
         iconAwake.className = "ms ms-dfc-night";
     }
 
+    // Inside applySettings():
+    const countersRow = document.getElementById('counters-row');
+    const btnCounters = document.getElementById('btn-counters');
+
+    if (AppState.settings.counters) {
+        countersRow.classList.remove('hidden');
+        btnCounters.classList.remove('disabled');
+    } else {
+        countersRow.classList.add('hidden');
+        btnCounters.classList.add('disabled');
+    }
+
     if (AppState.settings.layoutLR) {
         document.body.classList.add('layout-lr');
     } else {
@@ -485,6 +497,12 @@ function togglePips() {
     saveSettings();
 }
 
+function toggleCounters() {
+    AppState.settings.counters = !AppState.settings.counters;
+    applySettings();
+    saveSettings();
+}
+
 function toggleFlyout() {
     const bubble = document.getElementById('flyout-bubble');
     if (bubble) bubble.classList.toggle('hidden');
@@ -508,7 +526,7 @@ function renderDock() {
 
     if (!dockContainer || !flyoutBubble) return;
 
-    const masterOrder = ['btn-life', 'btn-tax', 'btn-pips', 'btn-cmd', 'btn-connect', 'btn-udlrswap', 'btn-awake'];
+    const masterOrder = ['btn-life', 'btn-tax', 'btn-pips', 'btn-counters', 'btn-cmd', 'btn-connect', 'btn-udlrswap', 'btn-awake'];
 
     let dockCount = 0;
     let flyoutCount = 0;
@@ -1249,5 +1267,5 @@ Object.assign(window, {
     joinRoom, startQRScan, stopQRScan, showRoomQR, leaveRoom, switchHelpTab,
     toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode, shareRoomLink,
     copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
-    saveDockConfig, startDockHold, stopDockHold, cancelDockHold
+    saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters
 });

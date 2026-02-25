@@ -1554,4 +1554,32 @@ body.symbols-hidden .spinner-btns button {
     .quantity {
         font-size: 5rem;
     }
+
+    /* Expand the floating dock and prevent wrapping */
+    .floating-controls {
+        flex-wrap: nowrap;
+        max-width: 1400px;
+        /* Matches your .floatcontainer landscape max-width */
+    }
+
+    /* Convert the counters grid to flexbox to bypass the JS grid-column inline styles */
+    .counters-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 100%;
+        grid-column: 1 / -1;
+    }
+
+    /* Ensure all visible counters share the row equally */
+    .counter-tile {
+        flex: 1;
+        min-width: 0;
+        /* Prevents items from overflowing if they get too squeezed */
+    }
+
+    /* Prevent the landscape .quantity rule from ballooning the counter numbers */
+    .counter-qty {
+        font-size: 2.5rem;
+    }
 }

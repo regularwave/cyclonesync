@@ -740,14 +740,32 @@ function updateCountersGrid() {
             visibleTiles.push(wrapper);
         } else {
             wrapper.classList.add('hidden');
+            wrapper.style.gridColumn = '';
         }
     });
+
+    const count = visibleTiles.length;
+
+    if (count === 1) {
+        visibleTiles[0].style.gridColumn = 'span 6';
+    } else if (count === 2 || count === 4) {
+        visibleTiles.forEach(t => t.style.gridColumn = 'span 3');
+    } else if (count === 3 || count === 6) {
+        visibleTiles.forEach(t => t.style.gridColumn = 'span 2');
+    } else if (count === 5) {
+        visibleTiles[0].style.gridColumn = 'span 2';
+        visibleTiles[1].style.gridColumn = 'span 2';
+        visibleTiles[2].style.gridColumn = 'span 2';
+        visibleTiles[3].style.gridColumn = 'span 3';
+        visibleTiles[4].style.gridColumn = 'span 3';
+    }
 
     document.getElementById('label-custom1').innerText = AppState.customCounters.custom1.name;
     document.getElementById('icon-custom1').className = AppState.customCounters.custom1.icon + ' ms-2x counter-icon';
     document.getElementById('label-custom2').innerText = AppState.customCounters.custom2.name;
     document.getElementById('icon-custom2').className = AppState.customCounters.custom2.icon + ' ms-2x counter-icon';
 }
+
 
 function openCountersModal() {
     const modal = document.getElementById('counters-modal');

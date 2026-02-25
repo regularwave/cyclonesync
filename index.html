@@ -142,34 +142,46 @@
                     </div>
                 </div>
             </div>
-            <div class="controls-row">
-                <button class="control-btn" id="btn-life" onclick="toggleLife()">
-                    <i class="ms ss-foil ss-grad ms-ability-lifelink"></i>
+            <div class="floating-controls">
+                <div id="dock-container" class="dock-container">
+                    <button class="control-btn" id="btn-life" onclick="toggleLife();">
+                        <i class="ms ss-foil ss-grad ms-ability-lifelink"></i>
+                    </button>
+                    <button class="control-btn" id="btn-pips" oncontextmenu="return false;">
+                        <i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>
+                    </button>
+                    <button class="control-btn" id="btn-cmd" onclick="toggleCmdModal()">
+                        <i class="ss ss-foil ss-grad ss-mic"></i>
+                    </button>
+                    <button class="control-btn" id="btn-connect" onclick="toggleConnectModal()">
+                        <i class="ss ss-foil ss-grad ss-eoe"></i>
+                    </button>
+                </div>
+                <button class="control-btn btn-danger" id="btn-reset" onclick="resetAll()">
+                    <i class="ms ss-foil ss-grad ms-ability-dfc"></i>
                 </button>
-                <button class="control-btn disabled" id="btn-tax" oncontextmenu="return false;">
-                    <i class="ss ss-foil ss-grad ss-cmd"></i>
-                </button>
-                <button class="control-btn" id="btn-pips" oncontextmenu="return false;">
-                    <i class="ms ss-foil ss-grad ms-watermark-colorpie"></i>
-                </button>
-                <button class="control-btn" id="btn-cmd" onclick="toggleCmdModal()">
-                    <i class="ss ss-foil ss-grad ss-mic"></i>
-                </button>
-                <button class="control-btn" id="btn-connect" onclick="toggleConnectModal()">
-                    <i class="ss ss-foil ss-grad ss-eoe"></i>
-                </button>
-                <button class="control-btn" id="btn-udlrswap" onclick="toggleUDLR()">
-                    <div id="icon-udlrswap" class="udlr-wrapper">
-                        <i class="ms ss-foil ss-grad ms-dfc-front"></i>
-                        <span class="udlr-plus ss-foil ss-grad">&plus;</span>
+                <div class="flyout-wrapper" id="flyout-wrapper">
+                    <button class="control-btn" id="btn-settings" onpointerdown="startDockHold(event)" onpointerup="stopDockHold()" onpointercancel="cancelDockHold()" oncontextmenu="return false;">
+                        <i class="ss ss-foil ss-grad ss-bro"></i>
+                    </button>
+                    <div class="flyout-bubble hidden" id="flyout-bubble">
+                        <button class="control-btn disabled hidden" id="flyout-empty-msg" style="width: 100%; font-size: 0.9rem; font-family: var(--font-ui);" disabled>
+                            ALL DOCKED
+                        </button>
+                        <button class="control-btn disabled" id="btn-tax" oncontextmenu="return false;">
+                            <i class="ss ss-foil ss-grad ss-cmd"></i>
+                        </button>
+                        <button class="control-btn" id="btn-udlrswap" onclick="toggleUDLR();">
+                            <div id="icon-udlrswap" class="udlr-wrapper">
+                                <i class="ms ss-foil ss-grad ms-dfc-front"></i>
+                                <span class="udlr-plus ss-foil ss-grad">&plus;</span>
+                            </div>
+                        </button>
+                        <button class="control-btn" id="btn-awake" onclick="toggleWakeLock();">
+                            <i class="ms ss-foil ss-grad ms-dfc-day"></i>
+                        </button>
                     </div>
-                </button>
-                <button class="control-btn" id="btn-awake" onclick="toggleWakeLock()">
-                    <i class="ms ss-foil ss-grad ms-dfc-day"></i>
-                </button>
-                <button onclick="resetAll()" class="control-btn">
-                    <i class="ms ss-foil ss-grad ms-ability-dfc"></i> <span class="reset-text">RESET</span>
-                </button>
+                </div>
             </div>
         </main>
     </div>
@@ -425,16 +437,61 @@
             <button class="close-btn btn-dialog-full" id="alert-ok">OK</button>
         </div>
     </div>
+    <div id="dock-modal" class="hidden modal-overlay">
+        <div class="cmd-modal-content">
+            <h2>Control Dock Config</h2>
+            <p class="help-subtext mb-0-5">Choose which buttons are anchored to the main bar.</p>
+            <div class="dock-grid">
+                <input type="checkbox" id="chk-dock-life" class="dock-chk hidden" value="btn-life">
+                <label for="chk-dock-life" class="dock-chk-label">
+                    <i class="ms ss-foil ss-grad ms-ability-lifelink ms-2x dock-icon"></i>
+                    <span>Life Tracker</span>
+                </label>
+                <input type="checkbox" id="chk-dock-tax" class="dock-chk hidden" value="btn-tax">
+                <label for="chk-dock-tax" class="dock-chk-label">
+                    <i class="ss ss-foil ss-grad ss-cmd ss-2x dock-icon"></i>
+                    <span>Commander Tax Tracker</span>
+                </label>
+                <input type="checkbox" id="chk-dock-pips" class="dock-chk hidden" value="btn-pips">
+                <label for="chk-dock-pips" class="dock-chk-label">
+                    <i class="ms ss-foil ss-grad ms-watermark-colorpie ms-2x dock-icon"></i>
+                    <span>Mana Tracker Tile Control</span>
+                </label>
+                <input type="checkbox" id="chk-dock-cmd" class="dock-chk hidden" value="btn-cmd">
+                <label for="chk-dock-cmd" class="dock-chk-label">
+                    <i class="ss ss-foil ss-grad ss-mic ss-2x dock-icon"></i>
+                    <span>Commander Damage Tracker</span>
+                </label>
+                <input type="checkbox" id="chk-dock-connect" class="dock-chk hidden" value="btn-connect">
+                <label for="chk-dock-connect" class="dock-chk-label">
+                    <i class="ss ss-foil ss-grad ss-eoe ss-2x dock-icon"></i>
+                    <span>PodConnect</span>
+                </label>
+                <input type="checkbox" id="chk-dock-udlr" class="dock-chk hidden" value="btn-udlrswap">
+                <label for="chk-dock-udlr" class="dock-chk-label">
+                    <i class="ms ss-foil ss-grad ms-dfc-front ms-2x dock-icon"></i>
+                    <span>Toggle Tap Zones</span>
+                </label>
+                <input type="checkbox" id="chk-dock-awake" class="dock-chk hidden" value="btn-awake">
+                <label for="chk-dock-awake" class="dock-chk-label">
+                    <i class="ms ss-foil ss-grad ms-dfc-day ms-2x dock-icon"></i>
+                    <span>Screen WakeLock</span>
+                </label>
+            </div>
+            <div class="dialog-btn-row mt-1">
+                <button class="close-btn btn-dialog-full btn-primary" onclick="saveDockConfig()">SAVE</button>
+                <button class="close-btn btn-dialog-full" onclick="closeDockModal()">CANCEL</button>
+            </div>
+        </div>
+    </div>
     <div id="help-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content modal-content-help">
             <h2>Help & Info</h2>
-
             <div class="help-tabs">
                 <button class="help-tab-btn active" onclick="switchHelpTab('help-icons')">Icons</button>
                 <button class="help-tab-btn" onclick="switchHelpTab('help-basics')">Basics</button>
                 <button class="help-tab-btn" onclick="switchHelpTab('help-multi')">PodConnect</button>
             </div>
-
             <div id="help-icons" class="help-tab-content">
                 <div class="help-icon-row">
                     <i class="ms ss-foil ss-grad ms-ability-lifelink ms-2x"></i> <span>toggle life tracker tile</span>
@@ -470,7 +527,6 @@
                     <i class="ms ss-foil ss-grad ms-ability-dfc ms-2x"></i> <span>reset tracking tile values</span>
                 </div>
             </div>
-
             <div id="help-basics" class="help-tab-content hidden">
                 <p><strong>Adjusting Values:</strong> Tap the tile to change its value. By default, the top half
                     increases and the bottom half decreases. Use the
@@ -486,7 +542,6 @@
                 <p><strong>Custom Names:</strong> You can tap on any name in the commander damage tracker window to edit
                     them.</p>
             </div>
-
             <div id="help-multi" class="help-tab-content hidden">
                 <p><strong>Your Name:</strong> You must enter a name to join a room (1 - 12 characters).</p>
                 <p><strong>Join or Create a Room:</strong> Enter a 5+ character room name to create a new room or join
@@ -500,7 +555,6 @@
                 <p><strong>Idle Timeout:</strong> The app will automatically disconnect you if it's in the background,
                     if the device is locked, or if you're idle for 30 or more minutes.</p>
             </div>
-
             <button class="close-btn mt-auto" onclick="toggleHelp()">CLOSE</button>
         </div>
     </div>
@@ -511,11 +565,9 @@
             <p>
                 <a href="https://regularwave.github.io/cyclonesync/" target="_blank">https://regularwave.github.io/cyclonesync/</a>
             </p>
-
             <button id="btn-native-share" class="control-btn hidden mt-1" onclick="shareNatively()" style="width: 100%;">
                 <i class="ss ss-foil ss-grad ss-plc"></i> SHARE APP
             </button>
-
             <button class="close-btn" onclick="toggleShare()">CLOSE</button>
         </div>
     </div>
@@ -548,40 +600,33 @@
         if ('serviceWorker' in navigator) {
             let refreshing = false;
             let newWorker;
-
             navigator.serviceWorker.addEventListener('controllerchange', () => {
                 if (!refreshing) {
                     refreshing = true;
                     window.location.reload();
                 }
             });
-
             const toast = document.getElementById('update-toast');
             const btnUpdate = document.getElementById('btn-update-refresh');
             const btnDismiss = document.getElementById('btn-update-dismiss');
-
             if (btnUpdate) {
                 btnUpdate.onclick = () => {
                     if (toast) toast.classList.add('hidden');
                     if (newWorker) newWorker.postMessage('SKIP_WAITING');
                 };
             }
-
             if (btnDismiss) {
                 btnDismiss.onclick = () => {
                     if (toast) toast.classList.add('hidden');
                 };
             }
-
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').then(reg => {
                     console.log('SW Registered');
-
                     if (reg.waiting) {
                         newWorker = reg.waiting;
                         showUpdatePrompt();
                     }
-
                     reg.addEventListener('updatefound', () => {
                         newWorker = reg.installing;
                         newWorker.addEventListener('statechange', () => {
@@ -592,7 +637,6 @@
                     });
                 }).catch(err => console.log('SW Registration Failed: ', err));
             });
-
             function showUpdatePrompt() {
                 if (!toast) return;
                 toast.classList.remove('hidden');

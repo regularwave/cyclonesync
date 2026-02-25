@@ -32,8 +32,9 @@ const AppState = {
     wakeLock: null,
     exitTimer: null,
     syncedPlayers: {},
-    pipsOpen: false,
-    pipsMask: ['white', 'blue', 'black', 'red', 'green', 'colorless']
+    pipsOpen: true,
+    pipsMask: ['white', 'blue', 'black', 'red', 'green', 'colorless'],
+    dockMask: ['btn-life', 'btn-pips', 'btn-cmd', 'btn-connect']
 };
 
 function getStored(key, defaultValue = null) {
@@ -230,6 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
             history.pushState(null, '', window.location.href);
             return;
         }
+        if (!document.getElementById('dock-modal').classList.contains('hidden')) {
+            closeDockModal();
+            history.pushState(null, '', window.location.href);
+            return;
+        }
 
         if (AppState.exitTimer) {
             clearTimeout(AppState.exitTimer);
@@ -373,13 +379,20 @@ function loadSettings() {
     const savedSettings = getStored('cyclonesync_settings');
     if (savedSettings) AppState.settings = JSON.parse(savedSettings);
 
-    AppState.pipsOpen = getStored('cyclonesync_tracker_pipsOpen') === 'true';
+    AppState.pipsOpen = getStored('cyclonesync_tracker_pipsOpen', 'true') === 'true';
 
     const savedMask = getStored('cyclonesync_tracker_pipsMask');
     if (savedMask) {
         try { AppState.pipsMask = JSON.parse(savedMask); }
         catch (e) { AppState.pipsMask = ['white', 'blue', 'black', 'red', 'green', 'colorless']; }
     }
+
+    const savedDockMask = getStored('cyclonesync_dockMask');
+    if (savedDockMask) {
+        try { AppState.dockMask = JSON.parse(savedDockMask); }
+        catch (e) { AppState.dockMask = ['btn-life', 'btn-pips', 'btn-cmd', 'btn-connect']; }
+    }
+    renderDock();
 
     applySettings();
     updateManaGrid();
@@ -470,6 +483,113 @@ function togglePips() {
     AppState.pipsOpen = !AppState.pipsOpen;
     updateManaGrid();
     saveSettings();
+}
+
+function toggleFlyout() {
+    const bubble = document.getElementById('flyout-bubble');
+    if (bubble) bubble.classList.toggle('hidden');
+}
+
+document.addEventListener('click', (event) => {
+    const wrapper = document.getElementById('flyout-wrapper');
+    const bubble = document.getElementById('flyout-bubble');
+    if (wrapper && bubble && !bubble.classList.contains('hidden')) {
+        if (!wrapper.contains(event.target)) {
+            bubble.classList.add('hidden');
+        }
+    }
+});
+
+function renderDock() {
+    const dockContainer = document.getElementById('dock-container');
+    const flyoutBubble = document.getElementById('flyout-bubble');
+    const emptyMsg = document.getElementById('flyout-empty-msg');
+    const resetBtn = document.getElementById('btn-reset');
+
+    if (!dockContainer || !flyoutBubble) return;
+
+    const masterOrder = ['btn-life', 'btn-tax', 'btn-pips', 'btn-cmd', 'btn-connect', 'btn-udlrswap', 'btn-awake'];
+
+    let dockCount = 0;
+    let flyoutCount = 0;
+
+    masterOrder.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+
+        if (AppState.dockMask.includes(btnId)) {
+            dockContainer.appendChild(btn);
+            dockCount++;
+        } else {
+            flyoutBubble.appendChild(btn);
+            flyoutCount++;
+        }
+    });
+
+    if (flyoutCount === 0) {
+        if (emptyMsg) emptyMsg.classList.remove('hidden');
+    } else {
+        if (emptyMsg) emptyMsg.classList.add('hidden');
+    }
+
+    if (dockCount === 0) {
+        dockContainer.style.display = 'none';
+        resetBtn.style.flex = '1';
+    } else {
+        dockContainer.style.display = 'flex';
+        resetBtn.style.flex = '0 0 auto';
+    }
+}
+
+function openDockModal() {
+    const modal = document.getElementById('dock-modal');
+    modal.classList.remove('hidden');
+
+    const checkboxes = document.querySelectorAll('.dock-chk');
+    checkboxes.forEach(chk => {
+        chk.checked = AppState.dockMask.includes(chk.value);
+    });
+}
+
+function closeDockModal() {
+    document.getElementById('dock-modal').classList.add('hidden');
+}
+
+function saveDockConfig() {
+    const checkboxes = document.querySelectorAll('.dock-chk');
+    AppState.dockMask = [];
+    checkboxes.forEach(chk => {
+        if (chk.checked) AppState.dockMask.push(chk.value);
+    });
+
+    setStored('cyclonesync_dockMask', JSON.stringify(AppState.dockMask));
+    renderDock();
+    closeDockModal();
+}
+
+let dockPressTimer;
+let isDockLongPress = false;
+
+function startDockHold(e) {
+    isDockLongPress = false;
+    dockPressTimer = setTimeout(() => {
+        isDockLongPress = true;
+        openDockModal();
+        if (navigator.vibrate) navigator.vibrate(50);
+    }, 600);
+}
+
+function stopDockHold() {
+    if (dockPressTimer) clearTimeout(dockPressTimer);
+    if (!isDockLongPress) {
+        toggleFlyout();
+    }
+    isDockLongPress = false;
+}
+
+function cancelDockHold() {
+    if (dockPressTimer) clearTimeout(dockPressTimer);
+    isDockLongPress = true;
 }
 
 function updateManaGrid() {
@@ -1128,5 +1248,6 @@ Object.assign(window, {
     resetAll, savePlayerName, saveCmdName, savePipsConfig, validateConnectionInputs,
     joinRoom, startQRScan, stopQRScan, showRoomQR, leaveRoom, switchHelpTab,
     toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode, shareRoomLink,
-    copyPendingRoomCode
+    copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
+    saveDockConfig, startDockHold, stopDockHold, cancelDockHold
 });

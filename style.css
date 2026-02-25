@@ -172,6 +172,7 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    max-width: 6rem;
 }
 
 .dock-container .control-btn {
@@ -506,7 +507,6 @@ body.symbols-hidden .spinner-btns button {
     height: 2.5rem;
     flex-grow: 1;
     min-width: 3.5rem;
-    max-width: 6rem;
     justify-content: center;
     transition: background 0.2s, opacity 0.2s;
     touch-action: manipulation;

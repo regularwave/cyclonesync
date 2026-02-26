@@ -502,6 +502,7 @@ body.symbols-hidden .spinner-btns button {
     transition: background 0.2s, opacity 0.2s;
     touch-action: manipulation;
     font-size: 1.5rem;
+    white-space: nowrap;
 }
 
 .control-btn i {
@@ -1487,6 +1488,14 @@ body.symbols-hidden .spinner-btns button {
 @media (max-width: 440px) {
     .tracker-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .modal-overlay .control-btn {
+        font-size: 1rem;
+    }
+
+    .modal-overlay .control-btn i {
+        font-size: 1.2rem;
     }
 }
 

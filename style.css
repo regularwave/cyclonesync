@@ -39,7 +39,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 1.5rem;
+    padding-top: .5rem;
     padding-bottom: 8rem;
     min-height: 100dvh;
     user-select: none;
@@ -123,14 +123,14 @@ input[type=number]::-webkit-outer-spin-button {
 .top-row {
     display: flex;
     width: 100%;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    margin-bottom: .75rem;
 }
 
 .tracker-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    gap: .75rem;
     margin-bottom: 0;
 }
 
@@ -957,7 +957,7 @@ body.symbols-hidden .spinner-btns button {
     justify-content: space-between;
     width: 100%;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: .75rem;
     padding: 0.5rem;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--border-darker);

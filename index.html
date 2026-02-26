@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
 
+    <link href="https://cdn.jsdelivr.net/npm/@regularwave/beleren-bold-woff2@latest/css/beleren-bold-w2.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mana-font@latest/css/mana.css">
     <link rel="stylesheet" href="style.css">
@@ -20,7 +21,6 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript" defer></script>
 
     <link rel="shortcut icon" type="image/svg" href="img/CycloneSync.svg">
-    <link rel="preload" href="./font/Beleren2016-Bold.woff" as="font" type="font/woff" crossorigin="anonymous">
 
     <title>CycloneSync</title>
     <meta name="description" content="Synchronize life totals with your pod! No ads, no sign-ups, no having to touch another person's phone!">
@@ -503,18 +503,20 @@
                 </label>
             </div>
             <h3 style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left; border-bottom: 1px solid #333; padding-bottom: 0.25rem;">Custom Counters</h3>
-            <div class="custom-counter-config" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;">
-                    <input type="checkbox" id="chk-cnt-custom1" class="cnt-chk" value="custom1" style="width: 1.5rem; height: 1.5rem; flex-shrink: 0;">
-                    <input type="text" id="input-name-custom1" class="modal-input" placeholder="Name (e.g. Acorn)" style="margin-bottom: 0; padding: 0.5rem; font-size: 0.9rem; flex-grow: 1;">
-                    <button class="control-btn" onclick="openIconPicker(1)" style="flex-shrink: 0; width: 3.5rem; height: 100%; margin: 0;">
+            <div class="custom-counter-config">
+                <div class="custom-counter-row">
+                    <input type="checkbox" id="chk-cnt-custom1" class="cnt-chk custom-chk" value="custom1">
+                    <input type="text" id="input-name-custom1" class="modal-input custom-name-input" placeholder="Name (e.g. Acorn)">
+                    <input type="color" id="color-custom1" class="color-picker-input">
+                    <button class="control-btn custom-icon-btn" onclick="openIconPicker(1)">
                         <i id="preview-icon-custom1" class="ms ms-acorn"></i>
                     </button>
                 </div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;">
-                    <input type="checkbox" id="chk-cnt-custom2" class="cnt-chk" value="custom2" style="width: 1.5rem; height: 1.5rem; flex-shrink: 0;">
-                    <input type="text" id="input-name-custom2" class="modal-input" placeholder="Name (e.g. Rarity)" style="margin-bottom: 0; padding: 0.5rem; font-size: 0.9rem; flex-grow: 1;">
-                    <button class="control-btn" onclick="openIconPicker(2)" style="flex-shrink: 0; width: 3.5rem; height: 100%; margin: 0;">
+                <div class="custom-counter-row">
+                    <input type="checkbox" id="chk-cnt-custom2" class="cnt-chk custom-chk" value="custom2">
+                    <input type="text" id="input-name-custom2" class="modal-input custom-name-input" placeholder="Name (e.g. Rarity)">
+                    <input type="color" id="color-custom2" class="color-picker-input">
+                    <button class="control-btn custom-icon-btn" onclick="openIconPicker(2)">
                         <i id="preview-icon-custom2" class="ms ms-rarity"></i>
                     </button>
                 </div>

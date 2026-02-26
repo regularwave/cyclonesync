@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cyclonesync-tracker-20260225T083300';
+const CACHE_NAME = 'cyclonesync-tracker-20260225T193700';
 
 const LOCAL_ASSETS = [
     './',
@@ -9,11 +9,11 @@ const LOCAL_ASSETS = [
     './img/bg.webp',
     './img/CycloneSync.svg',
     './img/CycloneSync-192.png',
-    './img/CycloneSync-512.png',
-    './font/Beleren2016-Bold.woff'
+    './img/CycloneSync-512.png'
 ];
 
 const EXTERNAL_ASSETS = [
+    'https://cdn.jsdelivr.net/npm/@regularwave/beleren-bold-woff2@latest/css/beleren-bold-w2.css',
     'https://cdn.jsdelivr.net/npm/keyrune@latest/css/keyrune.css',
     'https://cdn.jsdelivr.net/npm/mana-font@latest/css/mana.css',
     'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',

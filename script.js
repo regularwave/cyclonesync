@@ -37,8 +37,8 @@ const AppState = {
     dockMask: ['btn-life', 'btn-pips', 'btn-cmd', 'btn-connect'],
     countersMask: ['poison', 'exp', 'energy', 'rad'],
     customCounters: {
-        custom1: { name: 'Custom 1', icon: 'ms ms-acorn' },
-        custom2: { name: 'Custom 2', icon: 'ms ms-rarity' }
+        custom1: { name: 'Custom 1', icon: 'ms ms-acorn', color: '#dddddd' },
+        custom2: { name: 'Custom 2', icon: 'ms ms-rarity', color: '#dddddd' }
     }
 };
 
@@ -760,10 +760,17 @@ function updateCountersGrid() {
         visibleTiles[4].style.gridColumn = 'span 3';
     }
 
-    document.getElementById('label-custom1').innerText = AppState.customCounters.custom1.name;
-    document.getElementById('icon-custom1').className = AppState.customCounters.custom1.icon + ' ms-2x counter-icon';
-    document.getElementById('label-custom2').innerText = AppState.customCounters.custom2.name;
-    document.getElementById('icon-custom2').className = AppState.customCounters.custom2.icon + ' ms-2x counter-icon';
+    const c1 = AppState.customCounters.custom1;
+    document.getElementById('label-custom1').innerText = c1.name;
+    document.getElementById('label-custom1').style.color = '';
+    document.getElementById('icon-custom1').className = c1.icon + ' ms-2x counter-icon';
+    document.getElementById('icon-custom1').style.color = c1.color;
+
+    const c2 = AppState.customCounters.custom2;
+    document.getElementById('label-custom2').innerText = c2.name;
+    document.getElementById('label-custom2').style.color = '';
+    document.getElementById('icon-custom2').className = c2.icon + ' ms-2x counter-icon';
+    document.getElementById('icon-custom2').style.color = c2.color;
 }
 
 
@@ -780,6 +787,8 @@ function openCountersModal() {
     document.getElementById('preview-icon-custom1').className = AppState.customCounters.custom1.icon;
     document.getElementById('input-name-custom2').value = AppState.customCounters.custom2.name;
     document.getElementById('preview-icon-custom2').className = AppState.customCounters.custom2.icon;
+    document.getElementById('color-custom1').value = AppState.customCounters.custom1.color || '#dddddd';
+    document.getElementById('color-custom2').value = AppState.customCounters.custom2.color || '#dddddd';
 }
 
 function closeCountersModal() {
@@ -795,6 +804,8 @@ function saveCountersConfig() {
 
     AppState.customCounters.custom1.name = document.getElementById('input-name-custom1').value || 'Custom 1';
     AppState.customCounters.custom2.name = document.getElementById('input-name-custom2').value || 'Custom 2';
+    AppState.customCounters.custom1.color = document.getElementById('color-custom1').value;
+    AppState.customCounters.custom2.color = document.getElementById('color-custom2').value;
 
     setStored('cyclonesync_countersMask', JSON.stringify(AppState.countersMask));
     setStored('cyclonesync_customCounters', JSON.stringify(AppState.customCounters));

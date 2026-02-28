@@ -26,8 +26,11 @@ const AppState = {
     roomId: null,
     playerId: 'player_' + Math.random().toString(36).substr(2, 9),
     roomListener: null,
-    debounceTimer: null,
+    lifeDebounceTimer: null,
+    nameDebounceTimer: null,
     isSyncLocked: false,
+    nameEditMode: false,
+    isNameSyncLocked: false,
     html5QrcodeScanner: null,
     wakeLock: null,
     exitTimer: null,
@@ -169,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.visibilityState === 'hidden') {
             localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
         } else if (document.visibilityState === 'visible') {
-            if (AppState.settings.awake) requestWakeLock();
+            if (AppState.settings.awake) requestWakeLock(true);
             triggerSymbolFade();
 
             if (AppState.roomId) {
@@ -230,6 +233,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             toggleConnectModal();
             validateConnectionInputs();
+
+            const statusEl = document.getElementById('conn-status');
+            statusEl.innerText = "Enter your name to join the pod!";
+            statusEl.style.color = "var(--accent-blue)";
+
+            setTimeout(() => nameInputEl.focus(), 300);
         }
     }
 
@@ -327,7 +336,12 @@ function toggleShare() {
 }
 
 function toggleCmdModal() {
-    document.getElementById('cmd-modal').classList.toggle('hidden');
+    const modal = document.getElementById('cmd-modal');
+    modal.classList.toggle('hidden');
+
+    if (!modal.classList.contains('hidden')) {
+        document.getElementById('cmd-modal-life').innerText = document.getElementById('life').value;
+    }
 }
 
 function updateValue(id, change) {
@@ -400,10 +414,44 @@ function updateCmdValue(id, change) {
     let lifeVal = parseInt(lifeInput.value) || 0;
     lifeVal -= change;
     saveValues(lifeInput, lifeVal);
+
+    const modalLife = document.getElementById('cmd-modal-life');
+    if (modalLife) {
+        modalLife.innerText = lifeVal;
+
+        modalLife.classList.remove('pulse-danger');
+        void modalLife.offsetWidth;
+        modalLife.classList.add('pulse-danger');
+    }
+}
+
+function openResetModal() {
+    document.getElementById('reset-modal').classList.remove('hidden');
+}
+
+function closeResetModal() {
+    document.getElementById('reset-modal').classList.add('hidden');
+}
+
+async function resetMana() {
+    closeResetModal();
+    if (!(await customConfirm("Reset all mana tiles to zero?"))) return;
+
+    const manaIds = ['mana-w', 'mana-u', 'mana-b', 'mana-r', 'mana-g', 'mana-c'];
+    manaIds.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.value = 0;
+            localStorage.setItem('cyclonesync_tracker_' + id, 0);
+        }
+    });
+
+    if (navigator.vibrate) navigator.vibrate([50, 50]);
 }
 
 async function resetAll() {
-    if (!(await customConfirm("Are you sure you want to reset?"))) return;
+    closeResetModal();
+    if (!(await customConfirm("Reset ALL tiles to zero?"))) return;
 
     const allInputs = document.querySelectorAll('.quantity');
     allInputs.forEach(input => {
@@ -424,6 +472,25 @@ function savePlayerName(input) {
 
 function saveCmdName(input) {
     setStored('cyclonesync_tracker_' + input.id, input.value);
+}
+
+function updateActiveName(input) {
+    const newName = input.value.trim();
+    if (!newName) return;
+
+    localStorage.setItem('name-p1', newName);
+    document.getElementById('conn-player-name').value = newName;
+    const p1Input = document.getElementById('name-p1');
+    if (p1Input) p1Input.value = newName;
+
+    if (!AppState.roomId || !AppState.playerId || AppState.isSyncLocked) return;
+
+    if (AppState.nameDebounceTimer) clearTimeout(AppState.nameDebounceTimer);
+
+    AppState.nameDebounceTimer = setTimeout(() => {
+        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
+        set(myNameRef, newName);
+    }, 800);
 }
 
 function loadSettings() {
@@ -617,7 +684,7 @@ function renderDock() {
         dockContainer.style.display = 'none';
         resetBtn.style.flex = '1';
     } else {
-        dockContainer.style.display = 'content';
+        dockContainer.style.display = '';
         resetBtn.style.flex = '';
     }
 }
@@ -905,7 +972,7 @@ async function toggleWakeLock() {
     saveSettings();
 }
 
-async function requestWakeLock() {
+async function requestWakeLock(isAutoResume = false) {
     try {
         if ('wakeLock' in navigator && document.visibilityState === 'visible') {
             if (AppState.wakeLock !== null) return;
@@ -916,12 +983,23 @@ async function requestWakeLock() {
         }
     } catch (err) {
         console.error(`${err.name}, ${err.message}`);
+
+        if (AppState.settings.awake) {
+            AppState.settings.awake = false;
+            applySettings();
+            saveSettings();
+
+            if (!isAutoResume && err.name === 'NotAllowedError') {
+                customAlert("Screen wake lock denied by the device. Check if Battery Saver is on, or tap the wake lock button again to grant permission.");
+            }
+        }
     }
 }
 
 function validateConnectionInputs() {
     const nameInputEl = document.getElementById('conn-player-name');
     const roomInputEl = document.getElementById('conn-room-code');
+    roomInputEl.value = roomInputEl.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     const nameInput = nameInputEl.value.trim();
     const roomInputValue = roomInputEl.value.trim();
     const joinBtn = document.getElementById('btn-join-room');
@@ -1012,8 +1090,19 @@ async function joinRoom() {
 
     document.getElementById('connect-step-1').classList.add('hidden');
     document.getElementById('connect-step-2').classList.remove('hidden');
+    document.getElementById('conn-active-name').value = playerName;
     document.getElementById('display-room-code').innerText = roomId;
     document.getElementById('room-row').classList.remove('hidden');
+
+    for (let i = 2; i <= 4; i++) {
+        const input = document.getElementById(`name-p${i}`);
+        const icon = document.getElementById(`sync-icon-p${i}`);
+        if (input && icon) {
+            input.value = `Player ${i}`;
+            input.disabled = false;
+            icon.classList.add('hidden');
+        }
+    }
 
     const qrContainer = document.getElementById('room-qr-display');
     qrContainer.innerHTML = "";
@@ -1031,6 +1120,65 @@ async function joinRoom() {
     status.innerText = "Connected!";
 }
 
+function toggleNameEdit() {
+    const input = document.getElementById('conn-active-name');
+    const btn = document.getElementById('btn-edit-name');
+
+    if (!AppState.nameEditMode) {
+        if (AppState.isNameSyncLocked) {
+            customAlert("Please wait a while before changing your name again.");
+            return;
+        }
+
+        AppState.nameEditMode = true;
+        input.disabled = false;
+        input.focus();
+
+        const val = input.value;
+        input.value = '';
+        input.value = val;
+
+        btn.innerHTML = `<span class="name-edit-text-btn">SAVE</span>`;
+        btn.classList.add('btn-primary');
+    } else {
+        const newName = input.value.trim();
+
+        if (!newName) {
+            input.value = localStorage.getItem('name-p1') || 'Player 1';
+        } else if (newName !== localStorage.getItem('name-p1')) {
+            saveActiveName(newName);
+        }
+
+        AppState.nameEditMode = false;
+        input.disabled = true;
+
+        btn.innerHTML = `<i id="icon-name-edit" class="ms ss-foil ss-grad ms-artist-nib"></i>`;
+        btn.classList.remove('btn-primary');
+    }
+}
+
+function saveActiveName(newName) {
+    localStorage.setItem('name-p1', newName);
+    document.getElementById('conn-player-name').value = newName;
+    const p1Input = document.getElementById('name-p1');
+    if (p1Input) p1Input.value = newName;
+
+    if (!AppState.roomId || !AppState.playerId) return;
+
+    AppState.isNameSyncLocked = true;
+
+    if (AppState.nameDebounceTimer) clearTimeout(AppState.nameDebounceTimer);
+
+    AppState.nameDebounceTimer = setTimeout(() => {
+        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
+        set(myNameRef, newName);
+
+        setTimeout(() => {
+            AppState.isNameSyncLocked = false;
+        }, 60000);
+    }, 300);
+}
+
 function listenToRoom() {
     const playersRef = ref(db, 'rooms/' + AppState.roomId + '/players');
 
@@ -1046,6 +1194,12 @@ function listenToRoom() {
 
     const removePlayer = (snap) => {
         if (!snap.key) return;
+
+        if (snap.key === AppState.playerId && AppState.roomId) {
+            reestablishPresence();
+            return;
+        }
+
         delete AppState.syncedPlayers[snap.key];
         renderRemotePlayers(AppState.syncedPlayers);
     };
@@ -1067,17 +1221,6 @@ function renderRemotePlayers(players) {
 
     let hasRemotePlayers = false;
     let remoteIndex = 2;
-
-    for (let i = 2; i <= 4; i++) {
-        const input = document.getElementById(`name-p${i}`);
-        const icon = document.getElementById(`sync-icon-p${i}`);
-        if (input && icon) {
-            const savedName = localStorage.getItem(`name-p${i}`);
-            input.value = savedName || `Player ${i}`;
-            input.disabled = false;
-            icon.classList.add('hidden');
-        }
-    }
 
     Object.keys(players).forEach(key => {
         if (key === AppState.playerId) return;
@@ -1115,6 +1258,19 @@ function renderRemotePlayers(players) {
         }
     });
 
+    for (let i = remoteIndex; i <= 4; i++) {
+        const cmdInput = document.getElementById(`name-p${i}`);
+        const cmdIcon = document.getElementById(`sync-icon-p${i}`);
+
+        if (cmdInput && cmdIcon) {
+            if (!cmdIcon.classList.contains('hidden')) {
+                cmdInput.value = `Player ${i}`;
+                cmdInput.disabled = false;
+                cmdIcon.classList.add('hidden');
+            }
+        }
+    }
+
     if (!hasRemotePlayers) {
         const waiting = document.createElement('span');
         waiting.className = 'waiting-text';
@@ -1127,7 +1283,7 @@ function syncLifeToRoom(newLife, immediate = false) {
     if (!AppState.roomId || AppState.isSyncLocked) return;
 
     if (immediate) {
-        clearTimeout(AppState.debounceTimer);
+        clearTimeout(AppState.lifeDebounceTimer);
 
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, newLife);
@@ -1138,8 +1294,8 @@ function syncLifeToRoom(newLife, immediate = false) {
         return;
     }
 
-    if (AppState.debounceTimer) clearTimeout(AppState.debounceTimer);
-    AppState.debounceTimer = setTimeout(() => {
+    if (AppState.lifeDebounceTimer) clearTimeout(AppState.lifeDebounceTimer);
+    AppState.lifeDebounceTimer = setTimeout(() => {
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, newLife);
     }, 500);
@@ -1465,5 +1621,6 @@ Object.assign(window, {
     copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
     saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters,
     openCountersModal, closeCountersModal, saveCountersConfig, openIconPicker,
-    closeIconPicker, selectIcon
+    closeIconPicker, selectIcon, openResetModal, closeResetModal, resetMana,
+    updateActiveName, toggleNameEdit
 });

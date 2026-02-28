@@ -212,7 +212,7 @@
                         <i class="ss ss-foil ss-grad ss-nph"></i>
                     </button>
                 </div>
-                <button class="control-btn btn-danger" id="btn-reset" onclick="resetAll()">
+                <button class="control-btn btn-danger" id="btn-reset" onclick="openResetModal()">
                     <i class="ms ss-foil ss-grad ms-ability-dfc"></i>
                 </button>
                 <div class="flyout-wrapper" id="flyout-wrapper">
@@ -285,7 +285,13 @@
     </div>
     <div id="cmd-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content">
-            <h2>Commander Damage</h2>
+            <div class="cmd-modal-header">
+                <h2>Commander Damage</h2>
+                <div class="cmd-life-display">
+                    <i class="ms ss-foil ss-grad ms-ability-lifelink"></i>
+                    <span id="cmd-modal-life">40</span>
+                </div>
+            </div>
             <div class="cmd-quarters">
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
@@ -422,8 +428,8 @@
                 <div class="divider-line"></div>
                 <div class="connect-split-row">
                     <div class="connect-col-main">
-                        <label for="conn-room-code" class="help-subtext input-label">Room Name (5-20 chars)</label>
-                        <input type="text" id="conn-room-code" class="modal-input room-code-input" placeholder="e.g. EDH-NIGHT" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
+                        <label for="conn-room-code" class="help-subtext input-label">Room Name (5-20 chars [A-Z & 0-9])</label>
+                        <input type="text" id="conn-room-code" class="modal-input room-code-input" placeholder="e.g. EDHNIGHT" minlength="5" maxlength="20" oninput="validateConnectionInputs()" disabled>
                         <button class="control-btn btn-primary" id="btn-join-room" onclick="joinRoom()" disabled>JOIN /
                             CREATE</button>
                     </div>
@@ -437,6 +443,13 @@
                 <p id="conn-status" class="help-subtext mt-1">Enter a name to begin.</p>
             </div>
             <div id="connect-step-2" class="hidden text-center">
+                <label for="conn-active-name" class="help-subtext input-label mt-1" style="text-align: center;">Your Display Name</label>
+                <div class="name-edit-row">
+                    <input type="text" id="conn-active-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" disabled>
+                    <button class="control-btn" id="btn-edit-name" onclick="toggleNameEdit()">
+                        <i id="icon-name-edit" class="ss ss-foil ss-grad ss-van"></i>
+                    </button>
+                </div>
                 <h3>Room: <span id="display-room-code" class="copyable-code" onclick="copyRoomCode()" title="Tap to copy"></span></h3>
                 <div id="room-qr-display" class="qr-display-box"></div>
                 <p class="help-subtext">Other players can scan this to join the same room!</p>
@@ -457,6 +470,18 @@
             <h2>Scan QR Code</h2>
             <div id="qr-reader" class="qr-reader-box"></div>
             <button class="close-btn" onclick="stopQRScan()">CANCEL</button>
+        </div>
+    </div>
+    <div id="reset-modal" class="hidden modal-overlay modal-topmost">
+        <div class="cmd-modal-content modal-dialog-small">
+            <h2 class="dialog-title">Reset Options</h2>
+            <div class="dialog-btn-row">
+                <button class="close-btn btn-dialog-full btn-primary" onclick="resetMana()">RESET MANA ONLY</button>
+                <br>
+                <button class="close-btn btn-dialog-full btn-danger" onclick="resetAll()">RESET ALL</button>
+                <br>
+                <button class="close-btn btn-dialog-full" onclick="closeResetModal()">CANCEL</button>
+            </div>
         </div>
     </div>
     <div id="confirm-modal" class="hidden modal-overlay modal-topmost">
@@ -529,7 +554,7 @@
     <div id="dock-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content">
             <h2>Control Dock Config</h2>
-            <p class="help-subtext mb-0-5">Choose which buttons are anchored to the main bar.</p>
+            <p class="help-subtext mb-0-5">Pin buttons to the main dock.</p>
             <div class="dock-grid">
                 <input type="checkbox" id="chk-dock-life" class="dock-chk hidden" value="btn-life">
                 <label for="chk-dock-life" class="dock-chk-label">

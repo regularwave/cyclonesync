@@ -922,6 +922,7 @@ async function requestWakeLock() {
 function validateConnectionInputs() {
     const nameInputEl = document.getElementById('conn-player-name');
     const roomInputEl = document.getElementById('conn-room-code');
+    roomInputEl.value = roomInputEl.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     const nameInput = nameInputEl.value.trim();
     const roomInputValue = roomInputEl.value.trim();
     const joinBtn = document.getElementById('btn-join-room');

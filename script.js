@@ -327,7 +327,12 @@ function toggleShare() {
 }
 
 function toggleCmdModal() {
-    document.getElementById('cmd-modal').classList.toggle('hidden');
+    const modal = document.getElementById('cmd-modal');
+    modal.classList.toggle('hidden');
+
+    if (!modal.classList.contains('hidden')) {
+        document.getElementById('cmd-modal-life').innerText = document.getElementById('life').value;
+    }
 }
 
 function updateValue(id, change) {
@@ -400,6 +405,15 @@ function updateCmdValue(id, change) {
     let lifeVal = parseInt(lifeInput.value) || 0;
     lifeVal -= change;
     saveValues(lifeInput, lifeVal);
+
+    const modalLife = document.getElementById('cmd-modal-life');
+    if (modalLife) {
+        modalLife.innerText = lifeVal;
+
+        modalLife.classList.remove('pulse-danger');
+        void modalLife.offsetWidth;
+        modalLife.classList.add('pulse-danger');
+    }
 }
 
 async function resetAll() {

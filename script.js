@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.visibilityState === 'hidden') {
             localStorage.setItem('cyclonesync_last_backgrounded', Date.now());
         } else if (document.visibilityState === 'visible') {
-            if (AppState.settings.awake) requestWakeLock();
+            if (AppState.settings.awake) requestWakeLock(true);
             triggerSymbolFade();
 
             if (AppState.roomId) {
@@ -905,7 +905,7 @@ async function toggleWakeLock() {
     saveSettings();
 }
 
-async function requestWakeLock() {
+async function requestWakeLock(isAutoResume = false) {
     try {
         if ('wakeLock' in navigator && document.visibilityState === 'visible') {
             if (AppState.wakeLock !== null) return;
@@ -916,6 +916,16 @@ async function requestWakeLock() {
         }
     } catch (err) {
         console.error(`${err.name}, ${err.message}`);
+
+        if (AppState.settings.awake) {
+            AppState.settings.awake = false;
+            applySettings();
+            saveSettings();
+
+            if (!isAutoResume && err.name === 'NotAllowedError') {
+                customAlert("Screen wake lock denied by the device. Check if Battery Saver is on, or tap the wake lock button again to grant permission.");
+            }
+        }
     }
 }
 

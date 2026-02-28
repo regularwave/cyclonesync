@@ -1057,6 +1057,12 @@ function listenToRoom() {
 
     const removePlayer = (snap) => {
         if (!snap.key) return;
+
+        if (snap.key === AppState.playerId && AppState.roomId) {
+            reestablishPresence();
+            return;
+        }
+
         delete AppState.syncedPlayers[snap.key];
         renderRemotePlayers(AppState.syncedPlayers);
     };

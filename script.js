@@ -416,8 +416,33 @@ function updateCmdValue(id, change) {
     }
 }
 
+function openResetModal() {
+    document.getElementById('reset-modal').classList.remove('hidden');
+}
+
+function closeResetModal() {
+    document.getElementById('reset-modal').classList.add('hidden');
+}
+
+async function resetMana() {
+    closeResetModal();
+    if (!(await customConfirm("Reset all mana tiles to zero?"))) return;
+
+    const manaIds = ['mana-w', 'mana-u', 'mana-b', 'mana-r', 'mana-g', 'mana-c'];
+    manaIds.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.value = 0;
+            localStorage.setItem('cyclonesync_tracker_' + id, 0);
+        }
+    });
+
+    if (navigator.vibrate) navigator.vibrate([50, 50]);
+}
+
 async function resetAll() {
-    if (!(await customConfirm("Are you sure you want to reset?"))) return;
+    closeResetModal();
+    if (!(await customConfirm("Reset ALL tiles to zero?"))) return;
 
     const allInputs = document.querySelectorAll('.quantity');
     allInputs.forEach(input => {
@@ -1508,5 +1533,5 @@ Object.assign(window, {
     copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
     saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters,
     openCountersModal, closeCountersModal, saveCountersConfig, openIconPicker,
-    closeIconPicker, selectIcon
+    closeIconPicker, selectIcon, openResetModal, closeResetModal, resetMana
 });

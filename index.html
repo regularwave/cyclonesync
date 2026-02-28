@@ -212,7 +212,7 @@
                         <i class="ss ss-foil ss-grad ss-nph"></i>
                     </button>
                 </div>
-                <button class="control-btn btn-danger" id="btn-reset" onclick="resetAll()">
+                <button class="control-btn btn-danger" id="btn-reset" onclick="openResetModal()">
                     <i class="ms ss-foil ss-grad ms-ability-dfc"></i>
                 </button>
                 <div class="flyout-wrapper" id="flyout-wrapper">
@@ -463,6 +463,18 @@
             <h2>Scan QR Code</h2>
             <div id="qr-reader" class="qr-reader-box"></div>
             <button class="close-btn" onclick="stopQRScan()">CANCEL</button>
+        </div>
+    </div>
+    <div id="reset-modal" class="hidden modal-overlay modal-topmost">
+        <div class="cmd-modal-content modal-dialog-small">
+            <h2 class="dialog-title">Reset Options</h2>
+            <div class="dialog-btn-row">
+                <button class="close-btn btn-dialog-full btn-primary" onclick="resetMana()">RESET MANA ONLY</button>
+                <br>
+                <button class="close-btn btn-dialog-full btn-danger" onclick="resetAll()">RESET ALL</button>
+                <br>
+                <button class="close-btn btn-dialog-full" onclick="closeResetModal()">CANCEL</button>
+            </div>
         </div>
     </div>
     <div id="confirm-modal" class="hidden modal-overlay modal-topmost">

@@ -569,7 +569,7 @@ body.symbols-hidden .spinner-btns button {
     justify-content: center;
     gap: 0.75rem;
     font-size: 0.8rem;
-    padding: 5rem 0.5rem 0.5rem 0.5rem;
+    padding: 5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom)) 0.5rem;
     background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0.95) 100%);
     pointer-events: none;
 }

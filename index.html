@@ -729,7 +729,15 @@
         if ('serviceWorker' in navigator) {
             let refreshing = false;
             let newWorker;
+
+            let isInitialInstall = !navigator.serviceWorker.controller;
+
             navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (isInitialInstall) {
+                    isInitialInstall = false;
+                    return;
+                }
+
                 if (!refreshing) {
                     refreshing = true;
                     window.location.reload();

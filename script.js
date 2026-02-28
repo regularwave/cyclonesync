@@ -327,8 +327,11 @@ function toggleShare() {
     if (qrContainer && qrContainer.innerHTML === "") {
         new QRCode(qrContainer, {
             text: "https://regularwave.github.io/cyclonesync/",
-            width: 150,
-            height: 150
+            width: 400,
+            height: 400,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L
         });
     }
 
@@ -1113,8 +1116,11 @@ async function joinRoom() {
 
     new QRCode(qrContainer, {
         text: joinUrl,
-        width: 150,
-        height: 150
+        width: 400,
+        height: 400,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.L
     });
 
     listenToRoom();

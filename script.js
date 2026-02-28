@@ -1026,6 +1026,16 @@ async function joinRoom() {
     document.getElementById('display-room-code').innerText = roomId;
     document.getElementById('room-row').classList.remove('hidden');
 
+    for (let i = 2; i <= 4; i++) {
+        const input = document.getElementById(`name-p${i}`);
+        const icon = document.getElementById(`sync-icon-p${i}`);
+        if (input && icon) {
+            input.value = `Player ${i}`;
+            input.disabled = false;
+            icon.classList.add('hidden');
+        }
+    }
+
     const qrContainer = document.getElementById('room-qr-display');
     qrContainer.innerHTML = "";
 
@@ -1085,17 +1095,6 @@ function renderRemotePlayers(players) {
     let hasRemotePlayers = false;
     let remoteIndex = 2;
 
-    for (let i = 2; i <= 4; i++) {
-        const input = document.getElementById(`name-p${i}`);
-        const icon = document.getElementById(`sync-icon-p${i}`);
-        if (input && icon) {
-            const savedName = localStorage.getItem(`name-p${i}`);
-            input.value = savedName || `Player ${i}`;
-            input.disabled = false;
-            icon.classList.add('hidden');
-        }
-    }
-
     Object.keys(players).forEach(key => {
         if (key === AppState.playerId) return;
 
@@ -1131,6 +1130,19 @@ function renderRemotePlayers(players) {
             remoteIndex++;
         }
     });
+
+    for (let i = remoteIndex; i <= 4; i++) {
+        const cmdInput = document.getElementById(`name-p${i}`);
+        const cmdIcon = document.getElementById(`sync-icon-p${i}`);
+
+        if (cmdInput && cmdIcon) {
+            if (!cmdIcon.classList.contains('hidden')) {
+                cmdInput.value = `Player ${i}`;
+                cmdInput.disabled = false;
+                cmdIcon.classList.add('hidden');
+            }
+        }
+    }
 
     if (!hasRemotePlayers) {
         const waiting = document.createElement('span');

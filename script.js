@@ -617,7 +617,7 @@ function renderDock() {
         dockContainer.style.display = 'none';
         resetBtn.style.flex = '1';
     } else {
-        dockContainer.style.display = 'content';
+        dockContainer.style.display = '';
         resetBtn.style.flex = '';
     }
 }

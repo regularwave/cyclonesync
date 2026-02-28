@@ -26,8 +26,11 @@ const AppState = {
     roomId: null,
     playerId: 'player_' + Math.random().toString(36).substr(2, 9),
     roomListener: null,
-    debounceTimer: null,
+    lifeDebounceTimer: null,
+    nameDebounceTimer: null,
     isSyncLocked: false,
+    nameEditMode: false,
+    isNameSyncLocked: false,
     html5QrcodeScanner: null,
     wakeLock: null,
     exitTimer: null,
@@ -230,6 +233,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             toggleConnectModal();
             validateConnectionInputs();
+
+            const statusEl = document.getElementById('conn-status');
+            statusEl.innerText = "Enter your name to join the pod!";
+            statusEl.style.color = "var(--accent-blue)";
+
+            setTimeout(() => nameInputEl.focus(), 300);
         }
     }
 
@@ -463,6 +472,25 @@ function savePlayerName(input) {
 
 function saveCmdName(input) {
     setStored('cyclonesync_tracker_' + input.id, input.value);
+}
+
+function updateActiveName(input) {
+    const newName = input.value.trim();
+    if (!newName) return;
+
+    localStorage.setItem('name-p1', newName);
+    document.getElementById('conn-player-name').value = newName;
+    const p1Input = document.getElementById('name-p1');
+    if (p1Input) p1Input.value = newName;
+
+    if (!AppState.roomId || !AppState.playerId || AppState.isSyncLocked) return;
+
+    if (AppState.nameDebounceTimer) clearTimeout(AppState.nameDebounceTimer);
+
+    AppState.nameDebounceTimer = setTimeout(() => {
+        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
+        set(myNameRef, newName);
+    }, 800);
 }
 
 function loadSettings() {
@@ -1062,6 +1090,7 @@ async function joinRoom() {
 
     document.getElementById('connect-step-1').classList.add('hidden');
     document.getElementById('connect-step-2').classList.remove('hidden');
+    document.getElementById('conn-active-name').value = playerName;
     document.getElementById('display-room-code').innerText = roomId;
     document.getElementById('room-row').classList.remove('hidden');
 
@@ -1089,6 +1118,65 @@ async function joinRoom() {
     listenToRoom();
 
     status.innerText = "Connected!";
+}
+
+function toggleNameEdit() {
+    const input = document.getElementById('conn-active-name');
+    const btn = document.getElementById('btn-edit-name');
+
+    if (!AppState.nameEditMode) {
+        if (AppState.isNameSyncLocked) {
+            customAlert("Please wait a while before changing your name again.");
+            return;
+        }
+
+        AppState.nameEditMode = true;
+        input.disabled = false;
+        input.focus();
+
+        const val = input.value;
+        input.value = '';
+        input.value = val;
+
+        btn.innerHTML = `<span class="name-edit-text-btn">SAVE</span>`;
+        btn.classList.add('btn-primary');
+    } else {
+        const newName = input.value.trim();
+
+        if (!newName) {
+            input.value = localStorage.getItem('name-p1') || 'Player 1';
+        } else if (newName !== localStorage.getItem('name-p1')) {
+            saveActiveName(newName);
+        }
+
+        AppState.nameEditMode = false;
+        input.disabled = true;
+
+        btn.innerHTML = `<i id="icon-name-edit" class="ms ss-foil ss-grad ms-artist-nib"></i>`;
+        btn.classList.remove('btn-primary');
+    }
+}
+
+function saveActiveName(newName) {
+    localStorage.setItem('name-p1', newName);
+    document.getElementById('conn-player-name').value = newName;
+    const p1Input = document.getElementById('name-p1');
+    if (p1Input) p1Input.value = newName;
+
+    if (!AppState.roomId || !AppState.playerId) return;
+
+    AppState.isNameSyncLocked = true;
+
+    if (AppState.nameDebounceTimer) clearTimeout(AppState.nameDebounceTimer);
+
+    AppState.nameDebounceTimer = setTimeout(() => {
+        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
+        set(myNameRef, newName);
+
+        setTimeout(() => {
+            AppState.isNameSyncLocked = false;
+        }, 60000);
+    }, 300);
 }
 
 function listenToRoom() {
@@ -1195,7 +1283,7 @@ function syncLifeToRoom(newLife, immediate = false) {
     if (!AppState.roomId || AppState.isSyncLocked) return;
 
     if (immediate) {
-        clearTimeout(AppState.debounceTimer);
+        clearTimeout(AppState.lifeDebounceTimer);
 
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, newLife);
@@ -1206,8 +1294,8 @@ function syncLifeToRoom(newLife, immediate = false) {
         return;
     }
 
-    if (AppState.debounceTimer) clearTimeout(AppState.debounceTimer);
-    AppState.debounceTimer = setTimeout(() => {
+    if (AppState.lifeDebounceTimer) clearTimeout(AppState.lifeDebounceTimer);
+    AppState.lifeDebounceTimer = setTimeout(() => {
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, newLife);
     }, 500);
@@ -1533,5 +1621,6 @@ Object.assign(window, {
     copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
     saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters,
     openCountersModal, closeCountersModal, saveCountersConfig, openIconPicker,
-    closeIconPicker, selectIcon, openResetModal, closeResetModal, resetMana
+    closeIconPicker, selectIcon, openResetModal, closeResetModal, resetMana,
+    updateActiveName, toggleNameEdit
 });

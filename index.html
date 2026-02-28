@@ -443,6 +443,13 @@
                 <p id="conn-status" class="help-subtext mt-1">Enter a name to begin.</p>
             </div>
             <div id="connect-step-2" class="hidden text-center">
+                <label for="conn-active-name" class="help-subtext input-label mt-1" style="text-align: center;">Your Display Name</label>
+                <div class="name-edit-row">
+                    <input type="text" id="conn-active-name" class="modal-input" placeholder="Your Name" minlength="1" maxlength="12" disabled>
+                    <button class="control-btn" id="btn-edit-name" onclick="toggleNameEdit()">
+                        <i id="icon-name-edit" class="ss ss-foil ss-grad ss-van"></i>
+                    </button>
+                </div>
                 <h3>Room: <span id="display-room-code" class="copyable-code" onclick="copyRoomCode()" title="Tap to copy"></span></h3>
                 <div id="room-qr-display" class="qr-display-box"></div>
                 <p class="help-subtext">Other players can scan this to join the same room!</p>

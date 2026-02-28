@@ -1290,6 +1290,32 @@ body.symbols-hidden .spinner-btns button {
     margin-bottom: 0.2rem;
 }
 
+.name-edit-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.name-edit-row .modal-input {
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+.name-edit-row .control-btn {
+    flex-shrink: 0;
+    width: 3.5rem;
+    margin: 0;
+}
+
+.name-edit-text-btn {
+    font-size: 0.8rem;
+    font-family: var(--font-ui);
+    font-weight: bold;
+}
+
 .room-code-input {
     text-transform: uppercase;
     margin-bottom: 0;

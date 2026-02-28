@@ -1166,10 +1166,12 @@ function toggleNameEdit() {
 }
 
 function saveActiveName(newName) {
-    localStorage.setItem('name-p1', newName);
-    document.getElementById('conn-player-name').value = newName;
+    const safeName = String(newName).trim().substring(0, 12) || "Player";
+
+    localStorage.setItem('name-p1', safeName);
+    document.getElementById('conn-player-name').value = safeName;
     const p1Input = document.getElementById('name-p1');
-    if (p1Input) p1Input.value = newName;
+    if (p1Input) p1Input.value = safeName;
 
     if (!AppState.roomId || !AppState.playerId) return;
 
@@ -1290,11 +1292,15 @@ function renderRemotePlayers(players) {
 function syncLifeToRoom(newLife, immediate = false) {
     if (!AppState.roomId || AppState.isSyncLocked) return;
 
+    let safeLife = parseInt(newLife) || 0;
+    if (safeLife < 0) safeLife = 0;
+    if (safeLife > 999) safeLife = 999;
+
     if (immediate) {
         clearTimeout(AppState.lifeDebounceTimer);
 
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
-        set(myLifeRef, newLife);
+        set(myLifeRef, safeLife);
 
         AppState.isSyncLocked = true;
         setTimeout(() => { AppState.isSyncLocked = false; }, 2000);
@@ -1305,7 +1311,7 @@ function syncLifeToRoom(newLife, immediate = false) {
     if (AppState.lifeDebounceTimer) clearTimeout(AppState.lifeDebounceTimer);
     AppState.lifeDebounceTimer = setTimeout(() => {
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
-        set(myLifeRef, newLife);
+        set(myLifeRef, safeLife);
     }, 500);
 }
 
@@ -1314,9 +1320,16 @@ function reestablishPresence() {
 
     const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
 
+    let safeLife = parseInt(document.getElementById('life').value) || 40;
+    if (safeLife < 0) safeLife = 0;
+    if (safeLife > 999) safeLife = 999;
+
+    let rawName = document.getElementById('conn-player-name').value.trim() || localStorage.getItem('name-p1') || 'Player';
+    let safeName = String(rawName).substring(0, 12);
+
     const myData = {
-        name: document.getElementById('conn-player-name').value.trim() || localStorage.getItem('name-p1'),
-        life: parseInt(document.getElementById('life').value) || 40,
+        name: safeName,
+        life: safeLife,
         lastSeen: Date.now()
     };
 

@@ -242,72 +242,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    history.pushState(null, '', window.location.href);
+    setTimeout(() => {
+        history.pushState(null, '', window.location.href);
 
-    window.addEventListener('popstate', (e) => {
-        if (!document.getElementById('qr-modal').classList.contains('hidden')) {
-            stopQRScan();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('connect-modal').classList.contains('hidden')) {
-            toggleConnectModal();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('pips-modal').classList.contains('hidden')) {
-            savePipsConfig();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('cmd-modal').classList.contains('hidden')) {
-            toggleCmdModal();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        const shareModal = document.getElementById('share-modal');
-        if (shareModal && !shareModal.classList.contains('hidden')) {
-            toggleShare();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('help-modal').classList.contains('hidden')) {
-            toggleHelp();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('credits-modal').classList.contains('hidden')) {
-            toggleCredits();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('dock-modal').classList.contains('hidden')) {
-            closeDockModal();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('counters-modal').classList.contains('hidden')) {
-            closeCountersModal();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
-        if (!document.getElementById('icon-picker-modal').classList.contains('hidden')) {
-            closeIconPicker();
-            history.pushState(null, '', window.location.href);
-            return;
-        }
+        window.addEventListener('popstate', (e) => {
+            if (!document.getElementById('qr-modal').classList.contains('hidden')) {
+                stopQRScan();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('connect-modal').classList.contains('hidden')) {
+                toggleConnectModal();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('pips-modal').classList.contains('hidden')) {
+                savePipsConfig();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('cmd-modal').classList.contains('hidden')) {
+                toggleCmdModal();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            const shareModal = document.getElementById('share-modal');
+            if (shareModal && !shareModal.classList.contains('hidden')) {
+                toggleShare();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('help-modal').classList.contains('hidden')) {
+                toggleHelp();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('credits-modal').classList.contains('hidden')) {
+                toggleCredits();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('dock-modal').classList.contains('hidden')) {
+                closeDockModal();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('counters-modal').classList.contains('hidden')) {
+                closeCountersModal();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
+            if (!document.getElementById('icon-picker-modal').classList.contains('hidden')) {
+                closeIconPicker();
+                history.pushState(null, '', window.location.href);
+                return;
+            }
 
-        if (AppState.exitTimer) {
-            clearTimeout(AppState.exitTimer);
-            history.back();
-        } else {
-            showExitToast();
-            history.pushState(null, '', window.location.href);
-            AppState.exitTimer = setTimeout(() => {
-                AppState.exitTimer = null;
-            }, 2000);
-        }
-    });
+            if (AppState.exitTimer) {
+                clearTimeout(AppState.exitTimer);
+                history.back();
+            } else {
+                showExitToast();
+                history.pushState(null, '', window.location.href);
+                AppState.exitTimer = setTimeout(() => {
+                    AppState.exitTimer = null;
+                }, 2000);
+            }
+        });
+    }, 500);
 });
 
 function toggleCredits() {
@@ -325,8 +327,11 @@ function toggleShare() {
     if (qrContainer && qrContainer.innerHTML === "") {
         new QRCode(qrContainer, {
             text: "https://regularwave.github.io/cyclonesync/",
-            width: 150,
-            height: 150
+            width: 400,
+            height: 400,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L
         });
     }
 
@@ -1111,8 +1116,11 @@ async function joinRoom() {
 
     new QRCode(qrContainer, {
         text: joinUrl,
-        width: 150,
-        height: 150
+        width: 400,
+        height: 400,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.L
     });
 
     listenToRoom();

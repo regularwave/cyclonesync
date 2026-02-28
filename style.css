@@ -1497,6 +1497,23 @@ body.symbols-hidden .spinner-btns button {
     .modal-overlay .control-btn i {
         font-size: 1.2rem;
     }
+
+    .flyout-wrapper {
+        position: static;
+    }
+
+    .flyout-bubble {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        justify-content: center;
+        max-width: 100%;
+    }
+
+    .flyout-bubble::before,
+    .flyout-bubble::after {
+        display: none;
+    }
 }
 
 @media (max-width: 360px) {

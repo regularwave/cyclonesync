@@ -3,10 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
     <link rel="apple-touch-icon" href="img/CycloneSync-iOS-180.png">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="CycloneSync">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
 
@@ -296,11 +298,11 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p1" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p1" class="player-name" value="Player 1" placeholder="Name" oninput="savePlayerName(this)">
+                        <input type="text" id="name-p1" class="player-name" value="Player 1" placeholder="Name" maxlength="12" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c1" value="Commander 1" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p1-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -310,7 +312,7 @@
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p1-c2" value="Commander 2" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p1-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -324,11 +326,11 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p2" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p2" class="player-name" value="Player 2" placeholder="Name" oninput="savePlayerName(this)">
+                        <input type="text" id="name-p2" class="player-name" value="Player 2" placeholder="Name" maxlength="12" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c1" value="Commander 1" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p2-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -338,7 +340,7 @@
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p2-c2" value="Commander 2" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p2-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -352,11 +354,11 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p3" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p3" class="player-name" value="Player 3" placeholder="Name" oninput="savePlayerName(this)">
+                        <input type="text" id="name-p3" class="player-name" value="Player 3" placeholder="Name" maxlength="12" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c1" value="Commander 1" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p3-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -366,7 +368,7 @@
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p3-c2" value="Commander 2" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p3-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -380,11 +382,11 @@
                 <div class="cmd-quarter">
                     <div class="player-name-wrapper">
                         <i id="sync-icon-p4" class="ss ss-foil ss-grad ss-eoe hidden"></i>
-                        <input type="text" id="name-p4" class="player-name" value="Player 4" placeholder="Name" oninput="savePlayerName(this)">
+                        <input type="text" id="name-p4" class="player-name" value="Player 4" placeholder="Name" maxlength="12" oninput="savePlayerName(this)">
                     </div>
                     <div class="cmd-counters-vertical">
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c1" value="Commander 1" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c1" value="Commander 1" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p4-c1" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -394,7 +396,7 @@
                             </div>
                         </div>
                         <div class="cmd-wrapper">
-                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c2" value="Commander 2" oninput="saveCmdName(this)">
+                            <input type="text" class="cmd-name-input" id="name-cmd-p4-c2" value="Commander 2" maxlength="24" oninput="saveCmdName(this)">
                             <div class="cmd-counter-unit">
                                 <input class="quantity cmd-qty" id="cmd-p4-c2" value="0" type="number" readonly tabindex="-1">
                                 <div class="spinner-btns">
@@ -729,7 +731,15 @@
         if ('serviceWorker' in navigator) {
             let refreshing = false;
             let newWorker;
+
+            let isInitialInstall = !navigator.serviceWorker.controller;
+
             navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (isInitialInstall) {
+                    isInitialInstall = false;
+                    return;
+                }
+
                 if (!refreshing) {
                     refreshing = true;
                     window.location.reload();

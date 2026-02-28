@@ -3,32 +3,51 @@
     "name": "CycloneSync",
     "short_name": "CycloneSync",
     "description": "A life and mana tracker for Magic: the Gathering Commander.",
-    "start_url": "./index.html",
-    "display": "standalone",
+    "start_url": "./index.html?source=pwa",
+    "display": "fullscreen",
     "orientation": "any",
     "background_color": "#000000",
     "theme_color": "#000000",
+    "categories": [
+        "games",
+        "entertainment",
+        "utilities"
+    ],
     "launch_handler": {
         "client_mode": "navigate-existing"
     },
     "icons": [
         {
+            "src": "img/CycloneSync.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
             "src": "img/CycloneSync-192.png",
             "sizes": "192x192",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "any"
         },
         {
             "src": "img/CycloneSync-512.png",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "img/screenshot-1.png",
+            "sizes": "1040x1800",
+            "type": "image/png",
+            "form_factor": "narrow"
         },
         {
-            "src": "img/CycloneSync.svg",
-            "sizes": "any",
-            "type": "image/svg+xml",
-            "purpose": "any"
+            "src": "img/screenshot-2.png",
+            "sizes": "1040x1800",
+            "type": "image/png",
+            "form_factor": "narrow"
         }
     ]
 }

@@ -1984,4 +1984,19 @@ body.symbols-hidden .spinner-btns button {
     #counter-edit-modal .icon-picker-grid {
         max-height: 40vh;
     }
+
+    #dock-modal .dock-grid {
+        grid-template-columns: repeat(4, 1fr);
+        margin: 0.5rem 0;
+    }
+
+    #dock-modal .dialog-btn-row {
+        flex-direction: row;
+        margin-top: auto;
+    }
+
+    #dock-modal .dialog-btn-row .close-btn {
+        margin-top: 0;
+        flex: 1;
+    }
 }

@@ -40,8 +40,9 @@ body {
     align-items: center;
     justify-content: flex-start;
     padding-top: .5rem;
-    padding-bottom: 8rem;
-    min-height: 100dvh;
+    padding-bottom: 0;
+    height: 100dvh;
+    overflow: hidden;
     user-select: none;
     -webkit-user-select: none;
     font-family: var(--font-beleren);
@@ -107,24 +108,34 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0 auto;
     width: 95vw;
     max-width: 450px;
+    height: calc(100dvh - 3rem);
     padding: 1rem;
     text-align: center;
     border: 1px solid var(--border-dark);
     border-radius: 1.5rem;
     background-color: var(--bg-panel);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
 .content {
     width: 100%;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    gap: 0.75rem;
 }
 
 .top-row {
     display: flex;
     width: 100%;
     gap: 1rem;
-    margin-bottom: .75rem;
+    margin-bottom: 0;
+    flex: 1 1 0px;
+    min-height: 0;
+    max-height: 220px;
 }
 
 .tracker-grid {
@@ -132,15 +143,16 @@ input[type=number]::-webkit-outer-spin-button {
     grid-template-columns: 1fr 1fr;
     gap: .75rem;
     margin-bottom: 0;
+    flex: 3 1 0px;
+    min-height: 0;
+    grid-auto-rows: 1fr;
+    max-height: calc(var(--grid-rows, 3) * 220px);
 }
 
 .floating-controls {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 95vw;
-    max-width: 450px;
+    position: relative;
+    width: 100%;
+    margin-top: auto;
     background: none;
     border: none;
     padding: 0;
@@ -151,6 +163,7 @@ input[type=number]::-webkit-outer-spin-button {
     gap: 0.5rem;
     z-index: 1000;
     pointer-events: none;
+    flex-shrink: 0;
 }
 
 .dock-container {
@@ -320,7 +333,8 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: rgba(0, 0, 0, 0.2);
     gap: 0.25rem;
     padding: 0 0 0 0.5rem;
-    min-height: 5rem;
+    min-height: 0;
+    height: 100%;
     position: relative;
     flex: 1;
     display: flex;
@@ -382,7 +396,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .quantity {
     font-family: var(--font-beleren);
-    font-size: 4rem;
+    font-size: clamp(2rem, 15vh, 4rem);
     text-align: right;
     background-color: transparent;
     color: var(--text-main);
@@ -559,19 +573,19 @@ body.symbols-hidden .spinner-btns button {
 }
 
 #sticky-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: relative;
     z-index: 999;
     width: 100%;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     gap: 0.75rem;
     font-size: 0.8rem;
-    padding: 5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom)) 0.5rem;
-    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0.95) 100%);
+    padding: 0 0.5rem calc(0.25rem + env(safe-area-inset-bottom)) 0.5rem;
+    height: 3rem;
+    background: none;
     pointer-events: none;
+    flex-shrink: 0;
 }
 
 #sticky-footer .footer-link,
@@ -983,11 +997,12 @@ body.symbols-hidden .spinner-btns button {
     justify-content: space-between;
     width: 100%;
     gap: 0.5rem;
-    margin-bottom: .75rem;
+    margin-bottom: 0;
     padding: 0.5rem;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--border-darker);
     border-radius: 0.5rem;
+    flex-shrink: 0;
 }
 
 .room-exit-btn,
@@ -1062,9 +1077,13 @@ body.symbols-hidden .spinner-btns button {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 0.5rem;
-    margin-top: 1rem;
+    margin-top: 0;
     margin-bottom: 0;
     width: 100%;
+    flex: 2 1 0px;
+    min-height: 0;
+    grid-auto-rows: 1fr;
+    max-height: calc(var(--grid-rows, 2) * 220px);
 }
 
 .counter-name {
@@ -1087,7 +1106,7 @@ body.symbols-hidden .spinner-btns button {
     top: 0;
     bottom: 0;
     width: 100%;
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 10vh, 2.5rem);
     padding-right: 0.25rem;
     z-index: var(--z-above);
     translate: 0 -4px;
@@ -1168,7 +1187,8 @@ body.symbols-hidden .spinner-btns button {
     border: 1px solid var(--border-darker);
     border-radius: 0.5rem;
     padding: 0;
-    min-height: 4rem;
+    min-height: 0;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -1178,17 +1198,7 @@ body.symbols-hidden .spinner-btns button {
     color: rgba(255, 255, 255, 0.2);
     z-index: var(--z-base);
     pointer-events: none;
-}
-
-.counter-qty {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    font-size: 2.5rem;
-    padding-right: 0.25rem;
-    z-index: var(--z-above);
+    font-size: clamp(1.5rem, 6vh, 2rem) !important;
 }
 
 .modal-input {
@@ -1493,6 +1503,28 @@ body.symbols-hidden .spinner-btns button {
     }
 }
 
+@keyframes lifePulseBlue {
+    0% {
+        color: var(--text-light);
+        transform: scale(1);
+    }
+
+    50% {
+        color: var(--accent-blue);
+        transform: scale(1.3);
+    }
+
+    100% {
+        color: var(--text-light);
+        transform: scale(1);
+    }
+}
+
+.pulse-blue {
+    animation: lifePulseBlue 0.4s ease-out;
+    display: inline-block;
+}
+
 .needs-attention {
     border-color: var(--accent-blue) !important;
     animation: attentionPulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
@@ -1571,6 +1603,43 @@ body.symbols-hidden .spinner-btns button {
     border-color: var(--accent-blue);
 }
 
+.room-info-split {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.room-info-left,
+.room-info-right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.room-info-right {
+    gap: 0.5rem;
+}
+
+.room-info-left .qr-display-box {
+    margin: 0.5rem auto;
+}
+
+.action-btn-row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.action-btn-row .control-btn {
+    flex: 1;
+}
+
 @media (max-width: 440px) {
     .tracker-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1618,51 +1687,180 @@ body.symbols-hidden .spinner-btns button {
     }
 }
 
-@media (min-width: 768px),
-(orientation: landscape) and (min-width: 560px) {
+@media (orientation: landscape),
+(min-width: 768px) {
     body {
         background-position: top center;
+        padding-top: 0.5rem;
+        padding-bottom: 0;
+        height: 100dvh;
+        overflow: hidden;
     }
 
     .floatcontainer {
         width: 98vw;
         max-width: 1400px;
-        padding: 1rem;
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
     }
 
     .content {
         display: grid;
         grid-template-columns: auto 1fr;
-        grid-template-areas: "stats mana";
-        gap: 1rem;
-        align-items: center;
+        grid-template-rows: 1fr max-content;
+        grid-template-areas:
+            "stats mana"
+            "controls controls";
+        gap: 0.5rem;
+        align-items: stretch;
+        flex-grow: 1;
+        height: 100%;
+        min-height: 0;
     }
 
     .content:has(.room-row:not(.hidden)) {
-        grid-template-rows: min-content auto;
+        grid-template-rows: max-content 1fr max-content;
         grid-template-areas:
             "room room"
-            "stats mana";
+            "stats mana"
+            "controls controls";
+    }
+
+    .content:has(.counters-grid:not(.hidden)) {
+        grid-template-rows: 1fr 1fr max-content;
+        grid-template-areas:
+            "stats mana"
+            "stats counters"
+            "controls controls";
+    }
+
+    .content:has(.room-row:not(.hidden)):has(.counters-grid:not(.hidden)) {
+        grid-template-rows: max-content 1fr 1fr max-content;
+        grid-template-areas:
+            "room room"
+            "stats mana"
+            "stats counters"
+            "controls controls";
     }
 
     .top-row {
         grid-area: stats;
         flex-direction: column;
         margin-bottom: 0;
-        position: sticky;
-        top: 1rem;
-        gap: 1.5rem;
+        gap: 0.5rem;
         width: 180px;
+        max-height: none;
+        height: 100%;
+        min-height: 0;
     }
 
     .tracker-grid {
         grid-area: mana;
         grid-template-columns: repeat(3, 1fr);
         margin-bottom: 0;
+        gap: 0.5rem;
+        max-height: none;
+        height: 100%;
+        min-height: 0;
+        grid-auto-rows: 1fr;
+    }
+
+    .counters-grid {
+        grid-area: counters;
+        margin-bottom: 0;
+        margin-top: 0;
+        gap: 0.5rem;
+        max-height: none;
+        height: 100%;
+        min-height: 0;
+        grid-auto-rows: 1fr;
+    }
+
+    .room-row {
+        grid-area: room;
+        margin-bottom: 0;
+        padding: 0.25rem 0.5rem;
+        height: min-content;
     }
 
     .span-full {
         grid-column: auto !important;
+    }
+
+    .tile-wrapper,
+    .counter-tile {
+        height: 100%;
+        min-height: 0;
+    }
+
+    .counter-tile {
+        max-width: none;
+    }
+
+    .quantity {
+        font-size: clamp(2rem, 15vh, 4rem);
+        translate: 0 0;
+    }
+
+    .counter-qty {
+        font-size: clamp(1.5rem, 10vh, 2.5rem);
+        translate: 0 0;
+    }
+
+    .manasymbol-icon,
+    .toprow-manasymbol-icon {
+        font-size: 3.5rem;
+        opacity: 0.3;
+    }
+
+    .counter-icon {
+        opacity: 0.3;
+        translate: 0 2px;
+        font-size: clamp(1.5rem, 6vh, 2rem);
+    }
+
+    .floating-controls {
+        grid-area: controls;
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0;
+        margin-top: 0;
+        gap: 0.25rem;
+        flex-wrap: nowrap;
+    }
+
+    .floating-controls .control-btn {
+        height: 2.2rem;
+        min-width: 3rem;
+    }
+
+    .floating-controls .control-btn i {
+        font-size: 1.2rem;
+    }
+
+    .flyout-wrapper {
+        max-width: 4rem;
+    }
+
+    .cmd-modal-content {
+        padding: 0.5rem;
+        gap: 0.15rem;
+    }
+
+    .modal-overlay h2 {
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.25rem;
+        font-size: 1.2rem;
+    }
+
+    .close-btn {
+        margin-top: 0.5rem;
+        padding: 0.25rem 2rem;
     }
 
     #credits-modal .cmd-modal-content {
@@ -1712,41 +1910,93 @@ body.symbols-hidden .spinner-btns button {
         margin-bottom: 0.25rem;
     }
 
-    .room-row {
-        grid-area: room;
-        margin-bottom: 0;
-    }
-
-    .tile-wrapper {
-        min-height: 5rem;
-    }
-
-    .quantity {
-        font-size: 4rem;
-    }
-
-    .floating-controls {
-        flex-wrap: nowrap;
-        max-width: 1400px;
-    }
-
-    .counters-grid {
-        display: flex;
+    .room-info-split {
         flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: center;
-        width: 100%;
-        grid-column: 1 / -1;
+        align-items: center;
+        gap: 0;
+    }
+
+    .room-info-left {
+        border-right: 1px solid var(--border-darker);
+        padding-right: 1rem;
+        width: 50%;
+    }
+
+    .room-info-right {
+        padding-left: 1rem;
+        width: 50%;
+    }
+
+    .room-info-left .qr-display-box {
+        margin: 0.25rem auto;
+        padding: 0.5rem;
+    }
+
+    .room-info-left .qr-display-box canvas,
+    .room-info-left .qr-display-box img {
+        max-height: 45vh !important;
+    }
+
+    .help-subtext {
         margin-top: 0;
+        margin-bottom: 0.25rem;
     }
 
-    .counter-tile {
+    .pips-grid {
+        grid-template-columns: repeat(3, 1fr);
+        margin: 0.5rem auto;
+        gap: 0.5rem;
+    }
+
+    .pip-label {
+        min-height: 2.5rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .modal-input {
+        padding: 0.4rem;
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .connect-split-row {
+        margin-top: 0.25rem;
+    }
+
+    .btn-scan-qr {
+        min-height: 3rem;
+    }
+
+    .divider-line {
+        margin: 0.5rem 0;
+    }
+
+    .ios-warning-box {
+        margin-bottom: 0.5rem;
+        padding: 0.4rem;
+    }
+
+    #counters-modal .dock-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+
+    #counter-edit-modal .icon-picker-grid {
+        max-height: 40vh;
+    }
+
+    #dock-modal .dock-grid {
+        grid-template-columns: repeat(4, 1fr);
+        margin: 0.5rem 0;
+    }
+
+    #dock-modal .dialog-btn-row {
+        flex-direction: row;
+        margin-top: auto;
+    }
+
+    #dock-modal .dialog-btn-row .close-btn {
+        margin-top: 0;
         flex: 1;
-        min-width: 0;
-        max-width: 25%;
-    }
-
-    .counter-qty {
-        font-size: 2.5rem;
     }
 }

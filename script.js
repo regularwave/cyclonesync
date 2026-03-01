@@ -38,10 +38,14 @@ const AppState = {
     pipsOpen: true,
     pipsMask: ['white', 'blue', 'black', 'red', 'green', 'colorless'],
     dockMask: ['btn-life', 'btn-pips', 'btn-cmd', 'btn-connect'],
-    countersMask: ['poison', 'exp', 'energy', 'rad'],
+    countersMask: ['c1', 'c2', 'c3', 'c4'],
     customCounters: {
-        custom1: { name: 'Custom 1', icon: 'ms ms-acorn', color: '#dddddd' },
-        custom2: { name: 'Custom 2', icon: 'ms ms-rarity', color: '#dddddd' }
+        c1: { name: 'Poison', icon: 'ms ms-h', color: '#dddddd' },
+        c2: { name: 'Experience', icon: 'ss ss-c15', color: '#dddddd' },
+        c3: { name: 'Energy', icon: 'ms ms-energy', color: '#dddddd' },
+        c4: { name: 'Rads', icon: 'ms ms-counter-rad', color: '#dddddd' },
+        c5: { name: 'Custom 5', icon: 'ms ms-rarity', color: '#dddddd' },
+        c6: { name: 'Custom 6', icon: 'ms ms-rarity', color: '#dddddd' }
     }
 };
 
@@ -236,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const statusEl = document.getElementById('conn-status');
             statusEl.innerText = "Enter your name to join the pod!";
-            statusEl.style.color = "var(--accent-blue)";
+            statusEl.style.color = "var(--accent-danger)";
 
             setTimeout(() => nameInputEl.focus(), 300);
         }
@@ -287,13 +291,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 history.pushState(null, '', window.location.href);
                 return;
             }
-            if (!document.getElementById('counters-modal').classList.contains('hidden')) {
-                closeCountersModal();
+            if (!document.getElementById('counter-edit-modal').classList.contains('hidden')) {
+                closeCounterEdit();
                 history.pushState(null, '', window.location.href);
                 return;
             }
-            if (!document.getElementById('icon-picker-modal').classList.contains('hidden')) {
-                closeIconPicker();
+            if (!document.getElementById('counters-modal').classList.contains('hidden')) {
+                closeCountersModal();
                 history.pushState(null, '', window.location.href);
                 return;
             }
@@ -424,9 +428,14 @@ function updateCmdValue(id, change) {
     if (modalLife) {
         modalLife.innerText = lifeVal;
 
-        modalLife.classList.remove('pulse-danger');
+        modalLife.classList.remove('pulse-danger', 'pulse-blue');
         void modalLife.offsetWidth;
-        modalLife.classList.add('pulse-danger');
+
+        if (change > 0) {
+            modalLife.classList.add('pulse-danger');
+        } else if (change < 0) {
+            modalLife.classList.add('pulse-blue');
+        }
     }
 }
 
@@ -456,7 +465,7 @@ async function resetMana() {
 
 async function resetAll() {
     closeResetModal();
-    if (!(await customConfirm("Reset ALL tiles to zero?"))) return;
+    if (!(await customConfirm("Reset life to 40 and other tiles to zero?"))) return;
 
     const allInputs = document.querySelectorAll('.quantity');
     allInputs.forEach(input => {
@@ -525,8 +534,10 @@ function loadSettings() {
 
     const savedCustomCounters = getStored('cyclonesync_customCounters');
     if (savedCustomCounters) {
-        try { AppState.customCounters = JSON.parse(savedCustomCounters); }
-        catch (e) { }
+        try {
+            const parsed = JSON.parse(savedCustomCounters);
+            Object.assign(AppState.customCounters, parsed);
+        } catch (e) { }
     }
 
     applySettings();
@@ -591,7 +602,9 @@ function applySettings() {
     const btnCounters = document.getElementById('btn-counters');
 
     if (AppState.settings.counters) {
-        countersRow.classList.remove('hidden');
+        if (AppState.countersMask.length > 0) {
+            countersRow.classList.remove('hidden');
+        }
         btnCounters.classList.remove('disabled');
     } else {
         countersRow.classList.add('hidden');
@@ -780,6 +793,20 @@ function updateManaGrid() {
         lastTile.classList.add('span-full');
     }
 
+    const trackerGrid = document.querySelector('.tracker-grid');
+    if (trackerGrid) {
+        if (visibleTiles.length === 0) {
+            trackerGrid.classList.add('hidden');
+        } else {
+            trackerGrid.classList.remove('hidden');
+            const rows = Math.ceil(visibleTiles.length / 2);
+            trackerGrid.style.flex = `${rows} 1 0px`;
+            trackerGrid.style.setProperty('--grid-rows', rows); 
+            
+            document.getElementById('content').style.setProperty('--mana-rows', rows);
+        }
+    }
+
     const btn = document.getElementById('btn-pips');
     if (AppState.pipsOpen) {
         btn.classList.remove('disabled');
@@ -790,34 +817,30 @@ function updateManaGrid() {
 }
 
 function updateCountersGrid() {
-    const countersMap = {
-        'poison': 'tile-poison',
-        'exp': 'tile-exp',
-        'energy': 'tile-energy',
-        'rad': 'tile-rad',
-        'custom1': 'tile-custom1',
-        'custom2': 'tile-custom2'
-    };
-
     let visibleTiles = [];
 
-    Object.keys(countersMap).forEach(cnt => {
-        const wrapper = document.getElementById(countersMap[cnt]);
-        if (!wrapper) return;
+    for (let i = 1; i <= 6; i++) {
+        const cId = 'c' + i;
+        const wrapper = document.getElementById('tile-' + cId);
+        if (!wrapper) continue;
 
         wrapper.classList.remove('span-full');
 
-        if (AppState.countersMask.includes(cnt)) {
+        const cData = AppState.customCounters[cId];
+        document.getElementById('label-' + cId).innerText = cData.name;
+        document.getElementById('icon-' + cId).className = cData.icon + ' counter-icon ms-2x';
+        document.getElementById('icon-' + cId).style.color = cData.color;
+
+        if (AppState.countersMask.includes(cId)) {
             wrapper.classList.remove('hidden');
             visibleTiles.push(wrapper);
         } else {
             wrapper.classList.add('hidden');
             wrapper.style.gridColumn = '';
         }
-    });
+    }
 
     const count = visibleTiles.length;
-
     if (count === 1) {
         visibleTiles[0].style.gridColumn = 'span 6';
     } else if (count === 2 || count === 4) {
@@ -832,19 +855,21 @@ function updateCountersGrid() {
         visibleTiles[4].style.gridColumn = 'span 3';
     }
 
-    const c1 = AppState.customCounters.custom1;
-    document.getElementById('label-custom1').innerText = c1.name;
-    document.getElementById('label-custom1').style.color = '';
-    document.getElementById('icon-custom1').className = c1.icon + ' ms-2x counter-icon';
-    document.getElementById('icon-custom1').style.color = c1.color;
+    const countersGrid = document.getElementById('counters-row');
+    if (countersGrid) {
+        if (count === 0 || !AppState.settings.counters) {
+            countersGrid.classList.add('hidden');
+        } else {
+            countersGrid.classList.remove('hidden');
+            const rows = count > 3 ? 2 : 1;
+            countersGrid.style.flex = `${rows} 1 0px`;
+            countersGrid.style.setProperty('--grid-rows', rows); /* ADDED */
 
-    const c2 = AppState.customCounters.custom2;
-    document.getElementById('label-custom2').innerText = c2.name;
-    document.getElementById('label-custom2').style.color = '';
-    document.getElementById('icon-custom2').className = c2.icon + ' ms-2x counter-icon';
-    document.getElementById('icon-custom2').style.color = c2.color;
+            document.getElementById('content').style.setProperty('--counter-rows', rows);
+        }
+    }
+
 }
-
 
 function openCountersModal() {
     const modal = document.getElementById('counters-modal');
@@ -855,16 +880,14 @@ function openCountersModal() {
         chk.checked = AppState.countersMask.includes(chk.value);
     });
 
-    document.getElementById('input-name-custom1').value = AppState.customCounters.custom1.name;
-    document.getElementById('preview-icon-custom1').className = AppState.customCounters.custom1.icon;
-    document.getElementById('input-name-custom2').value = AppState.customCounters.custom2.name;
-    document.getElementById('preview-icon-custom2').className = AppState.customCounters.custom2.icon;
-    document.getElementById('color-custom1').value = AppState.customCounters.custom1.color || '#dddddd';
-    document.getElementById('color-custom2').value = AppState.customCounters.custom2.color || '#dddddd';
-}
-
-function closeCountersModal() {
-    document.getElementById('counters-modal').classList.add('hidden');
+    for (let i = 1; i <= 6; i++) {
+        const cId = 'c' + i;
+        const cData = AppState.customCounters[cId];
+        const lbl = document.getElementById('modal-label-' + cId);
+        const icn = document.getElementById('modal-icon-' + cId);
+        if (lbl) lbl.innerText = cData.name;
+        if (icn) icn.className = cData.icon + ' ms-2x dock-icon';
+    }
 }
 
 function saveCountersConfig() {
@@ -874,23 +897,49 @@ function saveCountersConfig() {
         if (chk.checked) AppState.countersMask.push(chk.value);
     });
 
-    AppState.customCounters.custom1.name = document.getElementById('input-name-custom1').value || 'Custom 1';
-    AppState.customCounters.custom2.name = document.getElementById('input-name-custom2').value || 'Custom 2';
-    AppState.customCounters.custom1.color = document.getElementById('color-custom1').value;
-    AppState.customCounters.custom2.color = document.getElementById('color-custom2').value;
-
     setStored('cyclonesync_countersMask', JSON.stringify(AppState.countersMask));
-    setStored('cyclonesync_customCounters', JSON.stringify(AppState.customCounters));
-
     updateCountersGrid();
-    closeCountersModal();
+    document.getElementById('counters-modal').classList.add('hidden');
 }
 
-let editingCustomCounter = null;
+function closeCountersModal() {
+    document.getElementById('counters-modal').classList.add('hidden');
+}
 
-function openIconPicker(counterNum) {
-    editingCustomCounter = counterNum;
-    const modal = document.getElementById('icon-picker-modal');
+let counterPressTimer;
+let isCounterLongPress = false;
+let editingCounterId = null;
+let tempEditIcon = '';
+
+function startCounterHold(e, id) {
+    isCounterLongPress = false;
+    counterPressTimer = setTimeout(() => {
+        isCounterLongPress = true;
+        openCounterEdit(id);
+        if (navigator.vibrate) navigator.vibrate(50);
+    }, 600);
+}
+
+function stopCounterHold() {
+    if (counterPressTimer) clearTimeout(counterPressTimer);
+}
+
+function handleCounterClick(e) {
+    if (isCounterLongPress) {
+        e.preventDefault();
+    }
+}
+
+function openCounterEdit(id) {
+    editingCounterId = id;
+    const counter = AppState.customCounters[id];
+    tempEditIcon = counter.icon;
+
+    document.getElementById('edit-counter-name').value = counter.name;
+    document.getElementById('edit-counter-color').value = counter.color || '#dddddd';
+    document.getElementById('edit-counter-icon-preview').className = counter.icon + ' ms-2x';
+
+    const modal = document.getElementById('counter-edit-modal');
     const grid = document.getElementById('icon-picker-grid');
 
     if (grid.children.length === 0) {
@@ -907,19 +956,31 @@ function openIconPicker(counterNum) {
 }
 
 function selectIcon(iconClass) {
-    if (editingCustomCounter === 1) {
-        AppState.customCounters.custom1.icon = iconClass;
-        document.getElementById('preview-icon-custom1').className = iconClass;
-    } else if (editingCustomCounter === 2) {
-        AppState.customCounters.custom2.icon = iconClass;
-        document.getElementById('preview-icon-custom2').className = iconClass;
-    }
-    closeIconPicker();
+    tempEditIcon = iconClass;
+    document.getElementById('edit-counter-icon-preview').className = iconClass + ' ms-2x';
 }
 
-function closeIconPicker() {
-    document.getElementById('icon-picker-modal').classList.add('hidden');
-    editingCustomCounter = null;
+function saveCounterEdit() {
+    const name = document.getElementById('edit-counter-name').value || 'Custom';
+    const color = document.getElementById('edit-counter-color').value;
+
+    AppState.customCounters[editingCounterId] = {
+        name: name,
+        icon: tempEditIcon,
+        color: color
+    };
+
+    document.getElementById(`modal-label-${editingCounterId}`).innerText = name;
+    document.getElementById(`modal-icon-${editingCounterId}`).className = tempEditIcon + ' ms-2x dock-icon';
+
+    setStored('cyclonesync_customCounters', JSON.stringify(AppState.customCounters));
+    updateCountersGrid();
+    closeCounterEdit();
+}
+
+function closeCounterEdit() {
+    document.getElementById('counter-edit-modal').classList.add('hidden');
+    editingCounterId = null;
 }
 
 function openPipsModal() {
@@ -1029,15 +1090,18 @@ function validateConnectionInputs() {
         if (roomInputValue.length >= 5) {
             joinBtn.disabled = false;
             status.innerText = "Ready to connect!";
+            status.style.color = "var(--accent-blue)";
         } else {
             joinBtn.disabled = true;
             status.innerText = "Enter a room name (5+ chars) or scan a QR code.";
+            status.style.color = "var(--accent-danger)";
         }
     } else {
         roomInputEl.disabled = true;
         joinBtn.disabled = true;
         scanBtn.disabled = true;
         status.innerText = "Enter a name to begin.";
+        status.style.color = "var(--accent-danger)";
     }
 }
 
@@ -1641,7 +1705,8 @@ Object.assign(window, {
     toggleUDLR, startHold, stopHold, shareNatively, copyRoomCode, shareRoomLink,
     copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
     saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters,
-    openCountersModal, closeCountersModal, saveCountersConfig, openIconPicker,
-    closeIconPicker, selectIcon, openResetModal, closeResetModal, resetMana,
-    updateActiveName, toggleNameEdit
+    openCountersModal, closeCountersModal, saveCountersConfig, startCounterHold,
+    selectIcon, openResetModal, closeResetModal, resetMana,
+    updateActiveName, toggleNameEdit, stopCounterHold, handleCounterClick, closeCounterEdit,
+    saveCounterEdit
 });

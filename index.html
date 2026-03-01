@@ -141,58 +141,58 @@
                 </div>
             </div>
             <div id="counters-row" class="counters-grid hidden">
-                <div class="counter-tile" id="tile-poison">
-                    <i class="ms ms-h ms-2x counter-icon"></i>
-                    <div class="counter-name">Poison</div>
-                    <input class="quantity counter-qty" id="cnt-poison" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                <div class="counter-tile" id="tile-c1">
+                    <i id="icon-c1" class="ms ms-h ms-2x counter-icon"></i>
+                    <div id="label-c1" class="counter-name">Poison</div>
+                    <input class="quantity counter-qty" id="cnt-c1" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'cnt-poison', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'cnt-poison', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-c1', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-c1', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
-                <div class="counter-tile" id="tile-exp">
-                    <i class="ss ss-c15 ss-2x counter-icon"></i>
-                    <div class="counter-name">Experience</div>
-                    <input class="quantity counter-qty" id="cnt-exp" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                <div class="counter-tile" id="tile-c2">
+                    <i id="icon-c2" class="ss ss-c15 ss-2x counter-icon"></i>
+                    <div id="label-c2" class="counter-name">Experience</div>
+                    <input class="quantity counter-qty" id="cnt-c2" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'cnt-exp', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'cnt-exp', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-c2', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-c2', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
-                <div class="counter-tile" id="tile-energy">
-                    <i class="ms ms-energy ms-2x counter-icon"></i>
-                    <div class="counter-name">Energy</div>
-                    <input class="quantity counter-qty" id="cnt-energy" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                <div class="counter-tile" id="tile-c3">
+                    <i id="icon-c3" class="ms ms-energy ms-2x counter-icon"></i>
+                    <div id="label-c3" class="counter-name">Energy</div>
+                    <input class="quantity counter-qty" id="cnt-c3" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'cnt-energy', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'cnt-energy', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-c3', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-c3', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
-                <div class="counter-tile" id="tile-rad">
-                    <i class="ms ms-counter-rad ms-2x counter-icon"></i>
-                    <div class="counter-name">Rads</div>
-                    <input class="quantity counter-qty" id="cnt-rad" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                <div class="counter-tile" id="tile-c4">
+                    <i id="icon-c4" class="ms ms-counter-rad ms-2x counter-icon"></i>
+                    <div id="label-c4" class="counter-name">Rads</div>
+                    <input class="quantity counter-qty" id="cnt-c4" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'cnt-rad', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'cnt-rad', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-c4', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-c4', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
-                <div class="counter-tile hidden" id="tile-custom1">
-                    <i id="icon-custom1" class="ms ms-star ms-2x counter-icon"></i>
-                    <div id="label-custom1" class="counter-name">Custom 1</div>
-                    <input class="quantity counter-qty" id="cnt-custom1" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                <div class="counter-tile hidden" id="tile-c5">
+                    <i id="icon-c5" class="ms ms-star ms-2x counter-icon"></i>
+                    <div id="label-c5" class="counter-name">Custom 1</div>
+                    <input class="quantity counter-qty" id="cnt-c5" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'cnt-custom1', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'cnt-custom1', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-c5', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-c5', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
-                <div class="counter-tile hidden" id="tile-custom2">
-                    <i id="icon-custom2" class="ms ms-star ms-2x counter-icon"></i>
-                    <div id="label-custom2" class="counter-name">Custom 2</div>
-                    <input class="quantity counter-qty" id="cnt-custom2" min="0" max="999" value="0" type="number" readonly tabindex="-1">
+                <div class="counter-tile hidden" id="tile-c6">
+                    <i id="icon-c6" class="ms ms-star ms-2x counter-icon"></i>
+                    <div id="label-c6" class="counter-name">Custom 2</div>
+                    <input class="quantity counter-qty" id="cnt-c6" min="0" max="999" value="0" type="number" readonly tabindex="-1">
                     <div class="spinner-btns">
-                        <button class="plus" onpointerdown="startHold(event, 'cnt-custom2', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
-                        <button class="minus" onpointerdown="startHold(event, 'cnt-custom2', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
+                        <button class="plus" onpointerdown="startHold(event, 'cnt-c6', 1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&plus;</button>
+                        <button class="minus" onpointerdown="startHold(event, 'cnt-c6', -1)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()" oncontextmenu="return false;">&minus;</button>
                     </div>
                 </div>
             </div>
@@ -506,47 +506,43 @@
     <div id="counters-modal" class="hidden modal-overlay">
         <div class="cmd-modal-content">
             <h2>Counters Config</h2>
-            <p class="help-subtext mb-0-5">Choose which counters are shown when the <i class="ss ss-foil ss-grad ss-nph"></i> button is active.</p>
+            <p class="help-subtext mb-0-5">Tap to toggle visibility. Long-press to edit.</p>
             <div class="dock-grid" style="margin-bottom: 0;">
-                <input type="checkbox" id="chk-cnt-poison" class="cnt-chk hidden" value="poison">
-                <label for="chk-cnt-poison" class="dock-chk-label">
-                    <i class="ms ms-h ms-2x dock-icon"></i>
-                    <span>Poison</span>
+                <input type="checkbox" id="chk-cnt-c1" class="cnt-chk hidden" value="c1">
+                <label for="chk-cnt-c1" class="dock-chk-label" onclick="handleCounterClick(event)" onpointerdown="startCounterHold(event, 'c1')" onpointerup="stopCounterHold()" onpointercancel="stopCounterHold()" onpointerleave="stopCounterHold()" oncontextmenu="return false;">
+                    <i id="modal-icon-c1" class="ms ms-h ms-2x dock-icon"></i>
+                    <span id="modal-label-c1">Poison</span>
                 </label>
-                <input type="checkbox" id="chk-cnt-exp" class="cnt-chk hidden" value="exp">
-                <label for="chk-cnt-exp" class="dock-chk-label">
-                    <i class="ss ss-c15 ss-2x dock-icon"></i>
-                    <span>Experience</span>
+
+                <input type="checkbox" id="chk-cnt-c2" class="cnt-chk hidden" value="c2">
+                <label for="chk-cnt-c2" class="dock-chk-label" onclick="handleCounterClick(event)" onpointerdown="startCounterHold(event, 'c2')" onpointerup="stopCounterHold()" onpointercancel="stopCounterHold()" onpointerleave="stopCounterHold()" oncontextmenu="return false;">
+                    <i id="modal-icon-c2" class="ss ss-c15 ss-2x dock-icon"></i>
+                    <span id="modal-label-c2">Experience</span>
                 </label>
-                <input type="checkbox" id="chk-cnt-energy" class="cnt-chk hidden" value="energy">
-                <label for="chk-cnt-energy" class="dock-chk-label">
-                    <i class="ms ms-energy ms-2x dock-icon"></i>
-                    <span>Energy</span>
+
+                <input type="checkbox" id="chk-cnt-c3" class="cnt-chk hidden" value="c3">
+                <label for="chk-cnt-c3" class="dock-chk-label" onclick="handleCounterClick(event)" onpointerdown="startCounterHold(event, 'c3')" onpointerup="stopCounterHold()" onpointercancel="stopCounterHold()" onpointerleave="stopCounterHold()" oncontextmenu="return false;">
+                    <i id="modal-icon-c3" class="ms ms-energy ms-2x dock-icon"></i>
+                    <span id="modal-label-c3">Energy</span>
                 </label>
-                <input type="checkbox" id="chk-cnt-rad" class="cnt-chk hidden" value="rad">
-                <label for="chk-cnt-rad" class="dock-chk-label">
-                    <i class="ms ms-counter-rad ms-2x dock-icon"></i>
-                    <span>Rads</span>
+
+                <input type="checkbox" id="chk-cnt-c4" class="cnt-chk hidden" value="c4">
+                <label for="chk-cnt-c4" class="dock-chk-label" onclick="handleCounterClick(event)" onpointerdown="startCounterHold(event, 'c4')" onpointerup="stopCounterHold()" onpointercancel="stopCounterHold()" onpointerleave="stopCounterHold()" oncontextmenu="return false;">
+                    <i id="modal-icon-c4" class="ms ms-counter-rad ms-2x dock-icon"></i>
+                    <span id="modal-label-c4">Rads</span>
                 </label>
-            </div>
-            <h3 style="margin-top: 1rem; margin-bottom: 0.5rem; text-align: left; border-bottom: 1px solid #333; padding-bottom: 0.25rem;">Custom Counters</h3>
-            <div class="custom-counter-config">
-                <div class="custom-counter-row">
-                    <input type="checkbox" id="chk-cnt-custom1" class="cnt-chk custom-chk" value="custom1">
-                    <input type="text" id="input-name-custom1" class="modal-input custom-name-input" placeholder="Name (e.g. Acorn)">
-                    <input type="color" id="color-custom1" class="color-picker-input">
-                    <button class="control-btn custom-icon-btn" onclick="openIconPicker(1)">
-                        <i id="preview-icon-custom1" class="ms ms-acorn"></i>
-                    </button>
-                </div>
-                <div class="custom-counter-row">
-                    <input type="checkbox" id="chk-cnt-custom2" class="cnt-chk custom-chk" value="custom2">
-                    <input type="text" id="input-name-custom2" class="modal-input custom-name-input" placeholder="Name (e.g. Rarity)">
-                    <input type="color" id="color-custom2" class="color-picker-input">
-                    <button class="control-btn custom-icon-btn" onclick="openIconPicker(2)">
-                        <i id="preview-icon-custom2" class="ms ms-rarity"></i>
-                    </button>
-                </div>
+
+                <input type="checkbox" id="chk-cnt-c5" class="cnt-chk hidden" value="c5">
+                <label for="chk-cnt-c5" class="dock-chk-label" onclick="handleCounterClick(event)" onpointerdown="startCounterHold(event, 'c5')" onpointerup="stopCounterHold()" onpointercancel="stopCounterHold()" onpointerleave="stopCounterHold()" oncontextmenu="return false;">
+                    <i id="modal-icon-c5" class="ms ms-star ms-2x dock-icon"></i>
+                    <span id="modal-label-c5">Custom 1</span>
+                </label>
+
+                <input type="checkbox" id="chk-cnt-c6" class="cnt-chk hidden" value="c6">
+                <label for="chk-cnt-c6" class="dock-chk-label" onclick="handleCounterClick(event)" onpointerdown="startCounterHold(event, 'c6')" onpointerup="stopCounterHold()" onpointercancel="stopCounterHold()" onpointerleave="stopCounterHold()" oncontextmenu="return false;">
+                    <i id="modal-icon-c6" class="ms ms-star ms-2x dock-icon"></i>
+                    <span id="modal-label-c6">Custom 2</span>
+                </label>
             </div>
             <div class="dialog-btn-row mt-auto">
                 <button class="close-btn btn-dialog-full btn-primary" onclick="saveCountersConfig()">SAVE & CLOSE</button>
@@ -692,13 +688,20 @@
             <button class="close-btn" onclick="toggleShare()">CLOSE</button>
         </div>
     </div>
-    <div id="icon-picker-modal" class="hidden modal-overlay modal-topmost">
+    <div id="counter-edit-modal" class="hidden modal-overlay modal-topmost">
         <div class="cmd-modal-content">
-            <h2>Select Icon</h2>
-            <div id="icon-picker-grid" class="icon-picker-grid">
+            <h2>Edit Counter</h2>
+            <div class="custom-counter-row" style="margin-bottom: 1rem;">
+                <input type="text" id="edit-counter-name" class="modal-input custom-name-input" placeholder="Name" maxlength="12">
+                <input type="color" id="edit-counter-color" class="color-picker-input">
+                <div class="custom-icon-btn" style="pointer-events:none; display:flex; align-items:center; justify-content:center;">
+                    <i id="edit-counter-icon-preview" class="ms ms-acorn ms-2x"></i>
+                </div>
             </div>
+            <div id="icon-picker-grid" class="icon-picker-grid"></div>
             <div class="dialog-btn-row mt-auto">
-                <button class="close-btn btn-dialog-full" onclick="closeIconPicker()">CANCEL</button>
+                <button class="close-btn btn-dialog-full btn-primary" onclick="saveCounterEdit()">SAVE</button>
+                <button class="close-btn btn-dialog-full" onclick="closeCounterEdit()">CANCEL</button>
             </div>
         </div>
     </div>

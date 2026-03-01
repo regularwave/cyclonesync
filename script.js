@@ -465,7 +465,7 @@ async function resetMana() {
 
 async function resetAll() {
     closeResetModal();
-    if (!(await customConfirm("Reset ALL tiles to zero?"))) return;
+    if (!(await customConfirm("Reset life to 40 and other tiles to zero?"))) return;
 
     const allInputs = document.querySelectorAll('.quantity');
     allInputs.forEach(input => {
@@ -602,7 +602,9 @@ function applySettings() {
     const btnCounters = document.getElementById('btn-counters');
 
     if (AppState.settings.counters) {
-        countersRow.classList.remove('hidden');
+        if (AppState.countersMask.length > 0) {
+            countersRow.classList.remove('hidden');
+        }
         btnCounters.classList.remove('disabled');
     } else {
         countersRow.classList.add('hidden');
@@ -791,6 +793,20 @@ function updateManaGrid() {
         lastTile.classList.add('span-full');
     }
 
+    const trackerGrid = document.querySelector('.tracker-grid');
+    if (trackerGrid) {
+        if (visibleTiles.length === 0) {
+            trackerGrid.classList.add('hidden');
+        } else {
+            trackerGrid.classList.remove('hidden');
+            const rows = Math.ceil(visibleTiles.length / 2);
+            trackerGrid.style.flex = `${rows} 1 0px`;
+            trackerGrid.style.setProperty('--grid-rows', rows); 
+            
+            document.getElementById('content').style.setProperty('--mana-rows', rows);
+        }
+    }
+
     const btn = document.getElementById('btn-pips');
     if (AppState.pipsOpen) {
         btn.classList.remove('disabled');
@@ -838,6 +854,21 @@ function updateCountersGrid() {
         visibleTiles[3].style.gridColumn = 'span 3';
         visibleTiles[4].style.gridColumn = 'span 3';
     }
+
+    const countersGrid = document.getElementById('counters-row');
+    if (countersGrid) {
+        if (count === 0 || !AppState.settings.counters) {
+            countersGrid.classList.add('hidden');
+        } else {
+            countersGrid.classList.remove('hidden');
+            const rows = count > 3 ? 2 : 1;
+            countersGrid.style.flex = `${rows} 1 0px`;
+            countersGrid.style.setProperty('--grid-rows', rows); /* ADDED */
+
+            document.getElementById('content').style.setProperty('--counter-rows', rows);
+        }
+    }
+
 }
 
 function openCountersModal() {

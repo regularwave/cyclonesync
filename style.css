@@ -1493,6 +1493,28 @@ body.symbols-hidden .spinner-btns button {
     }
 }
 
+@keyframes lifePulseBlue {
+    0% {
+        color: var(--text-light);
+        transform: scale(1);
+    }
+
+    50% {
+        color: var(--accent-blue);
+        transform: scale(1.3);
+    }
+
+    100% {
+        color: var(--text-light);
+        transform: scale(1);
+    }
+}
+
+.pulse-blue {
+    animation: lifePulseBlue 0.4s ease-out;
+    display: inline-block;
+}
+
 .needs-attention {
     border-color: var(--accent-blue) !important;
     animation: attentionPulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);

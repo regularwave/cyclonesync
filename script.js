@@ -428,9 +428,14 @@ function updateCmdValue(id, change) {
     if (modalLife) {
         modalLife.innerText = lifeVal;
 
-        modalLife.classList.remove('pulse-danger');
+        modalLife.classList.remove('pulse-danger', 'pulse-blue');
         void modalLife.offsetWidth;
-        modalLife.classList.add('pulse-danger');
+
+        if (change > 0) {
+            modalLife.classList.add('pulse-danger');
+        } else if (change < 0) {
+            modalLife.classList.add('pulse-blue');
+        }
     }
 }
 

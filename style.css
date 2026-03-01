@@ -1750,3 +1750,65 @@ body.symbols-hidden .spinner-btns button {
         font-size: 2.5rem;
     }
 }
+
+/* Landscape Mobile Optimization for Modals */
+@media (orientation: landscape) and (max-height: 600px) {
+
+    /* Global Modal Vertical Padding Reductions */
+    .cmd-modal-content {
+        padding: 0.5rem;
+        gap: 0.15rem;
+    }
+
+    .modal-overlay h2 {
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.25rem;
+        font-size: 1.2rem;
+    }
+
+    .close-btn {
+        margin-top: 0.5rem;
+        padding: 0.25rem 2rem;
+    }
+
+    .help-subtext {
+        margin-top: 0;
+        margin-bottom: 0.25rem;
+    }
+
+    /* Pips Modal: 2 rows of 3, shorter buttons */
+    .pips-grid {
+        grid-template-columns: repeat(3, 1fr);
+        margin: 0.5rem auto;
+        gap: 0.5rem;
+    }
+
+    .pip-label {
+        min-height: 2.5rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Connect Modal: Shorter inputs and spacing */
+    .modal-input {
+        padding: 0.4rem;
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .connect-split-row {
+        margin-top: 0.25rem;
+    }
+
+    .btn-scan-qr {
+        min-height: 3rem;
+    }
+
+    .divider-line {
+        margin: 0.5rem 0;
+    }
+
+    .ios-warning-box {
+        margin-bottom: 0.5rem;
+        padding: 0.4rem;
+    }
+}

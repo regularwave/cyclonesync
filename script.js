@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const statusEl = document.getElementById('conn-status');
             statusEl.innerText = "Enter your name to join the pod!";
-            statusEl.style.color = "var(--accent-blue)";
+            statusEl.style.color = "var(--accent-danger)";
 
             setTimeout(() => nameInputEl.focus(), 300);
         }
@@ -1029,15 +1029,18 @@ function validateConnectionInputs() {
         if (roomInputValue.length >= 5) {
             joinBtn.disabled = false;
             status.innerText = "Ready to connect!";
+            status.style.color = "var(--accent-blue)";
         } else {
             joinBtn.disabled = true;
             status.innerText = "Enter a room name (5+ chars) or scan a QR code.";
+            status.style.color = "var(--accent-danger)";
         }
     } else {
         roomInputEl.disabled = true;
         joinBtn.disabled = true;
         scanBtn.disabled = true;
         status.innerText = "Enter a name to begin.";
+        status.style.color = "var(--accent-danger)";
     }
 }
 

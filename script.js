@@ -25,17 +25,11 @@ const AppState = {
     settings: { life: true, tax: false, taxSplit: false, awake: true, layoutLR: false, counters: false },
     roomId: null,
     playerId: 'player_' + Math.random().toString(36).substr(2, 9),
-    roomListener: null,
-    lifeDebounceTimer: null,
-    nameDebounceTimer: null,
-    isSyncLocked: false,
-    nameEditMode: false,
-    isNameSyncLocked: false,
-    html5QrcodeScanner: null,
-    wakeLock: null,
-    exitTimer: null,
     syncedPlayers: {},
+
     pipsOpen: true,
+    nameEditMode: false,
+
     pipsMask: ['white', 'blue', 'black', 'red', 'green', 'colorless'],
     dockMask: ['btn-life', 'btn-pips', 'btn-cmd', 'btn-connect'],
     countersMask: ['c1', 'c2', 'c3', 'c4'],
@@ -46,7 +40,38 @@ const AppState = {
         c4: { name: 'Rads', icon: 'ms ms-counter-rad', color: '#dddddd' },
         c5: { name: 'Custom 5', icon: 'ms ms-rarity', color: '#dddddd' },
         c6: { name: 'Custom 6', icon: 'ms ms-rarity', color: '#dddddd' }
-    }
+    },
+
+    timers: {
+        lifeDebounce: null,
+        nameDebounce: null,
+        exit: null,
+        hold: null,
+        repeat: null,
+        pipsPress: null,
+        taxPress: null,
+        countersPress: null,
+        dockPress: null,
+        counterPress: null
+    },
+    flags: {
+        isSyncLocked: false,
+        isNameSyncLocked: false,
+        isLongPress: false,
+        taxIsLongPress: false,
+        countersIsLongPress: false,
+        isDockLongPress: false,
+        isCounterLongPress: false
+    },
+    edit: {
+        counterId: null,
+        tempIcon: ''
+    },
+
+    roomListener: null,
+    html5QrcodeScanner: null,
+    wakeLock: null,
+    holdDuration: 0
 };
 
 const CURATED_ICONS = [
@@ -68,6 +93,74 @@ function setStored(key, value) {
     localStorage.setItem(key, value);
 }
 
+function customConfirm(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirm-modal');
+        const msgBox = document.getElementById('confirm-msg');
+        const btnYes = document.getElementById('confirm-yes');
+        const btnNo = document.getElementById('confirm-no');
+
+        msgBox.innerText = message;
+        modal.classList.remove('hidden');
+
+        const cleanup = () => {
+            modal.classList.add('hidden');
+            btnYes.removeEventListener('click', onYes);
+            btnNo.removeEventListener('click', onNo);
+        };
+
+        const onYes = () => { cleanup(); resolve(true); };
+        const onNo = () => { cleanup(); resolve(false); };
+
+        btnYes.addEventListener('click', onYes);
+        btnNo.addEventListener('click', onNo);
+    });
+}
+
+function customAlert(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('alert-modal');
+        const msgBox = document.getElementById('alert-msg');
+        const btnOk = document.getElementById('alert-ok');
+
+        msgBox.innerText = message;
+        modal.classList.remove('hidden');
+
+        const cleanup = () => {
+            modal.classList.add('hidden');
+            btnOk.removeEventListener('click', onOk);
+        };
+
+        const onOk = () => {
+            cleanup();
+            resolve();
+        };
+
+        btnOk.addEventListener('click', onOk);
+    });
+}
+
+function showExitToast() {
+    let toast = document.getElementById('exit-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'exit-toast';
+        toast.className = 'exit-toast';
+        toast.innerText = "Press back again to exit";
+        document.body.appendChild(toast);
+    }
+
+    toast.style.transition = 'none';
+    toast.style.opacity = '1';
+
+    void toast.offsetWidth;
+    toast.style.transition = 'opacity 0.5s ease-in-out';
+
+    setTimeout(() => {
+        if (toast) toast.style.opacity = '0';
+    }, 2000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.quantity, .cmd-name-input').forEach(input => {
@@ -86,21 +179,17 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
 
     const pipsBtn = document.getElementById('btn-pips');
-    let pressTimer;
-    let isLongPress = false;
-
     pipsBtn.addEventListener('pointerdown', (e) => {
-        isLongPress = false;
-        pressTimer = setTimeout(() => {
-            isLongPress = true;
+        AppState.flags.isLongPress = false;
+        AppState.timers.pipsPress = setTimeout(() => {
+            AppState.flags.isLongPress = true;
             openPipsModal();
             if (navigator.vibrate) navigator.vibrate(50);
         }, 600);
     });
-
     pipsBtn.addEventListener('pointerup', (e) => {
-        if (pressTimer) clearTimeout(pressTimer);
-        if (!isLongPress) {
+        if (AppState.timers.pipsPress) clearTimeout(AppState.timers.pipsPress);
+        if (!AppState.flags.isLongPress) {
             const controls = document.querySelector('.controls-row');
             if (controls) {
                 controls.style.pointerEvents = 'none';
@@ -108,64 +197,53 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             togglePips();
         }
-        isLongPress = false;
+        AppState.flags.isLongPress = false;
     });
-
     pipsBtn.addEventListener('pointercancel', () => {
-        if (pressTimer) clearTimeout(pressTimer);
-        isLongPress = true;
+        if (AppState.timers.pipsPress) clearTimeout(AppState.timers.pipsPress);
+        AppState.flags.isLongPress = true;
     });
 
     const taxBtn = document.getElementById('btn-tax');
-    let taxPressTimer;
-    let taxIsLongPress = false;
-
     taxBtn.addEventListener('pointerdown', (e) => {
-        taxIsLongPress = false;
-        taxPressTimer = setTimeout(() => {
-            taxIsLongPress = true;
+        AppState.flags.taxIsLongPress = false;
+        AppState.timers.taxPress = setTimeout(() => {
+            AppState.flags.taxIsLongPress = true;
             toggleTaxSplit();
             if (navigator.vibrate) navigator.vibrate(50);
         }, 600);
     });
-
     taxBtn.addEventListener('pointerup', (e) => {
-        if (taxPressTimer) clearTimeout(taxPressTimer);
-        if (!taxIsLongPress) {
+        if (AppState.timers.taxPress) clearTimeout(AppState.timers.taxPress);
+        if (!AppState.flags.taxIsLongPress) {
             toggleTax();
         }
-        taxIsLongPress = false;
+        AppState.flags.taxIsLongPress = false;
     });
-
     taxBtn.addEventListener('pointercancel', () => {
-        if (taxPressTimer) clearTimeout(taxPressTimer);
-        taxIsLongPress = true;
+        if (AppState.timers.taxPress) clearTimeout(AppState.timers.taxPress);
+        AppState.flags.taxIsLongPress = true;
     });
 
     const countersBtn = document.getElementById('btn-counters');
-    let countersPressTimer;
-    let countersIsLongPress = false;
-
     countersBtn.addEventListener('pointerdown', (e) => {
-        countersIsLongPress = false;
-        countersPressTimer = setTimeout(() => {
-            countersIsLongPress = true;
+        AppState.flags.countersIsLongPress = false;
+        AppState.timers.countersPress = setTimeout(() => {
+            AppState.flags.countersIsLongPress = true;
             openCountersModal();
             if (navigator.vibrate) navigator.vibrate(50);
         }, 600);
     });
-
     countersBtn.addEventListener('pointerup', (e) => {
-        if (countersPressTimer) clearTimeout(countersPressTimer);
-        if (!countersIsLongPress) {
+        if (AppState.timers.countersPress) clearTimeout(AppState.timers.countersPress);
+        if (!AppState.flags.countersIsLongPress) {
             toggleCounters();
         }
-        countersIsLongPress = false;
+        AppState.flags.countersIsLongPress = false;
     });
-
     countersBtn.addEventListener('pointercancel', () => {
-        if (countersPressTimer) clearTimeout(countersPressTimer);
-        countersIsLongPress = true;
+        if (AppState.timers.countersPress) clearTimeout(AppState.timers.countersPress);
+        AppState.flags.countersIsLongPress = true;
     });
 
     if (AppState.settings.awake) {
@@ -227,7 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (roomFromUrl) {
         document.getElementById('conn-room-code').value = roomFromUrl.toUpperCase();
-
         window.history.replaceState({}, document.title, window.location.pathname);
 
         const hasSavedName = document.getElementById('conn-player-name').value.trim().length > 0;
@@ -242,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             statusEl.innerText = "Enter your name to join the pod!";
             statusEl.style.color = "var(--accent-danger)";
 
-            setTimeout(() => nameInputEl.focus(), 300);
+            setTimeout(() => document.getElementById('conn-player-name').focus(), 300);
         }
     }
 
@@ -302,54 +379,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            if (AppState.exitTimer) {
-                clearTimeout(AppState.exitTimer);
+            if (AppState.timers.exit) {
+                clearTimeout(AppState.timers.exit);
                 history.back();
             } else {
                 showExitToast();
                 history.pushState(null, '', window.location.href);
-                AppState.exitTimer = setTimeout(() => {
-                    AppState.exitTimer = null;
+                AppState.timers.exit = setTimeout(() => {
+                    AppState.timers.exit = null;
                 }, 2000);
             }
         });
     }, 500);
 });
 
-function toggleCredits() {
-    document.getElementById('credits-modal').classList.toggle('hidden');
-}
-
-function toggleHelp() {
-    document.getElementById('help-modal').classList.toggle('hidden');
-}
-
-function toggleShare() {
-    document.getElementById('share-modal').classList.toggle('hidden');
-
-    const qrContainer = document.getElementById('share-qr-display');
-    if (qrContainer && qrContainer.innerHTML === "") {
-        new QRCode(qrContainer, {
-            text: "https://regularwave.github.io/cyclonesync/",
-            width: 400,
-            height: 400,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.L
-        });
-    }
-
-    if (navigator.share) {
-        document.getElementById('btn-native-share').classList.remove('hidden');
-    }
-}
-
+function toggleCredits() { document.getElementById('credits-modal').classList.toggle('hidden'); }
+function toggleHelp() { document.getElementById('help-modal').classList.toggle('hidden'); }
 function toggleCmdModal() {
     const modal = document.getElementById('cmd-modal');
     modal.classList.toggle('hidden');
-
     if (!modal.classList.contains('hidden')) {
         document.getElementById('cmd-modal-life').innerText = document.getElementById('life').value;
+    }
+}
+function toggleShare() {
+    document.getElementById('share-modal').classList.toggle('hidden');
+    const qrContainer = document.getElementById('share-qr-display');
+    if (qrContainer && qrContainer.innerHTML === "") {
+        new QRCode(qrContainer, {
+            text: "https://cyclonesync.cloud/",
+            width: 400, height: 400, colorDark: "#000000", colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L
+        });
+    }
+    if (navigator.share) {
+        document.getElementById('btn-native-share').classList.remove('hidden');
     }
 }
 
@@ -360,32 +424,21 @@ function updateValue(id, change) {
     saveValues(input, val);
 }
 
-let holdTimer = null;
-let repeatInterval = null;
-let holdDuration = 0;
-
 function startHold(e, targetId, change, isCmd = false) {
-    if (isCmd) {
-        updateCmdValue(targetId, change);
-    } else {
-        updateValue(targetId, change);
-    }
+    if (isCmd) { updateCmdValue(targetId, change); }
+    else { updateValue(targetId, change); }
     if (navigator.vibrate) navigator.vibrate(10);
 
-    holdDuration = 0;
+    AppState.holdDuration = 0;
 
-    holdTimer = setTimeout(() => {
-        repeatInterval = setInterval(() => {
-            holdDuration += 100;
-
-            const multiplier = holdDuration >= 2000 ? 5 : 1;
+    AppState.timers.hold = setTimeout(() => {
+        AppState.timers.repeat = setInterval(() => {
+            AppState.holdDuration += 100;
+            const multiplier = AppState.holdDuration >= 2000 ? 5 : 1;
             const finalChange = change * multiplier;
 
-            if (isCmd) {
-                updateCmdValue(targetId, finalChange);
-            } else {
-                updateValue(targetId, finalChange);
-            }
+            if (isCmd) { updateCmdValue(targetId, finalChange); }
+            else { updateValue(targetId, finalChange); }
 
             if (navigator.vibrate) navigator.vibrate(5);
         }, 100);
@@ -393,10 +446,10 @@ function startHold(e, targetId, change, isCmd = false) {
 }
 
 function stopHold() {
-    if (holdTimer) clearTimeout(holdTimer);
-    if (repeatInterval) clearInterval(repeatInterval);
-    holdTimer = null;
-    repeatInterval = null;
+    if (AppState.timers.hold) clearTimeout(AppState.timers.hold);
+    if (AppState.timers.repeat) clearInterval(AppState.timers.repeat);
+    AppState.timers.hold = null;
+    AppState.timers.repeat = null;
 }
 
 function saveValues(input, val) {
@@ -427,25 +480,15 @@ function updateCmdValue(id, change) {
     const modalLife = document.getElementById('cmd-modal-life');
     if (modalLife) {
         modalLife.innerText = lifeVal;
-
         modalLife.classList.remove('pulse-danger', 'pulse-blue');
         void modalLife.offsetWidth;
-
-        if (change > 0) {
-            modalLife.classList.add('pulse-danger');
-        } else if (change < 0) {
-            modalLife.classList.add('pulse-blue');
-        }
+        if (change > 0) modalLife.classList.add('pulse-danger');
+        else if (change < 0) modalLife.classList.add('pulse-blue');
     }
 }
 
-function openResetModal() {
-    document.getElementById('reset-modal').classList.remove('hidden');
-}
-
-function closeResetModal() {
-    document.getElementById('reset-modal').classList.add('hidden');
-}
+function openResetModal() { document.getElementById('reset-modal').classList.remove('hidden'); }
+function closeResetModal() { document.getElementById('reset-modal').classList.add('hidden'); }
 
 async function resetMana() {
     closeResetModal();
@@ -473,39 +516,13 @@ async function resetAll() {
         input.value = defaultVal;
         localStorage.setItem('cyclonesync_tracker_' + input.id, defaultVal);
 
-        if (input.id === 'life') {
-            syncLifeToRoom(defaultVal, true);
-        }
+        if (input.id === 'life') syncLifeToRoom(defaultVal, true);
     });
     if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
 }
 
-function savePlayerName(input) {
-    setStored(input.id, input.value);
-}
-
-function saveCmdName(input) {
-    setStored('cyclonesync_tracker_' + input.id, input.value);
-}
-
-function updateActiveName(input) {
-    const newName = input.value.trim();
-    if (!newName) return;
-
-    localStorage.setItem('name-p1', newName);
-    document.getElementById('conn-player-name').value = newName;
-    const p1Input = document.getElementById('name-p1');
-    if (p1Input) p1Input.value = newName;
-
-    if (!AppState.roomId || !AppState.playerId || AppState.isSyncLocked) return;
-
-    if (AppState.nameDebounceTimer) clearTimeout(AppState.nameDebounceTimer);
-
-    AppState.nameDebounceTimer = setTimeout(() => {
-        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
-        set(myNameRef, newName);
-    }, 800);
-}
+function savePlayerName(input) { setStored(input.id, input.value); }
+function saveCmdName(input) { setStored('cyclonesync_tracker_' + input.id, input.value); }
 
 function loadSettings() {
     const savedSettings = getStored('cyclonesync_settings');
@@ -559,11 +576,8 @@ function applySettings() {
     const tileTax = document.getElementById('tile-tax');
     const btnTax = document.getElementById('btn-tax');
 
-    if (!AppState.settings.life && !AppState.settings.tax) {
-        topRow.classList.add('hidden');
-    } else {
-        topRow.classList.remove('hidden');
-    }
+    if (!AppState.settings.life && !AppState.settings.tax) topRow.classList.add('hidden');
+    else topRow.classList.remove('hidden');
 
     if (AppState.settings.life) {
         tileLife.classList.remove('hidden');
@@ -582,11 +596,8 @@ function applySettings() {
     }
 
     const taxHalf2 = document.getElementById('tax-half-2');
-    if (AppState.settings.taxSplit) {
-        taxHalf2.classList.remove('hidden');
-    } else {
-        taxHalf2.classList.add('hidden');
-    }
+    if (AppState.settings.taxSplit) taxHalf2.classList.remove('hidden');
+    else taxHalf2.classList.add('hidden');
 
     const btnAwake = document.getElementById('btn-awake');
     const iconAwake = btnAwake.querySelector('i');
@@ -602,54 +613,27 @@ function applySettings() {
     const btnCounters = document.getElementById('btn-counters');
 
     if (AppState.settings.counters) {
-        if (AppState.countersMask.length > 0) {
-            countersRow.classList.remove('hidden');
-        }
+        if (AppState.countersMask.length > 0) countersRow.classList.remove('hidden');
         btnCounters.classList.remove('disabled');
     } else {
         countersRow.classList.add('hidden');
         btnCounters.classList.add('disabled');
     }
 
-    if (AppState.settings.layoutLR) {
-        document.body.classList.add('layout-lr');
-    } else {
-        document.body.classList.remove('layout-lr');
-    }
+    if (AppState.settings.layoutLR) document.body.classList.add('layout-lr');
+    else document.body.classList.remove('layout-lr');
 }
 
-function toggleLife() {
-    AppState.settings.life = !AppState.settings.life;
-    applySettings();
-    saveSettings();
-}
-
-function toggleTax() {
-    AppState.settings.tax = !AppState.settings.tax;
-    applySettings();
-    saveSettings();
-}
-
+function toggleLife() { AppState.settings.life = !AppState.settings.life; applySettings(); saveSettings(); }
+function toggleTax() { AppState.settings.tax = !AppState.settings.tax; applySettings(); saveSettings(); }
 function toggleTaxSplit() {
-    if (!AppState.settings.tax) {
-        AppState.settings.tax = true;
-    }
+    if (!AppState.settings.tax) AppState.settings.tax = true;
     AppState.settings.taxSplit = !AppState.settings.taxSplit;
     applySettings();
     saveSettings();
 }
-
-function togglePips() {
-    AppState.pipsOpen = !AppState.pipsOpen;
-    updateManaGrid();
-    saveSettings();
-}
-
-function toggleCounters() {
-    AppState.settings.counters = !AppState.settings.counters;
-    applySettings();
-    saveSettings();
-}
+function togglePips() { AppState.pipsOpen = !AppState.pipsOpen; updateManaGrid(); saveSettings(); }
+function toggleCounters() { AppState.settings.counters = !AppState.settings.counters; applySettings(); saveSettings(); }
 
 function toggleFlyout() {
     const bubble = document.getElementById('flyout-bubble');
@@ -660,9 +644,7 @@ document.addEventListener('click', (event) => {
     const wrapper = document.getElementById('flyout-wrapper');
     const bubble = document.getElementById('flyout-bubble');
     if (wrapper && bubble && !bubble.classList.contains('hidden')) {
-        if (!wrapper.contains(event.target)) {
-            bubble.classList.add('hidden');
-        }
+        if (!wrapper.contains(event.target)) bubble.classList.add('hidden');
     }
 });
 
@@ -692,11 +674,8 @@ function renderDock() {
         }
     });
 
-    if (flyoutCount === 0) {
-        if (emptyMsg) emptyMsg.classList.remove('hidden');
-    } else {
-        if (emptyMsg) emptyMsg.classList.add('hidden');
-    }
+    if (flyoutCount === 0) { if (emptyMsg) emptyMsg.classList.remove('hidden'); }
+    else { if (emptyMsg) emptyMsg.classList.add('hidden'); }
 
     if (dockCount === 0) {
         dockContainer.style.display = 'none';
@@ -710,64 +689,42 @@ function renderDock() {
 function openDockModal() {
     const modal = document.getElementById('dock-modal');
     modal.classList.remove('hidden');
-
     const checkboxes = document.querySelectorAll('.dock-chk');
-    checkboxes.forEach(chk => {
-        chk.checked = AppState.dockMask.includes(chk.value);
-    });
+    checkboxes.forEach(chk => { chk.checked = AppState.dockMask.includes(chk.value); });
 }
-
-function closeDockModal() {
-    document.getElementById('dock-modal').classList.add('hidden');
-}
+function closeDockModal() { document.getElementById('dock-modal').classList.add('hidden'); }
 
 function saveDockConfig() {
     const checkboxes = document.querySelectorAll('.dock-chk');
     AppState.dockMask = [];
-    checkboxes.forEach(chk => {
-        if (chk.checked) AppState.dockMask.push(chk.value);
-    });
-
+    checkboxes.forEach(chk => { if (chk.checked) AppState.dockMask.push(chk.value); });
     setStored('cyclonesync_dockMask', JSON.stringify(AppState.dockMask));
     renderDock();
     closeDockModal();
 }
 
-let dockPressTimer;
-let isDockLongPress = false;
-
 function startDockHold(e) {
-    isDockLongPress = false;
-    dockPressTimer = setTimeout(() => {
-        isDockLongPress = true;
+    AppState.flags.isDockLongPress = false;
+    AppState.timers.dockPress = setTimeout(() => {
+        AppState.flags.isDockLongPress = true;
         openDockModal();
         if (navigator.vibrate) navigator.vibrate(50);
     }, 600);
 }
 
 function stopDockHold() {
-    if (dockPressTimer) clearTimeout(dockPressTimer);
-    if (!isDockLongPress) {
-        toggleFlyout();
-    }
-    isDockLongPress = false;
+    if (AppState.timers.dockPress) clearTimeout(AppState.timers.dockPress);
+    if (!AppState.flags.isDockLongPress) toggleFlyout();
+    AppState.flags.isDockLongPress = false;
 }
 
 function cancelDockHold() {
-    if (dockPressTimer) clearTimeout(dockPressTimer);
-    isDockLongPress = true;
+    if (AppState.timers.dockPress) clearTimeout(AppState.timers.dockPress);
+    AppState.flags.isDockLongPress = true;
 }
 
 function updateManaGrid() {
-    const colorMap = {
-        'white': 'tile-w',
-        'blue': 'tile-u',
-        'black': 'tile-b',
-        'red': 'tile-r',
-        'green': 'tile-g',
-        'colorless': 'tile-c'
-    };
-
+    const colorMap = { 'white': 'tile-w', 'blue': 'tile-u', 'black': 'tile-b', 'red': 'tile-r', 'green': 'tile-g', 'colorless': 'tile-c' };
     let visibleTiles = [];
 
     Object.keys(colorMap).forEach(color => {
@@ -776,33 +733,23 @@ function updateManaGrid() {
         if (!wrapper) return;
 
         wrapper.classList.remove('span-full');
-
         const isManaged = AppState.pipsMask.includes(color);
         const shouldHide = isManaged && !AppState.pipsOpen;
 
-        if (shouldHide) {
-            wrapper.classList.add('hidden');
-        } else {
-            wrapper.classList.remove('hidden');
-            visibleTiles.push(wrapper);
-        }
+        if (shouldHide) wrapper.classList.add('hidden');
+        else { wrapper.classList.remove('hidden'); visibleTiles.push(wrapper); }
     });
 
-    if (visibleTiles.length % 2 !== 0) {
-        const lastTile = visibleTiles[visibleTiles.length - 1];
-        lastTile.classList.add('span-full');
-    }
+    if (visibleTiles.length % 2 !== 0) visibleTiles[visibleTiles.length - 1].classList.add('span-full');
 
     const trackerGrid = document.querySelector('.tracker-grid');
     if (trackerGrid) {
-        if (visibleTiles.length === 0) {
-            trackerGrid.classList.add('hidden');
-        } else {
+        if (visibleTiles.length === 0) trackerGrid.classList.add('hidden');
+        else {
             trackerGrid.classList.remove('hidden');
             const rows = Math.ceil(visibleTiles.length / 2);
             trackerGrid.style.flex = `${rows} 1 0px`;
-            trackerGrid.style.setProperty('--grid-rows', rows); 
-            
+            trackerGrid.style.setProperty('--grid-rows', rows);
             document.getElementById('content').style.setProperty('--mana-rows', rows);
         }
     }
@@ -825,7 +772,6 @@ function updateCountersGrid() {
         if (!wrapper) continue;
 
         wrapper.classList.remove('span-full');
-
         const cData = AppState.customCounters[cId];
         document.getElementById('label-' + cId).innerText = cData.name;
         document.getElementById('icon-' + cId).className = cData.icon + ' counter-icon ms-2x';
@@ -841,13 +787,10 @@ function updateCountersGrid() {
     }
 
     const count = visibleTiles.length;
-    if (count === 1) {
-        visibleTiles[0].style.gridColumn = 'span 6';
-    } else if (count === 2 || count === 4) {
-        visibleTiles.forEach(t => t.style.gridColumn = 'span 3');
-    } else if (count === 3 || count === 6) {
-        visibleTiles.forEach(t => t.style.gridColumn = 'span 2');
-    } else if (count === 5) {
+    if (count === 1) visibleTiles[0].style.gridColumn = 'span 6';
+    else if (count === 2 || count === 4) visibleTiles.forEach(t => t.style.gridColumn = 'span 3');
+    else if (count === 3 || count === 6) visibleTiles.forEach(t => t.style.gridColumn = 'span 2');
+    else if (count === 5) {
         visibleTiles[0].style.gridColumn = 'span 2';
         visibleTiles[1].style.gridColumn = 'span 2';
         visibleTiles[2].style.gridColumn = 'span 2';
@@ -857,18 +800,15 @@ function updateCountersGrid() {
 
     const countersGrid = document.getElementById('counters-row');
     if (countersGrid) {
-        if (count === 0 || !AppState.settings.counters) {
-            countersGrid.classList.add('hidden');
-        } else {
+        if (count === 0 || !AppState.settings.counters) countersGrid.classList.add('hidden');
+        else {
             countersGrid.classList.remove('hidden');
             const rows = count > 3 ? 2 : 1;
             countersGrid.style.flex = `${rows} 1 0px`;
-            countersGrid.style.setProperty('--grid-rows', rows); /* ADDED */
-
+            countersGrid.style.setProperty('--grid-rows', rows);
             document.getElementById('content').style.setProperty('--counter-rows', rows);
         }
     }
-
 }
 
 function openCountersModal() {
@@ -876,9 +816,7 @@ function openCountersModal() {
     modal.classList.remove('hidden');
 
     const checkboxes = document.querySelectorAll('.cnt-chk');
-    checkboxes.forEach(chk => {
-        chk.checked = AppState.countersMask.includes(chk.value);
-    });
+    checkboxes.forEach(chk => { chk.checked = AppState.countersMask.includes(chk.value); });
 
     for (let i = 1; i <= 6; i++) {
         const cId = 'c' + i;
@@ -893,47 +831,31 @@ function openCountersModal() {
 function saveCountersConfig() {
     const checkboxes = document.querySelectorAll('.cnt-chk');
     AppState.countersMask = [];
-    checkboxes.forEach(chk => {
-        if (chk.checked) AppState.countersMask.push(chk.value);
-    });
+    checkboxes.forEach(chk => { if (chk.checked) AppState.countersMask.push(chk.value); });
 
     setStored('cyclonesync_countersMask', JSON.stringify(AppState.countersMask));
     updateCountersGrid();
     document.getElementById('counters-modal').classList.add('hidden');
 }
 
-function closeCountersModal() {
-    document.getElementById('counters-modal').classList.add('hidden');
-}
-
-let counterPressTimer;
-let isCounterLongPress = false;
-let editingCounterId = null;
-let tempEditIcon = '';
+function closeCountersModal() { document.getElementById('counters-modal').classList.add('hidden'); }
 
 function startCounterHold(e, id) {
-    isCounterLongPress = false;
-    counterPressTimer = setTimeout(() => {
-        isCounterLongPress = true;
+    AppState.flags.isCounterLongPress = false;
+    AppState.timers.counterPress = setTimeout(() => {
+        AppState.flags.isCounterLongPress = true;
         openCounterEdit(id);
         if (navigator.vibrate) navigator.vibrate(50);
     }, 600);
 }
 
-function stopCounterHold() {
-    if (counterPressTimer) clearTimeout(counterPressTimer);
-}
-
-function handleCounterClick(e) {
-    if (isCounterLongPress) {
-        e.preventDefault();
-    }
-}
+function stopCounterHold() { if (AppState.timers.counterPress) clearTimeout(AppState.timers.counterPress); }
+function handleCounterClick(e) { if (AppState.flags.isCounterLongPress) e.preventDefault(); }
 
 function openCounterEdit(id) {
-    editingCounterId = id;
+    AppState.edit.counterId = id;
     const counter = AppState.customCounters[id];
-    tempEditIcon = counter.icon;
+    AppState.edit.tempIcon = counter.icon;
 
     document.getElementById('edit-counter-name').value = counter.name;
     document.getElementById('edit-counter-color').value = counter.color || '#dddddd';
@@ -951,12 +873,11 @@ function openCounterEdit(id) {
             grid.appendChild(btn);
         });
     }
-
     modal.classList.remove('hidden');
 }
 
 function selectIcon(iconClass) {
-    tempEditIcon = iconClass;
+    AppState.edit.tempIcon = iconClass;
     document.getElementById('edit-counter-icon-preview').className = iconClass + ' ms-2x';
 }
 
@@ -964,14 +885,14 @@ function saveCounterEdit() {
     const name = document.getElementById('edit-counter-name').value || 'Custom';
     const color = document.getElementById('edit-counter-color').value;
 
-    AppState.customCounters[editingCounterId] = {
+    AppState.customCounters[AppState.edit.counterId] = {
         name: name,
-        icon: tempEditIcon,
+        icon: AppState.edit.tempIcon,
         color: color
     };
 
-    document.getElementById(`modal-label-${editingCounterId}`).innerText = name;
-    document.getElementById(`modal-icon-${editingCounterId}`).className = tempEditIcon + ' ms-2x dock-icon';
+    document.getElementById(`modal-label-${AppState.edit.counterId}`).innerText = name;
+    document.getElementById(`modal-icon-${AppState.edit.counterId}`).className = AppState.edit.tempIcon + ' ms-2x dock-icon';
 
     setStored('cyclonesync_customCounters', JSON.stringify(AppState.customCounters));
     updateCountersGrid();
@@ -980,17 +901,14 @@ function saveCounterEdit() {
 
 function closeCounterEdit() {
     document.getElementById('counter-edit-modal').classList.add('hidden');
-    editingCounterId = null;
+    AppState.edit.counterId = null;
 }
 
 function openPipsModal() {
     const modal = document.getElementById('pips-modal');
     modal.classList.remove('hidden');
-
     const checkboxes = document.querySelectorAll('.pip-chk');
-    checkboxes.forEach(chk => {
-        chk.checked = AppState.pipsMask.includes(chk.value);
-    });
+    checkboxes.forEach(chk => { chk.checked = AppState.pipsMask.includes(chk.value); });
 }
 
 function savePipsConfig() {
@@ -998,14 +916,9 @@ function savePipsConfig() {
     const checkboxes = document.querySelectorAll('.pip-chk');
 
     AppState.pipsMask = [];
-    checkboxes.forEach(chk => {
-        if (chk.checked) {
-            AppState.pipsMask.push(chk.value);
-        }
-    });
+    checkboxes.forEach(chk => { if (chk.checked) AppState.pipsMask.push(chk.value); });
 
     modal.classList.add('hidden');
-
     updateManaGrid();
     saveSettings();
 }
@@ -1018,7 +931,6 @@ function toggleConnectModal() {
         validateConnectionInputs();
         checkIOSBrowserEnvironment();
     }
-
     if (modal.classList.contains('hidden') && AppState.html5QrcodeScanner) {
         AppState.html5QrcodeScanner.clear();
     }
@@ -1026,9 +938,8 @@ function toggleConnectModal() {
 
 async function toggleWakeLock() {
     AppState.settings.awake = !AppState.settings.awake;
-    if (AppState.settings.awake) {
-        await requestWakeLock();
-    } else {
+    if (AppState.settings.awake) await requestWakeLock();
+    else {
         if (AppState.wakeLock !== null) {
             await AppState.wakeLock.release();
             AppState.wakeLock = null;
@@ -1043,23 +954,44 @@ async function requestWakeLock(isAutoResume = false) {
         if ('wakeLock' in navigator && document.visibilityState === 'visible') {
             if (AppState.wakeLock !== null) return;
             AppState.wakeLock = await navigator.wakeLock.request('screen');
-            AppState.wakeLock.addEventListener('release', () => {
-                AppState.wakeLock = null;
-            });
+            AppState.wakeLock.addEventListener('release', () => { AppState.wakeLock = null; });
         }
     } catch (err) {
         console.error(`${err.name}, ${err.message}`);
-
         if (AppState.settings.awake) {
             AppState.settings.awake = false;
             applySettings();
             saveSettings();
-
             if (!isAutoResume && err.name === 'NotAllowedError') {
                 customAlert("Screen wake lock denied by the device. Check if Battery Saver is on, or tap the wake lock button again to grant permission.");
             }
         }
     }
+}
+
+function switchHelpTab(tabId) {
+    const contents = document.querySelectorAll('.help-tab-content');
+    contents.forEach(content => content.classList.add('hidden'));
+
+    const buttons = document.querySelectorAll('.help-tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    document.getElementById(tabId).classList.remove('hidden');
+    const targetBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(tabId));
+    if (targetBtn) targetBtn.classList.add('active');
+}
+
+function toggleUDLR() {
+    AppState.settings.layoutLR = !AppState.settings.layoutLR;
+    applySettings();
+    saveSettings();
+    triggerSymbolFade();
+}
+
+function triggerSymbolFade() {
+    document.body.classList.remove('symbols-hidden');
+    void document.body.offsetWidth;
+    document.body.classList.add('symbols-hidden');
 }
 
 function validateConnectionInputs() {
@@ -1112,15 +1044,8 @@ async function joinRoom() {
     const playerName = nameInput.value.trim();
     const roomId = roomInput.value.trim().toUpperCase();
 
-    if (!playerName) {
-        status.innerText = "Please enter your name.";
-        return;
-    }
-
-    if (roomId.length < 5 || roomId.length > 20) {
-        status.innerText = "Room name must be between 5 and 20 characters.";
-        return;
-    }
+    if (!playerName) { status.innerText = "Please enter your name."; return; }
+    if (roomId.length < 5 || roomId.length > 20) { status.innerText = "Room name must be between 5 and 20 characters."; return; }
 
     status.innerText = "Connecting...";
 
@@ -1147,12 +1072,7 @@ async function joinRoom() {
     }
 
     const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
-
-    const myData = {
-        name: playerName,
-        life: parseInt(document.getElementById('life').value) || 40,
-        lastSeen: Date.now()
-    };
+    const myData = { name: playerName, life: parseInt(document.getElementById('life').value) || 40, lastSeen: Date.now() };
 
     set(myRef, myData);
     onDisconnect(myRef).remove();
@@ -1176,20 +1096,34 @@ async function joinRoom() {
     const qrContainer = document.getElementById('room-qr-display');
     qrContainer.innerHTML = "";
 
-    const joinUrl = `https://regularwave.github.io/cyclonesync/?room=${roomId}`;
+    const joinUrl = `https://cyclonesync.cloud/?room=${roomId}`;
 
     new QRCode(qrContainer, {
-        text: joinUrl,
-        width: 400,
-        height: 400,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
+        text: joinUrl, width: 400, height: 400, colorDark: "#000000", colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.L
     });
 
     listenToRoom();
-
     status.innerText = "Connected!";
+}
+
+function updateActiveName(input) {
+    const newName = input.value.trim();
+    if (!newName) return;
+
+    localStorage.setItem('name-p1', newName);
+    document.getElementById('conn-player-name').value = newName;
+    const p1Input = document.getElementById('name-p1');
+    if (p1Input) p1Input.value = newName;
+
+    if (!AppState.roomId || !AppState.playerId || AppState.flags.isSyncLocked) return;
+
+    if (AppState.timers.nameDebounce) clearTimeout(AppState.timers.nameDebounce);
+
+    AppState.timers.nameDebounce = setTimeout(() => {
+        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
+        set(myNameRef, newName);
+    }, 800);
 }
 
 function toggleNameEdit() {
@@ -1197,7 +1131,7 @@ function toggleNameEdit() {
     const btn = document.getElementById('btn-edit-name');
 
     if (!AppState.nameEditMode) {
-        if (AppState.isNameSyncLocked) {
+        if (AppState.flags.isNameSyncLocked) {
             customAlert("Please wait a while before changing your name again.");
             return;
         }
@@ -1231,7 +1165,6 @@ function toggleNameEdit() {
 
 function saveActiveName(newName) {
     const safeName = String(newName).trim().substring(0, 12) || "Player";
-
     localStorage.setItem('name-p1', safeName);
     document.getElementById('conn-player-name').value = safeName;
     const p1Input = document.getElementById('name-p1');
@@ -1239,23 +1172,18 @@ function saveActiveName(newName) {
 
     if (!AppState.roomId || !AppState.playerId) return;
 
-    AppState.isNameSyncLocked = true;
+    AppState.flags.isNameSyncLocked = true;
+    if (AppState.timers.nameDebounce) clearTimeout(AppState.timers.nameDebounce);
 
-    if (AppState.nameDebounceTimer) clearTimeout(AppState.nameDebounceTimer);
-
-    AppState.nameDebounceTimer = setTimeout(() => {
+    AppState.timers.nameDebounce = setTimeout(() => {
         const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
         set(myNameRef, newName);
-
-        setTimeout(() => {
-            AppState.isNameSyncLocked = false;
-        }, 60000);
+        setTimeout(() => { AppState.flags.isNameSyncLocked = false; }, 60000);
     }, 300);
 }
 
 function listenToRoom() {
     const playersRef = ref(db, 'rooms/' + AppState.roomId + '/players');
-
     const playersQ = query(playersRef, orderByKey(), limitToFirst(4));
 
     AppState.syncedPlayers = {};
@@ -1268,12 +1196,10 @@ function listenToRoom() {
 
     const removePlayer = (snap) => {
         if (!snap.key) return;
-
         if (snap.key === AppState.playerId && AppState.roomId) {
             reestablishPresence();
             return;
         }
-
         delete AppState.syncedPlayers[snap.key];
         renderRemotePlayers(AppState.syncedPlayers);
     };
@@ -1282,11 +1208,7 @@ function listenToRoom() {
     const unsubChg = onChildChanged(playersQ, applyPlayerSnapshot);
     const unsubRem = onChildRemoved(playersQ, removePlayer);
 
-    AppState.roomListener = () => {
-        unsubAdd();
-        unsubChg();
-        unsubRem();
-    };
+    AppState.roomListener = () => { unsubAdd(); unsubChg(); unsubRem(); };
 }
 
 function renderRemotePlayers(players) {
@@ -1300,7 +1222,6 @@ function renderRemotePlayers(players) {
         if (key === AppState.playerId) return;
 
         hasRemotePlayers = true;
-
         const p = players[key] || {};
         const safeName = typeof p.name === 'string' ? p.name : '';
         const safeLife = (p.life === 0 || p.life) ? String(p.life) : '';
@@ -1335,7 +1256,6 @@ function renderRemotePlayers(players) {
     for (let i = remoteIndex; i <= 4; i++) {
         const cmdInput = document.getElementById(`name-p${i}`);
         const cmdIcon = document.getElementById(`sync-icon-p${i}`);
-
         if (cmdInput && cmdIcon) {
             if (!cmdIcon.classList.contains('hidden')) {
                 cmdInput.value = `Player ${i}`;
@@ -1354,26 +1274,24 @@ function renderRemotePlayers(players) {
 }
 
 function syncLifeToRoom(newLife, immediate = false) {
-    if (!AppState.roomId || AppState.isSyncLocked) return;
+    if (!AppState.roomId || AppState.flags.isSyncLocked) return;
 
     let safeLife = parseInt(newLife) || 0;
     if (safeLife < 0) safeLife = 0;
     if (safeLife > 999) safeLife = 999;
 
     if (immediate) {
-        clearTimeout(AppState.lifeDebounceTimer);
-
+        clearTimeout(AppState.timers.lifeDebounce);
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, safeLife);
 
-        AppState.isSyncLocked = true;
-        setTimeout(() => { AppState.isSyncLocked = false; }, 2000);
-
+        AppState.flags.isSyncLocked = true;
+        setTimeout(() => { AppState.flags.isSyncLocked = false; }, 2000);
         return;
     }
 
-    if (AppState.lifeDebounceTimer) clearTimeout(AppState.lifeDebounceTimer);
-    AppState.lifeDebounceTimer = setTimeout(() => {
+    if (AppState.timers.lifeDebounce) clearTimeout(AppState.timers.lifeDebounce);
+    AppState.timers.lifeDebounce = setTimeout(() => {
         const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
         set(myLifeRef, safeLife);
     }, 500);
@@ -1381,7 +1299,6 @@ function syncLifeToRoom(newLife, immediate = false) {
 
 function reestablishPresence() {
     if (!AppState.roomId || !AppState.playerId) return;
-
     const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
 
     let safeLife = parseInt(document.getElementById('life').value) || 40;
@@ -1391,11 +1308,7 @@ function reestablishPresence() {
     let rawName = document.getElementById('conn-player-name').value.trim() || localStorage.getItem('name-p1') || 'Player';
     let safeName = String(rawName).substring(0, 12);
 
-    const myData = {
-        name: safeName,
-        life: safeLife,
-        lastSeen: Date.now()
-    };
+    const myData = { name: safeName, life: safeLife, lastSeen: Date.now() };
 
     set(myRef, myData);
     onDisconnect(myRef).remove();
@@ -1403,9 +1316,7 @@ function reestablishPresence() {
 
 function startQRScan() {
     document.getElementById('conn-room-code').value = '';
-
     validateConnectionInputs();
-
     document.getElementById('qr-modal').classList.remove('hidden');
 
     AppState.html5QrcodeScanner = new Html5Qrcode("qr-reader");
@@ -1415,17 +1326,12 @@ function startQRScan() {
         { fps: 10, qrbox: 250 },
         (decodedText, decodedResult) => {
             let scannedRoomId = decodedText;
-
             if (decodedText.startsWith('http')) {
                 try {
                     const url = new URL(decodedText);
                     const param = url.searchParams.get('room');
-
-                    if (param) {
-                        scannedRoomId = param;
-                    } else {
-                        scannedRoomId = "";
-                    }
+                    if (param) scannedRoomId = param;
+                    else scannedRoomId = "";
                 } catch (e) { console.error("Invalid URL scanned"); }
             }
 
@@ -1438,8 +1344,7 @@ function startQRScan() {
                 stopQRScan();
             }
         },
-        (errorMessage) => {
-        }
+        (errorMessage) => { }
     ).catch(err => {
         document.getElementById('conn-status').innerText = "Camera error: " + err;
         stopQRScan();
@@ -1492,110 +1397,11 @@ async function leaveRoom(force = false) {
         document.getElementById('btn-connect').classList.remove('hidden');
         document.getElementById('connect-step-1').classList.remove('hidden');
         document.getElementById('connect-step-2').classList.add('hidden');
-
         document.getElementById('remote-players-container').innerHTML = '';
-
         document.getElementById('connect-modal').classList.add('hidden');
-
         document.getElementById('conn-status').innerText = "Enter a room name or scan a QR code.";
-
         validateConnectionInputs();
     }
-}
-
-function customConfirm(message) {
-    return new Promise((resolve) => {
-        const modal = document.getElementById('confirm-modal');
-        const msgBox = document.getElementById('confirm-msg');
-        const btnYes = document.getElementById('confirm-yes');
-        const btnNo = document.getElementById('confirm-no');
-
-        msgBox.innerText = message;
-        modal.classList.remove('hidden');
-
-        const cleanup = () => {
-            modal.classList.add('hidden');
-            btnYes.removeEventListener('click', onYes);
-            btnNo.removeEventListener('click', onNo);
-        };
-
-        const onYes = () => { cleanup(); resolve(true); };
-        const onNo = () => { cleanup(); resolve(false); };
-
-        btnYes.addEventListener('click', onYes);
-        btnNo.addEventListener('click', onNo);
-    });
-}
-
-function customAlert(message) {
-    return new Promise((resolve) => {
-        const modal = document.getElementById('alert-modal');
-        const msgBox = document.getElementById('alert-msg');
-        const btnOk = document.getElementById('alert-ok');
-
-        msgBox.innerText = message;
-        modal.classList.remove('hidden');
-
-        const cleanup = () => {
-            modal.classList.add('hidden');
-            btnOk.removeEventListener('click', onOk);
-        };
-
-        const onOk = () => {
-            cleanup();
-            resolve();
-        };
-
-        btnOk.addEventListener('click', onOk);
-    });
-}
-
-function switchHelpTab(tabId) {
-    const contents = document.querySelectorAll('.help-tab-content');
-    contents.forEach(content => content.classList.add('hidden'));
-
-    const buttons = document.querySelectorAll('.help-tab-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-
-    document.getElementById(tabId).classList.remove('hidden');
-    const targetBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(tabId));
-    if (targetBtn) targetBtn.classList.add('active');
-}
-
-function showExitToast() {
-    let toast = document.getElementById('exit-toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'exit-toast';
-        toast.className = 'exit-toast';
-        toast.innerText = "Press back again to exit";
-        document.body.appendChild(toast);
-    }
-
-    toast.style.transition = 'none';
-    toast.style.opacity = '1';
-
-    void toast.offsetWidth;
-    toast.style.transition = 'opacity 0.5s ease-in-out';
-
-    setTimeout(() => {
-        if (toast) toast.style.opacity = '0';
-    }, 2000);
-}
-
-function toggleUDLR() {
-    AppState.settings.layoutLR = !AppState.settings.layoutLR;
-    applySettings();
-    saveSettings();
-    triggerSymbolFade();
-}
-
-function triggerSymbolFade() {
-    document.body.classList.remove('symbols-hidden');
-
-    void document.body.offsetWidth;
-
-    document.body.classList.add('symbols-hidden');
 }
 
 function shareNatively() {
@@ -1603,15 +1409,14 @@ function shareNatively() {
         navigator.share({
             title: 'CycloneSync',
             text: 'Check out CycloneSync, a synchronized Magic: the Gathering tracker!',
-            url: 'https://regularwave.github.io/cyclonesync/'
+            url: 'https://cyclonesync.cloud/'
         }).catch(err => console.log('User canceled share or error:', err));
     }
 }
 
 function shareRoomLink() {
     if (!AppState.roomId) return;
-
-    const joinUrl = `https://regularwave.github.io/cyclonesync/?room=${AppState.roomId}`;
+    const joinUrl = `https://cyclonesync.cloud/?room=${AppState.roomId}`;
 
     if (navigator.share) {
         navigator.share({
@@ -1623,30 +1428,22 @@ function shareRoomLink() {
         navigator.clipboard.writeText(joinUrl).then(async () => {
             if (navigator.vibrate) navigator.vibrate(20);
             await customAlert("Room link copied to clipboard!");
-        }).catch(err => {
-            console.error("Clipboard copy failed", err);
-        });
+        }).catch(err => console.error("Clipboard copy failed", err));
     }
 }
 
 function copyRoomCode() {
     if (!AppState.roomId) return;
-
     navigator.clipboard.writeText(AppState.roomId).then(() => {
         const display = document.getElementById('display-room-code');
-
         display.innerText = "COPIED!";
         display.style.color = "#4da6ff";
-
         setTimeout(() => {
             display.innerText = AppState.roomId;
             display.style.color = "";
         }, 1500);
-
         if (navigator.vibrate) navigator.vibrate(20);
-    }).catch(err => {
-        console.error("Clipboard copy failed", err);
-    });
+    }).catch(err => console.error("Clipboard copy failed", err));
 }
 
 function checkIOSBrowserEnvironment() {
@@ -1654,12 +1451,10 @@ function checkIOSBrowserEnvironment() {
     if (!warningBox) return;
 
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
     if (isIOS && !isStandalone) {
         warningBox.classList.remove('hidden');
-
         const roomCodeInput = document.getElementById('conn-room-code').value.trim();
         const codeSection = document.getElementById('ios-room-code-section');
         const codeDisplay = document.getElementById('ios-room-code-display');
@@ -1667,9 +1462,7 @@ function checkIOSBrowserEnvironment() {
         if (roomCodeInput && roomCodeInput.length >= 5) {
             codeDisplay.innerText = roomCodeInput;
             codeSection.classList.remove('hidden');
-        } else {
-            codeSection.classList.add('hidden');
-        }
+        } else { codeSection.classList.add('hidden'); }
     } else {
         warningBox.classList.add('hidden');
     }
@@ -1678,23 +1471,17 @@ function checkIOSBrowserEnvironment() {
 function copyPendingRoomCode() {
     const roomCode = document.getElementById('conn-room-code').value.trim();
     if (!roomCode) return;
-
     navigator.clipboard.writeText(roomCode).then(() => {
         const display = document.getElementById('ios-room-code-display');
         const originalText = display.innerText;
-
         display.innerText = "COPIED!";
         display.style.color = "#09a6e9";
-
         setTimeout(() => {
             display.innerText = originalText;
             display.style.color = "";
         }, 1500);
-
         if (navigator.vibrate) navigator.vibrate(20);
-    }).catch(err => {
-        console.error("Clipboard copy failed", err);
-    });
+    }).catch(err => console.error("Clipboard copy failed", err));
 }
 
 Object.assign(window, {

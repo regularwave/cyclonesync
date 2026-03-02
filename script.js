@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, onDisconnect, remove, get, child, query, orderByKey, limitToFirst, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { getDatabase, ref, set, update, onValue, onDisconnect, remove, get, child, query, orderByKey, limitToFirst, onChildAdded, onChildChanged, onChildRemoved, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app-check.js";
 
 const firebaseConfig = {
@@ -55,6 +55,7 @@ const AppState = {
         counterPress: null
     },
     flags: {
+        golem: false,
         isSyncLocked: false,
         isNameSyncLocked: false,
         isLongPress: false,
@@ -138,6 +139,10 @@ function customAlert(message) {
 
         btnOk.addEventListener('click', onOk);
     });
+}
+
+function triggerPanel() {
+    AppState.flags.golem = true;
 }
 
 function showExitToast() {
@@ -1038,6 +1043,7 @@ function validateConnectionInputs() {
 }
 
 async function joinRoom() {
+    if (AppState.flags.golem) return;
     const nameInput = document.getElementById('conn-player-name');
     const roomInput = document.getElementById('conn-room-code');
     const status = document.getElementById('conn-status');
@@ -1072,7 +1078,12 @@ async function joinRoom() {
     }
 
     const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
-    const myData = { name: playerName, life: parseInt(document.getElementById('life').value) || 40, lastSeen: Date.now() };
+    const myData = {
+        name: playerName,
+        life: parseInt(document.getElementById('life').value) || 40,
+        lastSeen: Date.now(),
+        lastUpdate: serverTimestamp()
+    };
 
     set(myRef, myData);
     onDisconnect(myRef).remove();
@@ -1121,8 +1132,8 @@ function updateActiveName(input) {
     if (AppState.timers.nameDebounce) clearTimeout(AppState.timers.nameDebounce);
 
     AppState.timers.nameDebounce = setTimeout(() => {
-        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
-        set(myNameRef, newName);
+        const myPlayerRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
+        update(myPlayerRef, { name: newName, lastUpdate: serverTimestamp() });
     }, 800);
 }
 
@@ -1176,8 +1187,8 @@ function saveActiveName(newName) {
     if (AppState.timers.nameDebounce) clearTimeout(AppState.timers.nameDebounce);
 
     AppState.timers.nameDebounce = setTimeout(() => {
-        const myNameRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/name');
-        set(myNameRef, newName);
+        const myPlayerRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
+        update(myPlayerRef, { name: newName, lastUpdate: serverTimestamp() });
         setTimeout(() => { AppState.flags.isNameSyncLocked = false; }, 60000);
     }, 300);
 }
@@ -1274,7 +1285,7 @@ function renderRemotePlayers(players) {
 }
 
 function syncLifeToRoom(newLife, immediate = false) {
-    if (!AppState.roomId || AppState.flags.isSyncLocked) return;
+    if (AppState.flags.golem || !AppState.roomId || AppState.flags.isSyncLocked) return;
 
     let safeLife = parseInt(newLife) || 0;
     if (safeLife < 0) safeLife = 0;
@@ -1282,8 +1293,8 @@ function syncLifeToRoom(newLife, immediate = false) {
 
     if (immediate) {
         clearTimeout(AppState.timers.lifeDebounce);
-        const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
-        set(myLifeRef, safeLife);
+        const myPlayerRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
+        update(myPlayerRef, { life: safeLife, lastUpdate: serverTimestamp() });
 
         AppState.flags.isSyncLocked = true;
         setTimeout(() => { AppState.flags.isSyncLocked = false; }, 2000);
@@ -1292,8 +1303,8 @@ function syncLifeToRoom(newLife, immediate = false) {
 
     if (AppState.timers.lifeDebounce) clearTimeout(AppState.timers.lifeDebounce);
     AppState.timers.lifeDebounce = setTimeout(() => {
-        const myLifeRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId + '/life');
-        set(myLifeRef, safeLife);
+        const myPlayerRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
+        update(myPlayerRef, { life: safeLife, lastUpdate: serverTimestamp() });
     }, 500);
 }
 
@@ -1308,7 +1319,12 @@ function reestablishPresence() {
     let rawName = document.getElementById('conn-player-name').value.trim() || localStorage.getItem('name-p1') || 'Player';
     let safeName = String(rawName).substring(0, 12);
 
-    const myData = { name: safeName, life: safeLife, lastSeen: Date.now() };
+    const myData = {
+        name: safeName,
+        life: safeLife,
+        lastSeen: Date.now(),
+        lastUpdate: serverTimestamp()
+    };
 
     set(myRef, myData);
     onDisconnect(myRef).remove();
@@ -1493,7 +1509,7 @@ Object.assign(window, {
     copyPendingRoomCode, toggleFlyout, openDockModal, closeDockModal,
     saveDockConfig, startDockHold, stopDockHold, cancelDockHold, toggleCounters,
     openCountersModal, closeCountersModal, saveCountersConfig, startCounterHold,
-    selectIcon, openResetModal, closeResetModal, resetMana,
+    selectIcon, openResetModal, closeResetModal, resetMana, triggerPanel,
     updateActiveName, toggleNameEdit, stopCounterHold, handleCounterClick, closeCounterEdit,
     saveCounterEdit
 });

@@ -1,3 +1,45 @@
+@keyframes attentionPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(9, 166, 233, .9)
+    }
+
+    70% {
+        box-shadow: 0 0 0 14px transparent
+    }
+
+    to {
+        box-shadow: 0 0 0 0 transparent
+    }
+}
+
+@keyframes lifePulse {
+
+    0%,
+    to {
+        color: var(--text-light);
+        transform: scale(1)
+    }
+
+    50% {
+        color: var(--accent-danger);
+        transform: scale(1.3)
+    }
+}
+
+@keyframes lifePulseBlue {
+
+    0%,
+    to {
+        color: var(--text-light);
+        transform: scale(1)
+    }
+
+    50% {
+        color: var(--accent-blue);
+        transform: scale(1.3)
+    }
+}
+
 :root {
     --bg-main: #000;
     --bg-panel: rgba(0, 0, 0, 0.75);
@@ -20,16 +62,16 @@
     --z-spinner: 10;
     --z-modal: 2000;
     --z-modal-top: 3000;
-    --z-toast: 9999;
+    --z-toast: 9999
 }
 
 * {
-    box-sizing: border-box;
+    box-sizing: border-box
 }
 
-html,
-body {
-    overscroll-behavior-y: none;
+body,
+html {
+    overscroll-behavior-y: none
 }
 
 body {
@@ -46,7 +88,7 @@ body {
     user-select: none;
     -webkit-user-select: none;
     font-family: var(--font-beleren);
-    color: var(--text-main);
+    color: var(--text-main)
 }
 
 body::before {
@@ -61,47 +103,54 @@ body::before {
     background-size: cover;
     background-repeat: no-repeat;
     filter: brightness(1.9) contrast(1.1);
-    z-index: var(--z-bg);
+    z-index: var(--z-bg)
 }
 
 input[type=number] {
     -webkit-appearance: textfield;
     -moz-appearance: textfield;
     appearance: textfield;
-    translate: 0 6px;
+    translate: 0 6px
 }
 
 input[type=number]:focus {
-    outline: 0;
+    outline: 0
 }
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
+    -webkit-appearance: none
 }
 
 .hidden {
-    display: none !important;
+    display: none !important
 }
 
 .span-full {
-    grid-column: 1 / -1 !important;
+    grid-column: 1/-1 !important
 }
 
 .text-center {
-    text-align: center;
+    text-align: center
 }
 
 .mt-1 {
-    margin-top: 1rem;
+    margin-top: 1rem
 }
 
 .mt-auto {
-    margin-top: auto;
+    margin-top: auto
 }
 
 .mb-0-5 {
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem
+}
+
+.content,
+.floatcontainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 0
 }
 
 .floatcontainer {
@@ -113,70 +162,66 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center;
     border: 1px solid var(--border-dark);
     border-radius: 1.5rem;
-    background-color: var(--bg-panel);
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+    background-color: var(--bg-panel)
 }
 
 .content {
     width: 100%;
-    display: flex;
-    flex-direction: column;
     flex-grow: 1;
-    min-height: 0;
-    gap: 0.75rem;
+    gap: .75rem
+}
+
+.top-row,
+.tracker-grid {
+    margin-bottom: 0;
+    min-height: 0
 }
 
 .top-row {
     display: flex;
     width: 100%;
     gap: 1rem;
-    margin-bottom: 0;
     flex: 1 1 0px;
-    min-height: 0;
-    max-height: 220px;
+    max-height: 220px
 }
 
 .tracker-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: .75rem;
-    margin-bottom: 0;
     flex: 3 1 0px;
-    min-height: 0;
     grid-auto-rows: 1fr;
-    max-height: calc(var(--grid-rows, 3) * 220px);
+    max-height: calc(var(--grid-rows, 3)*220px)
 }
 
 .floating-controls {
     position: relative;
     width: 100%;
     margin-top: auto;
-    background: none;
-    border: none;
+    background: 0 0;
+    border: 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch;
-    gap: 0.5rem;
+    gap: .5rem;
     z-index: 1000;
     pointer-events: none;
-    flex-shrink: 0;
+    flex-shrink: 0
 }
 
 .dock-container {
     display: contents;
-    pointer-events: none;
+    pointer-events: none
 }
 
 .floating-controls .control-btn {
     pointer-events: auto;
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, .65);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    max-width: 6rem;
+    max-width: 6rem
 }
 
 .dock-container .control-btn {
@@ -190,13 +235,13 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     pointer-events: auto;
     min-width: 3.5rem;
-    max-width: 6rem;
+    max-width: 6rem
 }
 
 .flyout-wrapper>#btn-settings {
     flex-grow: 1;
     width: 100%;
-    margin: 0;
+    margin: 0
 }
 
 .flyout-bubble {
@@ -205,68 +250,65 @@ input[type=number]::-webkit-outer-spin-button {
     left: auto;
     right: 0;
     transform: none;
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, .65);
     border: 1px solid var(--border-light);
     border-radius: 1.5rem;
-    padding: 0.5rem;
+    padding: .5rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
     width: max-content;
     max-width: 16.63rem;
-    gap: 0.5rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.9);
+    gap: .5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .9);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    z-index: 1001;
+    z-index: 1001
 }
 
-.flyout-bubble::after {
-    content: "";
-    position: absolute;
-    bottom: -8px;
-    left: auto;
-    right: 1.25rem;
-    transform: none;
-    border-width: 8px 8px 0;
-    border-style: solid;
-    border-color: var(--border-light) transparent transparent transparent;
-    display: block;
-    width: 0;
-}
-
+.flyout-bubble::after,
 .flyout-bubble::before {
     content: "";
     position: absolute;
-    bottom: -6px;
     left: auto;
-    right: 1.3rem;
     transform: none;
-    border-width: 7px 7px 0;
     border-style: solid;
-    border-color: rgba(0, 0, 0, 0.65) transparent transparent transparent;
     display: block;
-    width: 0;
-    z-index: 1;
+    width: 0
+}
+
+.flyout-bubble::after {
+    bottom: -8px;
+    right: 1.25rem;
+    border-width: 8px 8px 0;
+    border-color: var(--border-light) transparent transparent transparent
+}
+
+.flyout-bubble::before {
+    bottom: -6px;
+    right: 1.3rem;
+    border-width: 7px 7px 0;
+    border-color: rgba(0, 0, 0, .65) transparent transparent;
+    z-index: 1
 }
 
 .flyout-bubble .control-btn {
     width: 3.5rem;
-    flex: none;
+    flex: none
 }
 
 .dock-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+    gap: .75rem;
     width: 100%;
-    margin: 1rem 0;
+    margin: 1rem 0
 }
 
 .dock-icon {
     width: 30px;
     text-align: center;
-    flex-shrink: 0;
+    flex-shrink: 0
 }
 
 .dock-chk-label {
@@ -274,97 +316,93 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0.4rem 0.25rem;
-    gap: 0.2rem;
+    padding: .4rem .25rem;
+    gap: .2rem;
     border: 1px solid var(--border-dark);
-    border-radius: 0.5rem;
-    background: rgba(0, 0, 0, 0.4);
+    border-radius: .5rem;
+    background: rgba(0, 0, 0, .4);
     cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text-muted);
+    transition: all .2s;
+    color: var(--text-muted)
 }
 
 .dock-chk-label .dock-icon {
     filter: grayscale(100%);
-    opacity: 0.4;
-    transition: all 0.2s;
+    opacity: .4;
+    transition: all .2s
 }
 
-.dock-chk:checked+.dock-chk-label .dock-icon,
-.cnt-chk:checked+.dock-chk-label .dock-icon {
+.cnt-chk:checked+.dock-chk-label .dock-icon,
+.dock-chk:checked+.dock-chk-label .dock-icon {
     filter: none;
-    opacity: 1;
+    opacity: 1
 }
 
 .dock-chk-label span {
     font-family: var(--font-beleren);
-    font-size: 0.9rem;
-    text-align: center;
+    font-size: .9rem;
+    text-align: center
 }
 
-.dock-chk:checked+.dock-chk-label,
-.cnt-chk:checked+.dock-chk-label {
-    background: rgba(255, 255, 255, 0.15);
+.cnt-chk:checked+.dock-chk-label,
+.dock-chk:checked+.dock-chk-label {
+    background: rgba(255, 255, 255, .15);
     border-color: var(--text-light);
-    color: var(--text-light);
+    color: var(--text-light)
 }
 
 .dock-chk-label::after {
     content: "Flyout";
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-family: var(--font-ui);
     font-style: italic;
-    opacity: 0.7;
-    margin-top: -0.25rem;
+    opacity: .7;
+    margin-top: -.25rem
 }
 
 .dock-chk:checked+.dock-chk-label::after {
     content: "Docked";
-    font-weight: bold;
+    font-weight: 700;
     font-style: normal;
     color: var(--accent-blue);
-    opacity: 1;
+    opacity: 1
 }
 
 .tile-wrapper {
     align-items: stretch;
     border: 2px solid var(--border-light);
-    border-radius: 0.5rem;
-    background-color: rgba(0, 0, 0, 0.2);
-    gap: 0.25rem;
-    padding: 0 0 0 0.5rem;
+    border-radius: .5rem;
+    background-color: rgba(0, 0, 0, .2);
+    gap: .25rem;
+    padding: 0 0 0 .5rem;
     min-height: 0;
-    height: 100%;
-    position: relative;
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-    container-type: inline-size;
+    height: 100%
 }
 
-.tax-half {
+.tax-half,
+.tile-wrapper {
     position: relative;
     flex: 1;
     display: flex;
     overflow: hidden;
-    container-type: inline-size;
+    container-type: inline-size
 }
 
 #tax-half-2 {
-    border-left: 2px solid rgba(255, 255, 255, 0.15);
-    padding-left: 0.25rem;
+    border-left: 2px solid rgba(255, 255, 255, .15);
+    padding-left: .25rem
 }
 
 .manasymbol-container {
     position: absolute;
-    left: 0.2rem;
+    left: .2rem;
     top: 0;
     bottom: 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     z-index: var(--z-base);
-    pointer-events: none;
+    pointer-events: none
 }
 
 .manasymbol-icon,
@@ -376,22 +414,22 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
+    line-height: 1
 }
 
 .manasymbol-icon::before {
-    font-size: 0.85em;
+    font-size: .85em
 }
 
 .toprow-manasymbol-icon {
-    translate: 0 -3px;
+    translate: 0 -3px
 }
 
 .quantity,
 .spinner-btns button {
     border: 0;
     font-weight: 700;
-    padding: 0;
+    padding: 0
 }
 
 .quantity {
@@ -401,9 +439,9 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: transparent;
     color: var(--text-main);
     z-index: var(--z-above);
-    padding-right: 0.25rem;
+    padding-right: .25rem;
     transform-origin: right center;
-    transition: transform 0.2s ease-out;
+    transition: transform .2s ease-out
 }
 
 .tile-wrapper .quantity {
@@ -411,24 +449,24 @@ input[type=number]::-webkit-outer-spin-button {
     right: 0;
     top: 0;
     bottom: 0;
-    width: 250px;
+    width: 250px
 }
 
 @container (max-width: 180px) {
     .quantity {
-        transform: scaleX(0.85);
+        transform: scaleX(.85)
     }
 }
 
 @container (max-width: 140px) {
     .quantity {
-        transform: scaleX(0.7);
+        transform: scaleX(.7)
     }
 }
 
 @container (max-width: 110px) {
     .quantity {
-        transform: scaleX(0.55);
+        transform: scaleX(.55)
     }
 }
 
@@ -441,66 +479,69 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     flex-direction: column;
     z-index: var(--z-spinner);
-    border: 0;
+    border: 0
 }
 
 .spinner-btns button {
     flex: 1 1 0%;
-    background: transparent;
+    background: 0 0;
     cursor: pointer;
     position: relative;
     outline: 0;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, .2);
     font-size: 1.2rem;
     font-family: var(--font-ui);
     display: flex;
     line-height: 1;
     touch-action: manipulation;
-    padding: 0.2rem 0.3rem;
-    transition: color 30s linear, background-color 0.2s;
+    padding: .2rem .3rem;
+    transition: color 30s linear, background-color .2s
 }
 
 .spinner-btns button:active {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.8) !important;
-    transition: none;
+    background-color: rgba(255, 255, 255, .05);
+    color: rgba(255, 255, 255, .8) !important;
+    transition: none
 }
 
 body.symbols-hidden .spinner-btns button {
-    color: transparent;
+    color: transparent
 }
 
 .spinner-btns .minus,
 .spinner-btns .plus {
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: flex-start
+}
+
+.spinner-btns .plus {
+    align-items: flex-start
 }
 
 .spinner-btns .minus {
-    align-items: flex-end;
+    align-items: flex-end
 }
 
 .layout-lr .spinner-btns {
-    flex-direction: row;
+    flex-direction: row
 }
 
 .layout-lr .spinner-btns .plus {
     order: 2;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .layout-lr .spinner-btns .minus {
     order: 1;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-start
 }
 
 .control-btn,
 .footer-link {
     cursor: pointer;
     display: flex;
-    align-items: center;
+    align-items: center
 }
 
 .control-btn {
@@ -508,50 +549,55 @@ body.symbols-hidden .spinner-btns button {
     color: var(--text-main);
     background-color: transparent;
     border: solid 1px var(--border-light);
-    border-radius: 0.5rem;
+    border-radius: .5rem;
     height: 2.5rem;
     flex-grow: 1;
     min-width: 3.5rem;
     justify-content: center;
-    transition: background 0.2s, opacity 0.2s;
+    transition: background .2s, opacity .2s;
     touch-action: manipulation;
-    font-size: 1.5rem;
-    white-space: nowrap;
+    white-space: nowrap
 }
 
+.control-btn,
 .control-btn i {
-    font-size: 1.5rem;
+    font-size: 1.5rem
 }
 
 .control-btn:not(:disabled):hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, .1)
 }
 
 .control-btn.disabled,
 .control-btn:disabled {
-    opacity: 0.4;
-    filter: grayscale(100%);
+    opacity: .4;
+    filter: grayscale(100%)
 }
 
 .control-btn:disabled {
-    cursor: not-allowed;
+    cursor: not-allowed
+}
+
+#icon-udlrswap,
+#sticky-footer,
+.udlr-wrapper {
+    position: relative;
+    align-items: center;
+    justify-content: center
 }
 
 #icon-udlrswap,
 .udlr-wrapper {
-    position: relative;
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s;
+    transition: transform .3s
 }
 
 .inline-help-wrapper {
-    transform: translateY(3px);
+    transform: translateY(3px)
 }
 
 .layout-lr #icon-udlrswap {
-    transform: rotate(90deg);
+    transform: rotate(90deg)
 }
 
 .udlr-plus {
@@ -559,64 +605,62 @@ body.symbols-hidden .spinner-btns button {
     top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 0.85rem;
+    font-size: .85rem;
     font-family: var(--font-ui);
     font-weight: 900;
     line-height: 1;
     text-shadow: -1px -1px 0 var(--bg-main), 1px -1px 0 var(--bg-main), -1px 1px 0 var(--bg-main), 1px 1px 0 var(--bg-main), 0 0 5px var(--bg-main);
-    pointer-events: none;
+    pointer-events: none
 }
 
 .reset-text {
     font-size: 1rem;
-    margin-left: 0.2rem;
+    margin-left: .2rem
 }
 
 #sticky-footer {
-    position: relative;
     z-index: 999;
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    font-size: 0.8rem;
-    padding: 0 0.5rem calc(0.25rem + env(safe-area-inset-bottom)) 0.5rem;
+    gap: .75rem;
+    font-size: .8rem;
+    padding: 0 .5rem calc(.25rem + env(safe-area-inset-bottom));
     height: 3rem;
-    background: none;
+    background: 0 0;
     pointer-events: none;
-    flex-shrink: 0;
+    flex-shrink: 0
 }
 
 #sticky-footer .footer-link,
 #sticky-footer .footer-separator {
-    pointer-events: auto;
+    pointer-events: auto
 }
 
 #sticky-footer a,
 #sticky-footer span {
     color: var(--text-light);
     text-decoration: none;
-    cursor: pointer;
+    cursor: pointer
 }
 
 #sticky-footer a:hover,
 #sticky-footer span:hover,
 .footer-link:hover {
-    text-decoration: underline;
+    text-decoration: underline
 }
 
 .footer-link {
-    gap: 0.25rem;
+    gap: .25rem
 }
 
 .footer-link:hover,
-.help-tab-content strong {
-    color: var(--text-light);
+.help-tab-content strong,
+.modal-overlay h2 {
+    color: var(--text-light)
 }
 
 .footer-separator {
-    color: var(--border-mid);
+    color: var(--border-mid)
 }
 
 .modal-overlay {
@@ -631,58 +675,57 @@ body.symbols-hidden .spinner-btns button {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    text-align: center
 }
 
 .modal-topmost {
-    z-index: var(--z-modal-top);
+    z-index: var(--z-modal-top)
 }
 
 .modal-overlay h2 {
     margin-top: 0;
-    color: var(--text-light);
     border-bottom: 1px solid var(--border-mid);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
+    padding-bottom: .5rem;
+    margin-bottom: 1.5rem
 }
 
-.modal-overlay p,
+.credits-section,
 .help-tab-content p,
-.credits-section {
+.modal-overlay p {
     font-size: 1rem;
     line-height: 1.4;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem
 }
 
 .modal-overlay a {
     color: var(--accent-blue);
-    text-align: center;
+    text-align: center
 }
 
 .legal-text {
-    font-size: 0.8rem;
-    opacity: 0.8;
+    font-size: .8rem;
+    opacity: .8;
     margin-top: 1.5rem;
-    line-height: 1.3;
+    line-height: 1.3
 }
 
 .close-btn {
     margin-top: 2rem;
-    padding: 0.5rem 2rem;
+    padding: .5rem 2rem;
     border: 1px solid var(--border-light);
-    background: transparent;
+    background: 0 0;
     color: var(--text-light);
-    border-radius: 0.5rem;
+    border-radius: .5rem;
     cursor: pointer;
     font-family: var(--font-beleren);
-    font-size: 1.2rem;
+    font-size: 1.2rem
 }
 
 .close-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, .1)
 }
 
 .cmd-modal-content {
@@ -691,7 +734,7 @@ body.symbols-hidden .spinner-btns button {
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    gap: 0.25rem;
+    gap: .25rem
 }
 
 .cmd-modal-header {
@@ -699,98 +742,98 @@ body.symbols-hidden .spinner-btns button {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-mid);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
+    padding-bottom: .5rem;
+    margin-bottom: 1.5rem
 }
 
 .cmd-modal-header h2 {
     border-bottom: none;
     padding-bottom: 0;
     margin-bottom: 0;
-    margin-top: 0;
+    margin-top: 0
 }
 
 .cmd-life-display {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: .5rem;
     font-size: 1.8rem;
     font-family: var(--font-beleren);
-    color: var(--text-light);
+    color: var(--text-light)
 }
 
 .modal-content-fit {
     height: auto;
-    max-height: 90vh;
+    max-height: 90vh
 }
 
 .modal-content-help {
-    max-height: 85vh;
+    max-height: 85vh
 }
 
 .modal-dialog-small {
     height: auto;
     max-height: 90vh;
     max-width: 350px;
-    text-align: center;
+    text-align: center
 }
 
 .dialog-title {
     border-bottom: none !important;
-    margin-bottom: 0.5rem !important;
-    color: var(--text-light) !important;
+    margin-bottom: .5rem !important;
+    color: var(--text-light) !important
 }
 
 .dialog-message {
     font-size: 1.1rem;
     color: var(--text-main);
-    margin-bottom: 2rem;
+    margin-bottom: 2rem
 }
 
 .dialog-btn-row {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    justify-content: center;
+    justify-content: center
 }
 
 .btn-dialog {
     margin-top: 0;
-    flex: 1;
+    flex: 1
 }
 
 .btn-dialog-full {
     margin-top: 0;
-    width: 100%;
+    width: 100%
 }
 
 .btn-danger {
     border-color: var(--accent-danger);
-    color: var(--accent-danger);
+    color: var(--accent-danger)
 }
 
 .cmd-quarters {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 0.75rem;
+    gap: .75rem;
     height: 100%;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 0.25rem;
+    padding-right: .25rem
 }
 
 .cmd-quarter {
     display: flex;
     flex-direction: column;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, .05);
     border: 1px solid var(--border-dark);
-    border-radius: 0.5rem;
-    padding: 0.5rem;
+    border-radius: .5rem;
+    padding: .5rem;
     height: 100%;
     min-height: 0;
-    min-width: 0;
+    min-width: 0
 }
 
 .player-name-wrapper {
@@ -799,92 +842,92 @@ body.symbols-hidden .spinner-btns button {
     align-items: center;
     width: 100%;
     border-bottom: 1px solid var(--border-mid);
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.2rem;
+    margin-bottom: .5rem;
+    padding-bottom: .2rem
 }
 
 .player-name-wrapper i {
     grid-column: 1;
     justify-self: start;
-    font-size: 1.1rem;
+    font-size: 1.1rem
 }
 
 .player-name {
     grid-column: 2;
     width: 100%;
-    background: transparent;
+    background: 0 0;
     border: 0;
     color: var(--text-light);
     font-family: var(--font-beleren);
     text-align: center;
     font-size: 1rem;
-    min-width: 0;
+    min-width: 0
 }
 
 .player-name:disabled {
     opacity: 1;
     color: var(--text-light);
-    cursor: default;
+    cursor: default
 }
 
 .cmd-counter-unit {
     position: relative;
     flex: 1;
     border: 1px solid var(--border-darker);
-    border-radius: 0.25rem;
+    border-radius: .25rem;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, .3);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center
 }
 
 .cmd-qty {
     width: 100% !important;
     height: 100%;
-    text-align: center;
+    text-align: center
 }
 
 .cmd-counters-vertical,
 .cmd-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    min-height: 0;
+    gap: .25rem;
+    min-height: 0
 }
 
 .cmd-counters-vertical {
     flex-grow: 1;
-    height: 100%;
+    height: 100%
 }
 
 .cmd-wrapper {
     align-items: stretch;
     flex: 1;
     width: 100%;
-    overflow: hidden;
+    overflow: hidden
 }
 
 .cmd-name-input {
-    background: transparent;
+    background: 0 0;
     border: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
     color: var(--text-muted);
     font-family: var(--font-beleren);
     text-align: center;
     height: auto;
     width: 100%;
-    padding: 0.2rem 0;
-    font-size: 0.9rem;
+    padding: .2rem 0;
+    font-size: .9rem
 }
 
-.modal-input:focus,
-.cmd-name-input:focus {
+.cmd-name-input:focus,
+.modal-input:focus {
     color: var(--text-light);
     outline: 0;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, .1);
     border-color: var(--accent-blue);
-    border-radius: 4px;
+    border-radius: 4px
 }
 
 .pips-grid {
@@ -895,11 +938,11 @@ body.symbols-hidden .spinner-btns button {
     max-width: 420px;
     margin: 1rem auto;
     max-height: 60vh;
-    overflow-y: auto;
+    overflow-y: auto
 }
 
 .pip-chk {
-    display: none;
+    display: none
 }
 
 .pip-label {
@@ -907,88 +950,88 @@ body.symbols-hidden .spinner-btns button {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 0.5rem 1rem;
+    padding: .5rem 1rem;
     gap: 1rem;
     border: 1px solid var(--text-light);
-    border-radius: 0.5rem;
-    background: rgba(255, 255, 255, 0.15);
+    border-radius: .5rem;
+    background: rgba(255, 255, 255, .15);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all .2s;
     height: 100%;
-    min-height: 4.5rem;
+    min-height: 4.5rem
 }
 
 .pip-label i {
     flex-shrink: 0;
-    transition: opacity 0.2s;
-    opacity: 1;
+    transition: opacity .2s;
+    opacity: 1
 }
 
 .pip-label::after {
     content: "always\ashown";
     white-space: pre;
     text-align: left;
-    font-size: 0.85rem;
+    font-size: .85rem;
     line-height: 1.1;
     color: var(--text-light);
     font-style: normal;
     font-weight: 700;
-    opacity: 1;
+    opacity: 1
 }
 
 .pip-chk:checked+.pip-label {
-    background: rgba(0, 0, 0, 0.4);
-    border-color: var(--border-dark);
+    background: rgba(0, 0, 0, .4);
+    border-color: var(--border-dark)
 }
 
 .pip-chk:checked+.pip-label i {
-    opacity: 0.2;
+    opacity: .2
 }
 
 .pip-chk:checked+.pip-label::after {
     content: "pip\a button\ahides";
     font-style: italic;
     font-weight: 400;
-    opacity: 0.8;
+    opacity: .8
 }
 
 #tile-w {
-    background-image: linear-gradient(to right, rgba(248, 231, 185, 0.35) 0, transparent 70%);
+    background-image: linear-gradient(to right, rgba(248, 231, 185, .35)0, transparent 70%)
 }
 
 #tile-u {
-    background-image: linear-gradient(to right, rgba(170, 224, 250, 0.35) 0, transparent 70%);
+    background-image: linear-gradient(to right, rgba(170, 224, 250, .35)0, transparent 70%)
 }
 
 #tile-b {
-    background-image: linear-gradient(to right, rgba(166, 127, 191, 0.35) 0, transparent 70%);
+    background-image: linear-gradient(to right, rgba(166, 127, 191, .35)0, transparent 70%)
 }
 
 #tile-r {
-    background-image: linear-gradient(to right, rgba(235, 159, 130, 0.35) 0, transparent 70%);
+    background-image: linear-gradient(to right, rgba(235, 159, 130, .35)0, transparent 70%)
 }
 
 #tile-g {
-    background-image: linear-gradient(to right, rgba(196, 211, 202, 0.35) 0, transparent 70%);
+    background-image: linear-gradient(to right, rgba(196, 211, 202, .35)0, transparent 70%)
 }
 
 #tile-c {
-    background-image: linear-gradient(to right, rgba(200, 200, 200, 0.3) 0, transparent 70%);
+    background-image: linear-gradient(to right, rgba(200, 200, 200, .3)0, transparent 70%)
 }
 
-#tile-w .manasymbol-icon,
-#tile-u .manasymbol-icon,
 #tile-b .manasymbol-icon,
-#tile-r .manasymbol-icon,
+#tile-c .manasymbol-icon,
 #tile-g .manasymbol-icon,
-#tile-c .manasymbol-icon {
-    color: rgba(0, 0, 0, 0.6);
-    filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.2));
+#tile-r .manasymbol-icon,
+#tile-u .manasymbol-icon,
+#tile-w .manasymbol-icon {
+    color: rgba(0, 0, 0, .6);
+    filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, .2))
 }
 
 #tile-life .toprow-manasymbol-icon,
 #tile-tax .toprow-manasymbol-icon {
-    opacity: 0.75;
+    opacity: .75
 }
 
 .room-row {
@@ -996,13 +1039,13 @@ body.symbols-hidden .spinner-btns button {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    gap: 0.5rem;
+    gap: .5rem;
     margin-bottom: 0;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.4);
+    padding: .5rem;
+    background: rgba(0, 0, 0, .4);
     border: 1px solid var(--border-darker);
-    border-radius: 0.5rem;
-    flex-shrink: 0;
+    border-radius: .5rem;
+    flex-shrink: 0
 }
 
 .room-exit-btn,
@@ -1011,138 +1054,142 @@ body.symbols-hidden .spinner-btns button {
     align-items: center;
     width: 3rem;
     height: 3rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, .05);
     border: 1px solid var(--border-dark);
-    border-radius: 0.5rem;
+    border-radius: .5rem;
     cursor: pointer;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    display: flex;
-    justify-content: center;
+    font-size: .8rem;
+    color: var(--text-muted)
 }
 
 .room-qr-trigger i {
     font-size: 1.2rem;
-    margin-bottom: 0.1rem;
+    margin-bottom: .1rem
+}
+
+.remote-players-grid,
+.remote-tile,
+.room-exit-btn,
+.room-qr-trigger {
+    display: flex;
+    justify-content: center
 }
 
 .remote-players-grid {
-    display: flex;
-    justify-content: center;
     flex: 1;
-    gap: 0.5rem;
-    overflow-x: auto;
+    gap: .5rem;
+    overflow-x: auto
 }
 
 .remote-tile {
-    display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
     background: #111;
     border: 1px solid var(--border-dark);
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.5rem;
+    border-radius: .5rem;
+    padding: .25rem .5rem;
     min-width: 0;
     flex: 1 1 0;
-    overflow: hidden;
+    overflow: hidden
 }
 
 .remote-name {
-    font-size: 0.8rem;
+    font-size: .8rem;
     color: var(--text-muted);
-    margin-bottom: 0.2rem;
+    margin-bottom: .2rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
+    max-width: 100%
 }
 
 .remote-life {
     font-size: 2rem;
     font-family: var(--font-beleren);
     color: var(--text-light);
-    line-height: 1;
+    line-height: 1
 }
 
 .waiting-text {
     margin: auto;
     color: #888;
-    font-size: 0.9rem;
+    font-size: .9rem;
     font-style: italic;
-    opacity: 0.8;
+    opacity: .8
 }
 
 .counters-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 0.5rem;
+    gap: .5rem;
     margin-top: 0;
     margin-bottom: 0;
     width: 100%;
     flex: 2 1 0px;
     min-height: 0;
     grid-auto-rows: 1fr;
-    max-height: calc(var(--grid-rows, 2) * 220px);
+    max-height: calc(var(--grid-rows, 2)*220px)
+}
+
+.counter-name,
+.counter-qty {
+    position: absolute;
+    width: 100%
 }
 
 .counter-name {
-    position: absolute;
-    bottom: 0.1rem;
-    width: 100%;
+    bottom: .1rem;
     text-align: center;
-    font-size: 0.5rem;
+    font-size: .5rem;
     color: var(--text-muted);
     font-family: var(--font-ui);
     text-transform: uppercase;
     letter-spacing: 1px;
     z-index: var(--z-base);
-    pointer-events: none;
+    pointer-events: none
 }
 
 .counter-qty {
-    position: absolute;
     right: 0;
     top: 0;
     bottom: 0;
-    width: 100%;
     font-size: clamp(1.5rem, 10vh, 2.5rem);
-    padding-right: 0.25rem;
+    padding-right: .25rem;
     z-index: var(--z-above);
-    translate: 0 -4px;
+    translate: 0 -4px
 }
 
 .custom-counter-config {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: .75rem
 }
 
 .custom-counter-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    justify-content: space-between;
+    gap: .5rem;
+    justify-content: space-between
 }
 
 .custom-chk {
     width: 1.5rem;
     height: 1.5rem;
-    flex-shrink: 0;
+    flex-shrink: 0
 }
 
 .custom-name-input {
     margin-bottom: 0;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    flex-grow: 1;
+    padding: .5rem;
+    font-size: .9rem;
+    flex-grow: 1
 }
 
 .custom-icon-btn {
     flex-shrink: 0;
     width: 3.5rem;
     height: 2.5rem;
-    margin: 0;
+    margin: 0
 }
 
 .color-picker-input {
@@ -1151,80 +1198,80 @@ body.symbols-hidden .spinner-btns button {
     height: 2.5rem;
     padding: 0;
     border: 1px solid var(--border-mid);
-    border-radius: 0.25rem;
+    border-radius: .25rem;
     cursor: pointer;
-    background: transparent;
+    background: 0 0
 }
 
 .color-picker-input::-webkit-color-swatch-wrapper {
-    padding: 0;
+    padding: 0
 }
 
 .color-picker-input::-webkit-color-swatch {
-    border: none;
-    border-radius: 0.2rem;
+    border: 0;
+    border-radius: .2rem
 }
 
 .color-picker-input::-moz-color-swatch {
-    border: none;
-    border-radius: 0.2rem;
+    border: 0;
+    border-radius: .2rem
 }
 
 #counters-modal .dock-chk-label::after {
-    content: "Hidden";
+    content: "Hidden"
 }
 
 #counters-modal .cnt-chk:checked+.dock-chk-label::after {
     content: "Visible";
-    color: var(--accent-blue);
+    color: var(--accent-blue)
 }
 
 .counter-tile {
     position: relative;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, .4);
     border: 1px solid var(--border-darker);
-    border-radius: 0.5rem;
+    border-radius: .5rem;
     padding: 0;
     min-height: 0;
     height: 100%;
-    overflow: hidden;
+    overflow: hidden
 }
 
 .counter-icon {
     position: absolute;
-    left: 0.5rem;
-    color: rgba(255, 255, 255, 0.2);
+    left: .5rem;
+    color: rgba(255, 255, 255, .2);
     z-index: var(--z-base);
     pointer-events: none;
-    font-size: clamp(1.5rem, 6vh, 2rem) !important;
+    font-size: clamp(1.5rem, 6vh, 2rem) !important
 }
 
 .modal-input {
     width: 100%;
-    background: transparent;
+    background: 0 0;
     border: 1px solid var(--border-mid);
     color: var(--text-light);
-    padding: 0.8rem;
+    padding: .8rem;
     font-size: 1.2rem;
     text-align: center;
-    border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-family: var(--font-beleren);
+    border-radius: .5rem;
+    margin-bottom: .5rem;
+    font-family: var(--font-beleren)
 }
 
 .modal-input:disabled {
-    opacity: 0.4;
+    opacity: .4;
     cursor: not-allowed;
-    border-color: var(--border-darker);
+    border-color: var(--border-darker)
 }
 
 .connect-split-row {
     display: flex;
     gap: 1rem;
     align-items: stretch;
-    margin-top: 1rem;
+    margin-top: 1rem
 }
 
 .connect-col-main,
@@ -1232,52 +1279,52 @@ body.symbols-hidden .spinner-btns button {
     flex: 2;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: .5rem
 }
 
 .connect-col-side {
     flex: 1;
-    justify-content: flex-end;
+    justify-content: flex-end
 }
 
-.connect-divider-vertical {
+.connect-divider-vertical,
+.divider-line {
     width: 1px;
     background: var(--border-darker);
-    margin: 0.5rem 0;
+    margin: .5rem 0
 }
 
 .divider-line {
     width: 100%;
     height: 1px;
-    background: var(--border-darker);
-    margin: 1rem 0;
+    margin: 1rem 0
 }
 
 .copyable-code {
     cursor: pointer;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.25rem;
-    background: rgba(255, 255, 255, 0.1);
-    transition: background 0.2s, color 0.2s;
-    display: inline-block;
+    padding: .2rem .5rem;
+    border-radius: .25rem;
+    background: rgba(255, 255, 255, .1);
+    transition: background .2s, color .2s;
+    display: inline-block
 }
 
 .copyable-code:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, .2)
 }
 
 .copyable-code:active {
-    background: rgba(9, 166, 233, 0.3);
+    background: rgba(9, 166, 233, .3);
     color: var(--accent-blue);
     transform: scale(1.05);
-    transition: none;
+    transition: none
 }
 
 .btn-scan-qr {
     height: 100%;
     min-height: 4.5rem;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: .2rem
 }
 
 .qr-display-box {
@@ -1286,10 +1333,10 @@ body.symbols-hidden .spinner-btns button {
     margin: 1rem auto;
     background: var(--text-light);
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: .5rem;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center
 }
 
 .qr-display-box canvas,
@@ -1298,363 +1345,314 @@ body.symbols-hidden .spinner-btns button {
     max-height: 35vh !important;
     width: auto !important;
     height: auto !important;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1/1
 }
 
 .qr-reader-box {
     width: 100%;
     margin: 1rem 0;
-    background: var(--bg-main);
+    background: var(--bg-main)
 }
 
 .input-label {
     text-align: left;
     display: block;
-    margin-bottom: 0.2rem;
+    margin-bottom: .2rem
 }
 
 .name-edit-row {
     display: flex;
-    gap: 0.5rem;
+    gap: .5rem;
     align-items: center;
     justify-content: center;
-    margin-bottom: 0.5rem;
-    width: 100%;
+    margin-bottom: .5rem;
+    width: 100%
 }
 
 .name-edit-row .modal-input {
     margin-bottom: 0;
-    flex-grow: 1;
+    flex-grow: 1
 }
 
 .name-edit-row .control-btn {
     flex-shrink: 0;
     width: 3.5rem;
-    margin: 0;
+    margin: 0
 }
 
 .name-edit-text-btn {
-    font-size: 0.8rem;
+    font-size: .8rem;
     font-family: var(--font-ui);
-    font-weight: bold;
+    font-weight: 700
 }
 
 .room-code-input {
     text-transform: uppercase;
-    margin-bottom: 0;
+    margin-bottom: 0
 }
 
 .help-subtext {
     display: block;
-    font-size: 0.85rem;
+    font-size: .85rem;
     color: var(--text-muted);
-    margin-top: 0.2rem;
-    font-style: italic;
+    margin-top: .2rem;
+    font-style: italic
 }
 
 .help-tabs {
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid var(--border-dark);
-    margin-bottom: 1rem;
+    margin-bottom: 1rem
+}
+
+.help-tab-btn,
+.update-toast button {
+    flex: 1;
+    border: 0;
+    cursor: pointer;
+    font-size: 1rem
 }
 
 .help-tab-btn {
-    flex: 1;
-    background: transparent;
-    border: 0;
+    background: 0 0;
     color: #888;
     font-family: var(--font-beleren);
-    font-size: 1rem;
-    padding: 0.5rem 0;
-    cursor: pointer;
-    transition: color 0.2s, border-bottom 0.2s;
+    padding: .5rem 0;
+    transition: color .2s, border-bottom .2s;
     border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
+    margin-bottom: -2px
 }
 
 .help-tab-btn.active {
     color: var(--text-light);
-    border-bottom: 2px solid var(--accent-blue);
+    border-bottom: 2px solid var(--accent-blue)
 }
 
 .help-tab-content {
     flex-grow: 1;
     overflow-y: auto;
     text-align: left;
-    font-size: 0.95rem;
+    font-size: .95rem;
     color: #ccc;
     line-height: 1.5;
-    padding-right: 0.5rem;
-    margin-bottom: 1rem;
+    padding-right: .5rem;
+    margin-bottom: 1rem
 }
 
 .help-icon-row {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem
 }
 
 .help-icon-row i {
     flex-shrink: 0;
     width: 2.5rem;
-    text-align: center;
+    text-align: center
+}
+
+.exit-toast,
+.update-toast {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-light);
+    z-index: var(--z-toast);
+    font-family: var(--font-beleren)
 }
 
 .exit-toast {
-    position: fixed;
     bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: var(--text-light);
-    padding: 0.75rem 1.5rem;
+    background-color: rgba(0, 0, 0, .8);
+    padding: .75rem 1.5rem;
     border-radius: 2rem;
-    z-index: var(--z-toast);
-    font-family: var(--font-beleren);
-    font-size: 0.9rem;
+    font-size: .9rem;
     pointer-events: none;
-    opacity: 0;
+    opacity: 0
 }
 
 .update-toast {
-    position: fixed;
     bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
     background-color: var(--bg-toast);
-    color: var(--text-light);
     padding: 1.5rem;
     border: 2px solid var(--accent-blue);
-    border-radius: 0.5rem;
-    z-index: var(--z-toast);
+    border-radius: .5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     align-items: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
-    font-family: var(--font-beleren);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .8);
     width: 90%;
-    max-width: 350px;
+    max-width: 350px
 }
 
 .update-toast span {
     font-size: 1.1rem;
-    text-align: center;
+    text-align: center
 }
 
 .update-toast-btns {
     display: flex;
     gap: 1rem;
-    width: 100%;
+    width: 100%
 }
 
 .update-toast button {
-    flex: 1;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
+    padding: .75rem;
+    border-radius: .25rem;
     font-family: inherit;
-    font-weight: bold;
-    font-size: 1rem;
+    font-weight: 700
 }
 
 .btn-update-yes {
     background: var(--accent-blue);
-    color: var(--bg-main);
+    color: var(--bg-main)
 }
 
 .btn-update-no {
     background: var(--border-dark);
     color: var(--text-light);
-    border: 1px solid #666 !important;
-}
-
-@keyframes attentionPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(9, 166, 233, 0.9);
-    }
-
-    70% {
-        box-shadow: 0 0 0 14px rgba(9, 166, 233, 0);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(9, 166, 233, 0);
-    }
-}
-
-@keyframes lifePulse {
-    0% {
-        color: var(--text-light);
-        transform: scale(1);
-    }
-
-    50% {
-        color: var(--accent-danger);
-        transform: scale(1.3);
-    }
-
-    100% {
-        color: var(--text-light);
-        transform: scale(1);
-    }
-}
-
-@keyframes lifePulseBlue {
-    0% {
-        color: var(--text-light);
-        transform: scale(1);
-    }
-
-    50% {
-        color: var(--accent-blue);
-        transform: scale(1.3);
-    }
-
-    100% {
-        color: var(--text-light);
-        transform: scale(1);
-    }
+    border: 1px solid #666 !important
 }
 
 .pulse-blue {
-    animation: lifePulseBlue 0.4s ease-out;
-    display: inline-block;
+    animation: lifePulseBlue .4s ease-out;
+    display: inline-block
 }
 
 .needs-attention {
     border-color: var(--accent-blue) !important;
-    animation: attentionPulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
+    animation: attentionPulse 1.5s infinite cubic-bezier(.66, 0, 0, 1)
 }
 
 .pulse-danger {
-    animation: lifePulse 0.4s ease-out;
-    display: inline-block;
+    animation: lifePulse .4s ease-out;
+    display: inline-block
 }
 
 .btn-primary:not(:disabled) {
-    border-color: var(--accent-blue);
+    border-color: var(--accent-blue)
 }
 
 .btn-primary:not(:disabled):hover {
-    background-color: rgba(9, 166, 233, 0.1);
+    background-color: rgba(9, 166, 233, .1)
 }
 
 .btn-danger:not(:disabled):hover {
-    background-color: rgba(255, 85, 85, 0.1);
+    background-color: rgba(255, 85, 85, .1)
 }
 
 .ios-warning-box {
-    background: rgba(255, 85, 85, 0.1);
+    background: rgba(255, 85, 85, .1);
     border: 1px solid var(--accent-danger);
-    border-radius: 0.5rem;
-    padding: 0.75rem;
+    border-radius: .5rem;
+    padding: .75rem;
     margin-bottom: 1rem;
-    text-align: center;
+    text-align: center
 }
 
 .ios-warning-text {
-    font-size: 0.85rem;
+    font-size: .85rem;
     color: var(--text-light);
     display: block;
-    line-height: 1.3;
+    line-height: 1.3
 }
 
 .ios-code-section {
-    font-size: 0.9rem;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid rgba(255, 85, 85, 0.3);
+    font-size: .9rem;
+    margin-top: .75rem;
+    padding-top: .75rem;
+    border-top: 1px solid rgba(255, 85, 85, .3)
 }
 
 .ios-code-display {
-    margin-top: 0.5rem;
-    font-size: 1.2rem;
+    margin-top: .5rem;
+    font-size: 1.2rem
 }
 
 .icon-picker-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(3.5rem, 1fr));
-    gap: 0.5rem;
+    gap: .5rem;
     overflow-y: auto;
-    padding: 0.5rem;
-    max-height: 70vh;
+    padding: .5rem;
+    max-height: 70vh
 }
 
 .icon-picker-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, .05);
     border: 1px solid var(--border-dark);
-    border-radius: 0.5rem;
+    border-radius: .5rem;
     height: 3.5rem;
     font-size: 1.5rem;
     color: var(--text-light);
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background .2s
 }
 
 .icon-picker-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: var(--accent-blue);
+    background: rgba(255, 255, 255, .2);
+    border-color: var(--accent-blue)
 }
 
+.room-info-left,
+.room-info-right,
 .room-info-split {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     width: 100%;
-    flex-grow: 1;
-    justify-content: center;
+    justify-content: center
+}
+
+.room-info-split {
+    gap: 1rem;
+    flex-grow: 1
 }
 
 .room-info-left,
 .room-info-right {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
+    align-items: center
 }
 
 .room-info-right {
-    gap: 0.5rem;
+    gap: .5rem
 }
 
 .room-info-left .qr-display-box {
-    margin: 0.5rem auto;
+    margin: .5rem auto
 }
 
 .action-btn-row {
     display: flex;
     gap: 1rem;
     width: 100%;
-    margin-top: 0.5rem;
+    margin-top: .5rem
 }
 
 .action-btn-row .control-btn {
-    flex: 1;
+    flex: 1
 }
 
-@media (max-width: 440px) {
+@media (max-width:440px) {
     .tracker-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr)
     }
 
     .modal-overlay .control-btn {
-        font-size: 1rem;
+        font-size: 1rem
     }
 
     .modal-overlay .control-btn i {
-        font-size: 1.2rem;
+        font-size: 1.2rem
     }
 
     .flyout-wrapper {
-        position: static;
+        position: static
     }
 
     .flyout-bubble {
@@ -1662,162 +1660,148 @@ body.symbols-hidden .spinner-btns button {
         right: auto;
         transform: translateX(-50%);
         justify-content: center;
-        max-width: 100%;
+        max-width: 100%
     }
 
-    .flyout-bubble::before,
-    .flyout-bubble::after {
-        display: none;
+    .flyout-bubble::after,
+    .flyout-bubble::before {
+        display: none
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width:360px) {
 
     .footer-separator,
     .footer-text {
-        display: none;
+        display: none
     }
 
     #sticky-footer {
-        gap: 2rem;
+        gap: 2rem
     }
 
     .footer-link i {
-        font-size: 1.2rem;
+        font-size: 1.2rem
     }
 }
 
-@media (orientation: landscape),
-(min-width: 768px) {
+@media (orientation:landscape),
+(min-width:768px) {
     body {
         background-position: top center;
-        padding-top: 0.5rem;
+        padding-top: .5rem;
         padding-bottom: 0;
         height: 100dvh;
-        overflow: hidden;
+        overflow: hidden
     }
 
     .floatcontainer {
         width: 98vw;
         max-width: 1400px;
-        padding: 0.5rem;
+        padding: .5rem;
         display: flex;
-        flex-direction: column;
+        flex-direction: column
     }
 
     .content {
         display: grid;
         grid-template-columns: auto 1fr;
         grid-template-rows: 1fr max-content;
-        grid-template-areas:
-            "stats mana"
-            "controls controls";
-        gap: 0.5rem;
+        grid-template-areas: "stats mana" "controls controls";
+        gap: .5rem;
         align-items: stretch;
         flex-grow: 1;
         height: 100%;
-        min-height: 0;
+        min-height: 0
     }
 
     .content:has(.room-row:not(.hidden)) {
         grid-template-rows: max-content 1fr max-content;
-        grid-template-areas:
-            "room room"
-            "stats mana"
-            "controls controls";
+        grid-template-areas: "room room" "stats mana" "controls controls"
     }
 
     .content:has(.counters-grid:not(.hidden)) {
         grid-template-rows: 1fr 1fr max-content;
-        grid-template-areas:
-            "stats mana"
-            "stats counters"
-            "controls controls";
+        grid-template-areas: "stats mana" "stats counters" "controls controls"
     }
 
     .content:has(.room-row:not(.hidden)):has(.counters-grid:not(.hidden)) {
         grid-template-rows: max-content 1fr 1fr max-content;
-        grid-template-areas:
-            "room room"
-            "stats mana"
-            "stats counters"
-            "controls controls";
+        grid-template-areas: "room room" "stats mana" "stats counters" "controls controls"
+    }
+
+    .counters-grid,
+    .top-row,
+    .tracker-grid {
+        margin-bottom: 0;
+        gap: .5rem;
+        max-height: none;
+        height: 100%;
+        min-height: 0
     }
 
     .top-row {
         grid-area: stats;
         flex-direction: column;
-        margin-bottom: 0;
-        gap: 0.5rem;
-        width: 180px;
-        max-height: none;
-        height: 100%;
-        min-height: 0;
+        width: 180px
+    }
+
+    .counters-grid,
+    .tracker-grid {
+        grid-auto-rows: 1fr
     }
 
     .tracker-grid {
         grid-area: mana;
-        grid-template-columns: repeat(3, 1fr);
-        margin-bottom: 0;
-        gap: 0.5rem;
-        max-height: none;
-        height: 100%;
-        min-height: 0;
-        grid-auto-rows: 1fr;
+        grid-template-columns: repeat(3, 1fr)
     }
 
     .counters-grid {
         grid-area: counters;
-        margin-bottom: 0;
-        margin-top: 0;
-        gap: 0.5rem;
-        max-height: none;
-        height: 100%;
-        min-height: 0;
-        grid-auto-rows: 1fr;
+        margin-top: 0
     }
 
     .room-row {
         grid-area: room;
         margin-bottom: 0;
-        padding: 0.25rem 0.5rem;
-        height: min-content;
+        padding: .25rem .5rem;
+        height: min-content
     }
 
     .span-full {
-        grid-column: auto !important;
+        grid-column: auto !important
     }
 
-    .tile-wrapper,
-    .counter-tile {
+    .counter-tile,
+    .tile-wrapper {
         height: 100%;
-        min-height: 0;
+        min-height: 0
     }
 
     .counter-tile {
-        max-width: none;
+        max-width: none
     }
 
+    .counter-qty,
     .quantity {
         font-size: clamp(2rem, 15vh, 4rem);
-        translate: 0 0;
+        translate: 0 0
     }
 
     .counter-qty {
-        font-size: clamp(1.5rem, 10vh, 2.5rem);
-        translate: 0 0;
+        font-size: clamp(1.5rem, 10vh, 2.5rem)
     }
 
     .manasymbol-icon,
     .toprow-manasymbol-icon {
         font-size: 3.5rem;
-        opacity: 0.3;
+        opacity: .3
     }
 
     .counter-icon {
-        opacity: 0.3;
+        opacity: .3;
         translate: 0 2px;
-        font-size: clamp(1.5rem, 6vh, 2rem);
+        font-size: clamp(1.5rem, 6vh, 2rem)
     }
 
     .floating-controls {
@@ -1830,173 +1814,178 @@ body.symbols-hidden .spinner-btns button {
         justify-content: center;
         margin-bottom: 0;
         margin-top: 0;
-        gap: 0.25rem;
-        flex-wrap: nowrap;
+        gap: .25rem;
+        flex-wrap: nowrap
     }
 
     .floating-controls .control-btn {
         height: 2.2rem;
-        min-width: 3rem;
+        min-width: 3rem
     }
 
     .floating-controls .control-btn i {
-        font-size: 1.2rem;
+        font-size: 1.2rem
     }
 
     .flyout-wrapper {
-        max-width: 4rem;
+        max-width: 4rem
     }
 
     .cmd-modal-content {
-        padding: 0.5rem;
-        gap: 0.15rem;
+        padding: .5rem;
+        gap: .15rem
     }
 
     .modal-overlay h2 {
-        margin-bottom: 0.5rem;
-        padding-bottom: 0.25rem;
-        font-size: 1.2rem;
+        margin-bottom: .5rem;
+        padding-bottom: .25rem;
+        font-size: 1.2rem
     }
 
     .close-btn {
-        margin-top: 0.5rem;
-        padding: 0.25rem 2rem;
+        margin-top: .5rem;
+        padding: .25rem 2rem
     }
 
     #credits-modal .cmd-modal-content {
         display: grid !important;
         grid-template-columns: 1fr 1fr;
-        gap: 0.5rem 2rem;
+        gap: .5rem 2rem;
         text-align: left;
         padding: 1.5rem;
-        height: auto;
+        height: auto
     }
 
     #credits-modal .close-btn,
-    #credits-modal .legal-text,
-    #credits-modal h2 {
-        grid-column: 1 / span 2 !important;
+    #credits-modal .legal-text {
+        grid-column: 1/span 2 !important;
         width: 100%;
-        text-align: center;
+        text-align: center
     }
 
     #credits-modal .legal-text {
         width: 100% !important;
         max-width: none !important;
         text-align: left;
-        margin-top: 0.5rem;
-        box-sizing: border-box;
+        margin-top: .5rem;
+        box-sizing: border-box
+    }
+
+    #credits-modal h2 {
+        grid-column: 1/span 2 !important;
+        width: 100%;
+        text-align: center
     }
 
     .cmd-counter-unit {
         height: 100%;
         width: auto !important;
-        flex: 1;
+        flex: 1
     }
 
     .cmd-qty {
-        font-size: 3rem !important;
+        font-size: 3rem !important
     }
 
     .cmd-quarters {
         grid-template-columns: repeat(4, minmax(0, 1fr));
         grid-template-rows: 1fr;
-        overflow-y: hidden;
+        overflow-y: hidden
     }
 
     .player-name {
-        font-size: 0.9rem;
+        font-size: .9rem;
         padding-bottom: 0;
-        margin-bottom: 0.25rem;
+        margin-bottom: .25rem
     }
 
     .room-info-split {
         flex-direction: row;
         align-items: center;
-        gap: 0;
+        gap: 0
     }
 
     .room-info-left {
         border-right: 1px solid var(--border-darker);
         padding-right: 1rem;
-        width: 50%;
+        width: 50%
     }
 
     .room-info-right {
         padding-left: 1rem;
-        width: 50%;
+        width: 50%
     }
 
     .room-info-left .qr-display-box {
-        margin: 0.25rem auto;
-        padding: 0.5rem;
+        margin: .25rem auto;
+        padding: .5rem
     }
 
     .room-info-left .qr-display-box canvas,
     .room-info-left .qr-display-box img {
-        max-height: 45vh !important;
+        max-height: 45vh !important
     }
 
     .help-subtext {
         margin-top: 0;
-        margin-bottom: 0.25rem;
+        margin-bottom: .25rem
     }
 
     .pips-grid {
         grid-template-columns: repeat(3, 1fr);
-        margin: 0.5rem auto;
-        gap: 0.5rem;
+        margin: .5rem auto;
+        gap: .5rem
     }
 
     .pip-label {
         min-height: 2.5rem;
-        padding: 0.25rem 0.5rem;
+        padding: .25rem .5rem
     }
 
     .modal-input {
-        padding: 0.4rem;
+        padding: .4rem;
         font-size: 1rem;
-        margin-bottom: 0.25rem;
+        margin-bottom: .25rem
     }
 
     .connect-split-row {
-        margin-top: 0.25rem;
+        margin-top: .25rem
     }
 
     .btn-scan-qr {
-        min-height: 3rem;
+        min-height: 3rem
     }
 
     .divider-line {
-        margin: 0.5rem 0;
+        margin: .5rem 0
     }
 
     .ios-warning-box {
-        margin-bottom: 0.5rem;
-        padding: 0.4rem;
+        margin-bottom: .5rem;
+        padding: .4rem
     }
 
     #counters-modal .dock-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 0.5rem;
+        gap: .5rem
     }
 
     #counter-edit-modal .icon-picker-grid {
-        max-height: 40vh;
+        max-height: 40vh
     }
 
     #dock-modal .dock-grid {
         grid-template-columns: repeat(4, 1fr);
-        margin: 0.5rem 0;
+        margin: .5rem 0
     }
 
     #dock-modal .dialog-btn-row {
         flex-direction: row;
-        margin-top: auto;
+        margin-top: auto
     }
 
     #dock-modal .dialog-btn-row .close-btn {
         margin-top: 0;
-        flex: 1;
+        flex: 1
     }
 }

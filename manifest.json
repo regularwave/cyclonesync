@@ -3,7 +3,7 @@
     "name": "CycloneSync",
     "short_name": "CycloneSync",
     "description": "A life and mana tracker for Magic: the Gathering Commander.",
-    "start_url": "./index.html?source=pwa",
+    "start_url": "https://cyclonesync.cloud/?source=pwa",
     "display": "standalone",
     "orientation": "any",
     "background_color": "#000000",

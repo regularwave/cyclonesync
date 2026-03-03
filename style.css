@@ -1676,6 +1676,30 @@ body.symbols-hidden .spinner-btns button {
     .flyout-bubble::before {
         display: none
     }
+
+    .close-btn {
+        margin-top: 1rem;
+        padding: 0.4rem 1.5rem;
+    }
+
+    .modal-input {
+        padding: 0.6rem;
+        font-size: 1.1rem;
+    }
+
+    .qr-display-box {
+        margin: 0.5rem auto;
+        padding: 0.5rem;
+    }
+
+    .divider-line {
+        margin: 0.5rem 0;
+    }
+
+    .help-subtext {
+        font-size: 0.75rem;
+        margin-bottom: 0.15rem;
+    }
 }
 
 @media (max-width:360px) {
@@ -1996,5 +2020,40 @@ body.symbols-hidden .spinner-btns button {
     #dock-modal .dialog-btn-row .close-btn {
         margin-top: 0;
         flex: 1
+    }
+
+    #connect-modal .close-btn {
+        margin-top: 0.25rem;
+        padding: 0.25rem 1rem;
+        font-size: 1rem;
+    }
+
+    #connect-modal h2 {
+        margin-bottom: 0.25rem;
+        padding-bottom: 0.25rem;
+        font-size: 1.1rem;
+    }
+
+    #connect-modal .qr-display-box {
+        margin: 0.25rem auto;
+        padding: 0.25rem;
+    }
+
+    #connect-modal .modal-input {
+        padding: 0.3rem;
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
+    }
+
+    #connect-modal .connect-split-row {
+        margin-top: 0;
+    }
+
+    #connect-modal .divider-line {
+        margin: 0.25rem 0;
+    }
+
+    #connect-modal .action-btn-row {
+        margin-top: 0.25rem;
     }
 }

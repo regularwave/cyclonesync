@@ -21,10 +21,16 @@ const appCheck = initializeAppCheck(app, {
 
 const db = getDatabase(app);
 
+let storedPlayerId = localStorage.getItem('cyclonesync_playerId');
+if (!storedPlayerId) {
+    storedPlayerId = 'player_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('cyclonesync_playerId', storedPlayerId);
+}
+
 const AppState = {
     settings: { life: true, tax: false, taxSplit: false, awake: true, layoutLR: false, counters: false },
     roomId: null,
-    playerId: 'player_' + Math.random().toString(36).substr(2, 9),
+    playerId: storedPlayerId,
     syncedPlayers: {},
 
     pipsOpen: true,
@@ -1055,6 +1061,13 @@ async function joinRoom() {
 
     status.innerText = "Connecting...";
 
+    const prevRoomId = localStorage.getItem('cyclonesync_active_room');
+    if (prevRoomId && prevRoomId !== roomId) {
+        const oldRef = ref(db, 'rooms/' + prevRoomId + '/players/' + AppState.playerId);
+        onDisconnect(oldRef).cancel();
+        remove(oldRef);
+    }
+
     const playersRef = ref(db, 'rooms/' + roomId + '/players');
     const playersQ = query(playersRef, orderByKey(), limitToFirst(4));
     const snapshot = await get(playersQ);
@@ -1067,6 +1080,7 @@ async function joinRoom() {
     }
 
     AppState.roomId = roomId;
+    localStorage.setItem('cyclonesync_active_room', roomId);
     localStorage.setItem('name-p1', playerName);
 
     const p1Input = document.getElementById('name-p1');
@@ -1127,7 +1141,7 @@ function updateActiveName(input) {
     const p1Input = document.getElementById('name-p1');
     if (p1Input) p1Input.value = newName;
 
-    if (!AppState.roomId || !AppState.playerId || AppState.flags.isSyncLocked) return;
+    if (!AppState.roomId || !AppState.playerId || AppState.flags.isNameSyncLocked) return;
 
     if (AppState.timers.nameDebounce) clearTimeout(AppState.timers.nameDebounce);
 
@@ -1384,15 +1398,19 @@ function showRoomQR() {
 
 async function leaveRoom(force = false) {
     if (force || (await customConfirm("Disconnect from room?"))) {
-        if (AppState.roomId) {
-            const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
-            remove(myRef);
-        }
-
         if (AppState.roomListener) {
             AppState.roomListener();
             AppState.roomListener = null;
         }
+        if (AppState.timers.lifeDebounce) clearTimeout(AppState.timers.lifeDebounce);
+        if (AppState.timers.nameDebounce) clearTimeout(AppState.timers.nameDebounce);
+        if (AppState.roomId) {
+            const myRef = ref(db, 'rooms/' + AppState.roomId + '/players/' + AppState.playerId);
+            onDisconnect(myRef).cancel();
+            remove(myRef);
+        }
+
+        localStorage.removeItem('cyclonesync_active_room');
 
         AppState.syncedPlayers = {};
 
